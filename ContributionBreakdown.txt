@@ -1,0 +1,33 @@
+﻿## guest, subscriber:
+Menu														(00)
+Home - 						./index.html					(01)
+Danh sách bài viết - 		./category/ten-chuyen-muc.html	(02)
+							./tag/ten-tu-khoa.html			(03)
+Chi tiết bài viết  -		./tieu-de-bai-viet.html			(04)
+Tìm kiếm bài viết -			./search/tu-khoa-tim-kiem.html	(05)
+
+## writer:
+Đăng bài viết -					./dang-bai.html				(06)
+Danh sách bài viết (của writer)	./danh-sach-bai-dang.html	(07)
+Hiệu chỉnh bài viết				./chinh-sua-bai-viet.html	(08)
+
+## editor:
+Xem danh sách draft của writer ./danh-sach-nhap.html		(09)
+
+## administrator:
+Quản lý bao gồm xem/thêm/xóa/sửa
+								./quan-ly-chuyen-muc.html   (10)
+								./quan-ly-nhan.html         (11)
+								./quan-ly-bai-viet.html		(12)
+								./quan-ly-nguoi-dung.html   (13)	
+
+## common
+Đăng nhập						./login.html				(14)
+Cập nhật thông tin				./cap-nhat-thong-tin.html	(15)
+Quên mật khẩu					./quen-mat-khau.html		(16)
+
+
+
+I  	    00 - 01 - 02 - 03 - 04 - 05
+II 	    06 - 07 - 08 - 10 - 11 - 12 - 13
+III 	09 - 14 - 15 - 16
