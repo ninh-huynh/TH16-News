@@ -21,6 +21,17 @@
     filter: brightness(1);
 }
 
+.trending-item {
+    position: relative;
+    display: none;
+}
+
+.trending-caption{
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+}
+
 .img-cont{
     overflow: hidden;
 }
@@ -44,14 +55,22 @@
 }
 
 @media (min-width: 576px) {
-    .card-group .card{
-        width: 50%;
-    }
+    
 }
 
 
 @media (min-width: 768px) {
     .card-group .card {
-        width: 33.33%;
+        width: 50%;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-group .card {
+        width: 33.3333%;
+    }
+
+    .trending-item{
+        display: block;
     }
 }
