@@ -58,16 +58,19 @@
                     <a href="#" class="badge badge-dark">tag5</a>
                 </h6>
                 <div class="comment-section bg-light w-100 p-3 my-3">
-                    <textarea class="form-control mb-3" rows="2" placeholder="Bạn nghĩ gì về tin này?"></textarea>
-                    <button type="button" class="btn btn-primary">Gửi bình luận</button>
+                    <input type="text" class="form-control w-25 mb-3" id="txtName" placeholder="Tên của bạn">
+                    <textarea class="form-control mb-3" rows="2" id="txtComment" placeholder="Bạn nghĩ gì về tin này?"></textarea>
+                    <button type="button" class="btn btn-primary" id="comment-btn">Gửi bình luận</button>
                 </div>
 
                 <div class="comment-list">
                     <h6>Ý kiến bạn đọc</h6>
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush" id="comment-ul">
                         <li class="list-group-item">
                             <div class="font-weight-bold">Tên độc giả</div>
-                            <div>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero fuga quo, non voluptates voluptas voluptatem id adipisci vero cupiditate, qui omnis molestias ducimus cumque repudiandae error sit, culpa fugiat dolore!</div>
+                            <div>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero fuga quo, non
+                                voluptates voluptas voluptatem id adipisci vero cupiditate, qui omnis molestias ducimus
+                                cumque repudiandae error sit, culpa fugiat dolore!</div>
                             <div class="float-right text-muted">
                                 21/04/2019
                             </div>
@@ -79,29 +82,31 @@
                     <h3>BÀI VIẾT CÙNG CHUYÊN MỤC</h3>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                        <div class="media">
-                            <img data-src="https://dummyimage.com/300x200/000/fff" class="align-self-center mr-3 lazyload w-25" alt="...">
-                            <div class="media-body align-self-center w-75">
-                                <a href="#" class="text-dark">
-                                    <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, ab?</h4>
-                                </a>
-                                <h6 class="card-subtitle mt-2 text-muted">
-                                    17/04/2019
-                                </h6>
-                                <h6>
-                                    <i class="fas fa-tags mr-2"></i>
-                                    <a href="#" class="badge badge-dark">tag1</a>
-                                    <a href="#" class="badge badge-dark">tag2</a>
-                                    <a href="#" class="badge badge-dark">tag3</a>
-                                    <a href="#" class="badge badge-dark">tag4</a>
-                                    <a href="#" class="badge badge-dark">tag5</a>
-                                </h6>
-                                <div class="card-text">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere repudiandae ipsam
-                                    porro nihil dolorum aspernatur tempora hic cupiditate praesentium doloribus.
+                            <div class="media">
+                                <img data-src="https://dummyimage.com/300x200/000/fff"
+                                    class="align-self-center mr-3 lazyload w-25" alt="...">
+                                <div class="media-body align-self-center w-75">
+                                    <a href="#" class="text-dark">
+                                        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, ab?</h4>
+                                    </a>
+                                    <h6 class="card-subtitle mt-2 text-muted">
+                                        17/04/2019
+                                    </h6>
+                                    <h6>
+                                        <i class="fas fa-tags mr-2"></i>
+                                        <a href="#" class="badge badge-dark">tag1</a>
+                                        <a href="#" class="badge badge-dark">tag2</a>
+                                        <a href="#" class="badge badge-dark">tag3</a>
+                                        <a href="#" class="badge badge-dark">tag4</a>
+                                        <a href="#" class="badge badge-dark">tag5</a>
+                                    </h6>
+                                    <div class="card-text">
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere repudiandae
+                                        ipsam
+                                        porro nihil dolorum aspernatur tempora hic cupiditate praesentium doloribus.
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </li>
                     </ul>
                 </div>
