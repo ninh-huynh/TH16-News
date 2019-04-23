@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Danh sách bài đã viết</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="./css/danh-sach-bai-da-viet.css">
+    </head>
+
+    <body>
+        
+        <div id="header"></div>
+        <div id="category-menu" class="sticky-top"></div>
+
+        <div class="container">
+            <div id="pageHeader" class="pb-2 mt-4 mb-2 border-bottom">
+                <h1>Danh sách bài viết</h1>
+            </div>
+
+            <div class="row mt-4">
+                <div id="category" class="col-sm-3">
+                    <div class="h4 bottom-line">PHÂN LOẠI</div>
+                    <ul class="list-group mt-4">
+                        <a href="#" class="list-group-item list-group-item-action active 
+                            d-flex justify-content-between align-items-center">
+                            Đã xuất bản
+                            <span class="badge badge-primary badge-pill">50</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Đang chờ duyệt
+                            <span class="badge badge-primary badge-pill">50</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Bị từ chối
+                            <span class="badge badge-primary badge-pill">50</span>
+                        </a>
+                    
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Chưa được duyệt
+                            <span class="badge badge-primary badge-pill">50</span>
+                        </a>
+                    </ul>  
+                </div>
+    
+                <div id="artitleList" class="col-sm-9">
+                    <table id="articleListTable" class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Tiêu đề</th>
+                                <th>Ngày đăng</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit. Of
+                                    ficiis, nemo</a></td>
+                                <td>12-9-2018</td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, labore!</a></td>
+                                <td>30-12-2018</td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">Warm Place</a></td>
+                                <td>15-2-2019</td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, labore!</a></td>
+                                <td>20-2-2019</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div id="articlePage">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer"></div>
+        
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+        <script src="./scripts/danh-sach-bai-da-viet.js"></script>
+    </body>
+
+</html>

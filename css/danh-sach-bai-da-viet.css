@@ -1,0 +1,30 @@
+
+#articleListTable a{
+    text-decoration: none;
+    background-color: transparent;
+}
+
+#articleListTable a:link {
+    color: #333;
+
+}
+
+#articleListTable a:visited {
+    color: #333;
+}
+
+#articleListTable a:hover {
+    color: #4285f4;
+}
+
+#articleListTable a:active {
+    color: #4285f4;
+}
+
+#category .active .badge {
+    background-color: #333;
+}
+
+#category .list-group-item:hover {
+    background-color: #DEE2E6;
+}
