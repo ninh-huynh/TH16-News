@@ -62,4 +62,80 @@
         </ul>
     </div>
 
+
+    <!-- Các menu chức năng của từng loại user -->
+    <!-- Cần thay thế lớp d-none/d-block của từng loại user khi đăng nhập vào -->
+
+    <!-- guest/chưa đăng nhập -->
+    <div id="guestNavItem" class="navbar-nav navbar-right d-block">
+        <div class="dropdown" id="guestDropdownMenu">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" 
+            aria-haspopup="true" aria-expanded="false">
+                <span class="fa fa-user"></span></a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">Đăng nhập</a> 
+                <a class="dropdown-item" href="#">Đăng kí</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscriber -->
+    <div id="subscriberNavItem" class="navbar-nav navbar-right d-none">
+        <div class="dropdown" id="subscriberDropdownMenu">
+            <img src="#" class="rounded-circle dropdown-toggle" data-toggle="dropdown" 
+                aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown-menu dropdown-menu-right">
+                <span id="userName" class="dropdown-item-text"></span>
+                <a class="dropdown-item" href="#">Gia hạn</a>
+                <a class="dropdown-item" href="#">Đổi mật khẩu</a>
+                <a class="dropdown-item" href="#">Cập nhật thông tin</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Editor -->
+    <div id="editorNavItem" class="navbar-nav navbar-right d-none">
+        <div class="dropdown" id="editorDropdownMenu">
+            <img src="#" class="rounded-circle dropdown-toggle" data-toggle="dropdown" 
+            aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown-menu dropdown-menu-right">
+                <span id="userName" class="dropdown-item-text"></span>
+                <a class="dropdown-item" href="#">Duyệt bài viết</a>
+                <a class="dropdown-item" href="#">Đổi mật khẩu</a>
+                <a class="dropdown-item" href="#">Cập nhật thông tin</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Writer -->
+    <div id="writerNavItem" class="navbar-nav navbar-right d-none">
+        <div class="dropdown" id="writerDropdownMenu">
+            <img src="#" class="rounded-circle dropdown-toggle" data-toggle="dropdown" 
+            aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown-menu dropdown-menu-right">
+                <span id="userName" class="dropdown-item-text"></span>
+                <a class="dropdown-item" href="#">Đăng bài mới</a>
+                <a class="dropdown-item" href="#">Xem bài đã đăng</a>
+                <a class="dropdown-item" href="#">Đổi mật khẩu</a>
+                <a class="dropdown-item" href="#">Cập nhật thông tin</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Administrator -->
+    <div id="adminNavItem" class="navbar-nav navbar-right d-none">
+        <div class="dropdown" id="adminDropdownMenu">
+            <img src="#" class="rounded-circle dropdown-toggle" data-toggle="dropdown" 
+            aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown-menu dropdown-menu-right">
+                <span id="userName" class="dropdown-item-text"></span>
+                <a class="dropdown-item" href="#">Quản lý chuyên mục</a>
+                <a class="dropdown-item" href="#">Quản lý nhân viên</a>
+                <a class="dropdown-item" href="#">Quản lý bài viết</a>
+                <a class="dropdown-item" href="#">Quản lý người dùng</a>
+                <a class="dropdown-item" href="#">Đổi mật khẩu</a>
+                <a class="dropdown-item" href="#">Cập nhật thông tin</a>g</a>
+            </div>
+        </div>
+    </div>
 </nav>
