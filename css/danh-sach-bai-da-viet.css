@@ -1,3 +1,25 @@
+/* https://getbootstrap.com/docs/4.0/examples/sticky-footer/ */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 200px; /* Margin bottom by footer height */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer .container-fluid {
+    padding: 0;
+}
+
+
 
 #articleListTable a{
     text-decoration: none;
