@@ -17,6 +17,11 @@
   },
   "homepage": "https://github.com/kim-ninh/TH16-News#readme",
   "devDependencies": {
-    "eslint": "^5.16.0"
+    "eslint": "^5.16.0",
+    "nodemon": "^1.18.11"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2"
   }
 }
