@@ -193,52 +193,28 @@
 <div id="top-10" class="my-5">
     <div class="h3">TOP 10 CHUYÊN MỤC</div>
 
+    <%# javascript forEach callback function: 
+    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach %>
     <div class="card-group">
+        <% site.posts.forEach(function (post, index) { %>
+        <% if (index < 10) %>
+        <% { %>
         <div class="card">
             <div class="img-cont">
-                <img data-src="https://dummyimage.com/647x400/111/fff" class="card-img-top lazyload" alt="...">
+                <img data-src="<%- post.head_img %>" class="card-img-top lazyload" alt="...">
             </div>
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">
-                    <a href="#" class="badge badge-primary mr-3">Thế giới</a>
-                    17/04/2019
+                    <a href="<%- post.categories.data[0].path %>" class="badge badge-primary mr-3">
+                        <%- post.categories.data[0].name %> </a>
+                    <%- post.date.format(config.date_format) %>
                 </h6>
-                <a href="#" class="text-dark">
-                    <h5 class="card-title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, nemo.</h5>
+                <a href="<%- post.path %>" class="text-dark">
+                    <h5 class="card-title"><%- post.title %></h5>
                 </a>
             </div>
         </div>
-
-        <div class="card">
-            <div class="img-cont">
-                <img data-src="https://dummyimage.com/647x400/555/fff" class="card-img-top lazyload" alt="...">
-            </div>
-            <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted">
-                    <a href="#" class="badge badge-warning mr-3">Văn hóa</a>
-                    17/04/2019
-                </h6>
-                <a href="#" class="text-dark">
-                    <h5 class="card-title">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda,
-                        quisquam?</h5>
-                </a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="img-cont">
-                <img data-src="https://dummyimage.com/647x400/666/fff" class="card-img-top lazyload" alt="...">
-            </div>
-            <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted">
-                    <a href="#" class="badge badge-success mr-3">Sức khỏe</a>
-                    17/04/2019
-                </h6>
-                <a href="#" class="text-dark">
-                    <h5 class="card-title">Lorem ipsum dolor sit amet consectetur adipisicing.</h5>
-                </a>
-            </div>
-        </div>
+        <% } %>
+        <% }) %>
     </div>
-
 </div>
