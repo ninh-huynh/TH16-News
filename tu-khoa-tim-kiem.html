@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>từ khóa - Tìm kiếm từ khóa</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/menu-bar.css">
+    <link rel="stylesheet" href="./css/tu-khoa-tim-kiem.css">
+</head>
+
+<body>
+    <div id="header"></div>
+
+    <!-- Tái sử dụng menu bar -->
+    <div id="category-menu" class="sticky-top"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-auto mt-3" >
+                <div class="search-filter bg-light px-2 py-3">
+                    <div class="font-weight-light">
+                        <div class="text-uppercase font-weight-bold">Chế độ tìm kiếm</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="exactly" name="search-mode" value="chính xác"
+                                checked>
+                            <label class="form-check-label" for="exactly">
+                                Tìm chính xác
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="expand" name="search-mode" value="mở rộng">
+                            <label class="form-check-label" for="expand">
+                                Tìm mở rộng
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="title" name="search-mode" value="tiêu đề">
+                            <label class="form-check-label" for="title">
+                                Tiêu đề
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 mt-3">
+                <h2 id="key-word">blanditiis</h2>
+                <h5 class="text-muted" id="total-result">n kết quả phù hợp</h5>
+
+                <div class="d-flex justify-content-between">
+                    <select class="custom-select">
+                        <option value="mới nhất">Mới nhất</option>
+                        <option value="cũ nhất">Cũ nhất</option>
+                    </select>
+
+                    <select class="custom-select">
+                        <option value="tất cả">Tất cả chuyên mục</option>
+                        <option value="thời sự">Thời sự</option>
+                        <option value="thế giới">Thế giới</option>
+                        <option value="giải trí">Giải trí</option>
+                    </select>
+                </div>
+
+                <ul class="list-unstyled mt-4" id="article-list">
+                    <li class="media my-3">
+                        <img src="https://dummyimage.com/200x123/000/fff" class="mr-3" alt="...">
+                        <div class="media-body">
+                            <a href="#">
+                                <h6 class="mt-0 mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                    Debitis, distinctio!</h6>
+                            </a>
+                            <p>Lorem ipsum dolor, sit amet <em>blanditiis</em> consectetur adipisicing elit. Provident eius labore
+                                numquam ad
+                                reprehenderit, et eligendi odio nihil quasi.</p>
+                        </div>
+                    </li>
+                    <li class="media my-3">
+                        <img src="https://dummyimage.com/200x123/000/fff" class="mr-3" alt="...">
+                        <div class="media-body">
+                            <a href="#">
+                                <h6 class="mt-0 mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                    Debitis, distinctio!</h6>
+                            </a>
+                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident eius labore
+                                numquam ad <em>blanditiis</em>
+                                reprehenderit, et eligendi odio nihil quasi.</p>
+                        </div>
+                    </li>
+                    <li class="media my-3">
+                        <img src="https://dummyimage.com/200x123/000/fff" class="mr-3" alt="...">
+                        <div class="media-body">
+                            <a href="#">
+                                <h6 class="mt-0 mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                    Debitis, distinctio!</h6>
+                            </a>
+                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident eius labore
+                                numquam <em>blanditiis</em>  blanditiis ad
+                                reprehenderit, et eligendi odio nihil quasi.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+                <li class="page-item active">
+                    <span class="page-link">
+                        1
+                    </span>
+                </li>
+                <li class="page-item"><a href="#" class="page-link">2</a>
+        
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="footer"></div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+    <script src="./scripts/lazysizes.min.js" async=""></script>
+    <script src="./scripts/tu-khoa-tim-kiem.js"></script>
+</body>
+
+</html>
