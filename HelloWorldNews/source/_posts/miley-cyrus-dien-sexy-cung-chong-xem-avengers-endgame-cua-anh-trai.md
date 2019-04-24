@@ -1,5 +1,9 @@
 ---
 title: Miley Cyrus diện sexy, cùng chồng xem 'Avengers Endgame' của anh trai
+categories: 
+- Giải trí
+- Sao Hollywood
+head_img: https://znews-photo.zadn.vn/w660/Uploaded/oqivovbt/2019_04_23/miley_1_1.jpg
 ---
 
 **Nữ ca sĩ và chồng, tài tử Liam Hemsworth, dự buổi công chiếu tại Los Angeles hôm 22/4 của phim bom tấn có anh trai Chris Hemsworth đóng vai Thor.**

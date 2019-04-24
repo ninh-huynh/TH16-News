@@ -1,5 +1,8 @@
 ---
 title: Siêu anh hùng Marvel không viễn tưởng, họ chỉ đưa khoa học tiến xa hơn
+categories: 
+- Công nghệ
+head_img: https://znews-photo.zadn.vn/w860/Uploaded/pcckpqmv/2019_04_22/feature.jpeg
 ---
 **Các phim siêu anh hùng đều dựa vào thành tựu khoa học nhiều hơn so với bạn nghĩ. Thực tế, con người đang cố hiện thực hoá năng lực của các siêu anh hùng.**
 

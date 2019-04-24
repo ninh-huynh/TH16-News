@@ -1,6 +1,10 @@
 ---
 title: Sài Gòn nóng hầm hập đến 21h do đảo nhiệt đô thị
+categories: 
+- Thời sự
+- Đô thị
 tag: [tag1, tag2]
+head_img: https://znews-photo.zadn.vn/w660/Uploaded/yejutm/2019_04_22/Saigonnangnong.jpg
 ---
 
 **Sau cả ngày hứng chịu nắng nóng lên đến gần 40 độ C, người dân Sài Gòn tiếp tục vật lộn với cái nóng hầm hập vào buổi tối.**
