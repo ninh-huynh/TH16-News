@@ -54,8 +54,14 @@
     border-color: transparent;
 }
 
+.carousel-item h3 {
+    font-size: 1.25rem; /*h5 style*/
+}
+
 @media (min-width: 576px) {
-    
+    .carousel-item h3 {
+        font-size: 1.75rem; /*h3 style*/
+    }
 }
 
 
