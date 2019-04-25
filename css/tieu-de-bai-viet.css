@@ -1,16 +1,36 @@
+.same-category img {
+    width: 150px;
+}
+
+.same-category .card-text {
+    display: none;
+}
+
 @media (max-width: 576px) {}
 
-@media (max-width: 768px) {}
-
-@media (max-width: 992px) {
-    .same-category .card-text {
-        display: none;
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
     }
 }
 
-@media (min-width: 576px) {}
+@media (max-width: 992px) {}
+
+@media (min-width: 576px) {
+    .same-category img {
+        width: 200px;
+    }
+}
 
 
 @media (min-width: 768px) {}
 
-@media (min-width: 992px) {}
+@media (min-width: 992px) {
+    .same-category img {
+        width: 300px;
+    }
+
+    .same-category .card-text {
+        display: block;
+    }
+}
