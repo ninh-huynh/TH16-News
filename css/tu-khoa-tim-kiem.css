@@ -6,6 +6,12 @@
     width: initial;
 }
 
+#article-list img{
+    width: 200px;
+    height: 123px;
+    object-fit: cover;
+}
+
 em{
     background: #ffffd7;
 }
