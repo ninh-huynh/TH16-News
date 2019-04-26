@@ -32,7 +32,7 @@
     bottom: 20px;
 }
 
-#top-10 img {
+img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -61,35 +61,52 @@
     border-color: transparent;
 }
 
- .card-group .img-cont {
+ #top-10 .img-cont {
      height: 222px;         /* Chiều cao mặc định trên các thiết bị di động */
  }                          /* Cũng chả hiểu tại sao lại là con số này (giống với trường hợp >= 1200px) */
 
+#most-viewed .img-cont{
+    /* height: 178px; */
+    height: 237px;
+    /* height: 315px; */
+}
 
 @media (min-width: 576px) {
-    .card-group .img-cont {
+    #top-10 .img-cont {
         height: 308px;      
+    }
+
+    #most-viewed .img-cont {
+        height: 315px;
     }
 }
 
 
 @media (min-width: 768px) {
-    .card-group .card {
+    #top-10 .card {
         width: 50%;
     }
 
-    .card-group .img-cont {
+    #top-10 .img-cont {
         height: 207px;
+    }
+
+    #most-viewed .img-cont {
+        height: 143px;
     }
 }
 
 @media (min-width: 992px) {
-    .card-group .card {
+    #top-10 .card {
         width: 33.3333%;
     }
 
-    .card-group .img-cont {
+    #top-10 .img-cont {
         height: 185px;
+    }
+
+    #most-viewed .img-cont {
+        height: 126px;
     }
 
     .trending-item{
@@ -98,7 +115,11 @@
 }
 
 @media (min-width: 1200px){
-    .card-group .img-cont {
+    #top-10 .img-cont {
         height: 222px;
+    }
+
+    #most-viewed .img-cont {
+        height: 150px;
     }
 }
