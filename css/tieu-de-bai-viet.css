@@ -1,9 +1,18 @@
-.same-category img {
+#same-category img {
     width: 150px;
+    height: 100px;
 }
 
-.same-category .card-text {
+#same-category .card-text {
     display: none;
+}
+
+#right-side {
+    display: none;
+}
+
+#same-category img{
+    object-fit: cover;
 }
 
 @media (max-width: 576px) {}
@@ -17,8 +26,9 @@
 @media (max-width: 992px) {}
 
 @media (min-width: 576px) {
-    .same-category img {
+    #same-category img {
         width: 200px;
+        height: 133px;
     }
 }
 
@@ -26,11 +36,18 @@
 @media (min-width: 768px) {}
 
 @media (min-width: 992px) {
-    .same-category img {
+    #same-category img {
         width: 300px;
+        height: 200px;
     }
 
-    .same-category .card-text {
+    #same-category .card-text {
+        display: block;
+    }
+}
+
+@media (min-width: 1200px) {
+    #right-side {
         display: block;
     }
 }
