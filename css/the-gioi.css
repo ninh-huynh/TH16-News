@@ -1,15 +1,6 @@
-#right-side {
-    display: none;
-}
-
-#list-article .card-text {
-    display: none;
-}
-
 #list-article .img-cont {
-    height: 254px;
+    height: 100%;
 }
-
 
 img {
     width: 100%;
@@ -18,35 +9,15 @@ img {
     object-position: 50% 0%;
 }
 
-@media (min-width: 576px) {
-    #list-article .img-cont {
-        height: 127px;
-    }
+/* Không cần set height thủ công  */
+#list-article {
+    display: grid;
+    grid-template-columns: auto;
+    /* 1 cột duy nhất*/
 
-}
+    grid-auto-rows: 1fr;
+    /*Tự động lấy chiều cao lớn nhất và áp cho tất cả các dòng*/
 
-@media (min-width: 768px) {
-    #list-article .img-cont {
-        height: 172px;
-    }
-
-    #list-article .card-text {
-        display: block;
-    }
-}
-
-@media (min-width: 992px) {
-    #list-article .img-cont {
-        height: 190px;
-    }
-}
-
-@media (min-width: 1200px) {
-    #list-article .img-cont {
-        height: 182px;
-    }
-
-    #right-side {
-        display: block;
-    }
+    grid-row-gap: 10px;
+    /*khoảng cách giữa các dòng*/
 }
