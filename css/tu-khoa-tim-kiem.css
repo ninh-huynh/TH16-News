@@ -1,6 +1,3 @@
-.search-filter{
-    display: none;
-}
 
 .custom-select{
     width: initial;
@@ -15,10 +12,3 @@
 em{
     background: #ffffd7;
 }
-
-@media (min-width: 768px) {
-    .search-filter {
-        display: block;
-    }
-}
-
