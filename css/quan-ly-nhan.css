@@ -1,0 +1,41 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 200px; /* Margin bottom by footer height */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer .container-fluid {
+    padding: 0;
+}
+
+.dropdown-menu {
+    width: 52.7px;
+}
+
+table .visible-on-hover, table .visible-on-hover a{
+    color: #00838f;
+}
+table tbody .checkbox-column {
+    width: 5%;
+}
+
+table tbody .option-column {
+    width: 15%;
+}
+
+[class^="child-row"], [class*="child-row"]{
+    background-color: #e9ecef;
+}
+
+.category-name::first-letter {
+    text-transform: capitalize;
+}
