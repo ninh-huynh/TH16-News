@@ -26,6 +26,11 @@
     margin-bottom: 0;
 }
 
+.navbar-nav.navbar-right .dropdown-menu {
+    position: absolute;
+    float: left;
+}
+
 .custom-hover:hover{
     color: #42c5f5 !important;
     transition: 0.4s;
