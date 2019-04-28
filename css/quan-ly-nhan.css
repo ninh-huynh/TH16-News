@@ -17,9 +17,17 @@ body {
     padding: 0;
 }
 
-.dropdown-menu {
-    width: 52.7px;
+.btn-group .dropdown-menu {
+    left: auto;
+    right: 0;
 }
+
+#page-number-input {
+    width: 75%;
+    margin: auto; 
+    padding: 0.3rem;
+}
+
 
 table .visible-on-hover, table .visible-on-hover a{
     color: #00838f;

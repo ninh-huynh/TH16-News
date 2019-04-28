@@ -17,6 +17,18 @@ body {
     padding: 0;
 }
 
+.btn-group .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
+#page-number-input {
+    width: 75%;
+    margin: auto; 
+    padding: 0.3rem;
+}
+
+
 .dropdown-menu {
     width: 52.7px;
 }
