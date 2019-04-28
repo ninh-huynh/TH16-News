@@ -8,6 +8,7 @@ $(function () {
 
             if ($('#input-search').val() != '') {
                 SendKeyWordToServer($('#input-search').val());
+                $('#search-form').submit();
                 return;
             }
 
