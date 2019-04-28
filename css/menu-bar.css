@@ -26,6 +26,11 @@
     margin-bottom: 0;
 }
 
+.custom-hover:hover{
+    color: #42c5f5 !important;
+    transition: 0.4s;
+}
+
 /* Khoảng cách trên và dưới của search-form 
 khi phần chuyên mục bị thu lại là 1 rem */
 @media (max-width: 1200px) {
