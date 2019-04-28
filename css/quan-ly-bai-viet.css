@@ -1,0 +1,53 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 200px; /* Margin bottom by footer height */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer .container-fluid {
+    padding: 0;
+}
+
+.btn-group .dropdown-menu {
+    width: 52.7px;
+}
+
+table tbody [class^="article"], [class*="article"] {
+    color: black;
+    text-decoration: none;
+}
+
+table tbody .article-name a{
+    text-decoration: none;
+    background-color: transparent;
+}
+
+table tbody  a:link {
+    color: #333;
+
+}
+
+table tbody  a:visited {
+    color: #333;
+}
+
+table tbody  a:hover {
+    color: #00838f;
+}
+
+table tbody  a:active {
+    color: #4285f4;
+}
+
+table .visible-on-hover, table .visible-on-hover a{
+    color: #00838f;
+}
