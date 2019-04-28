@@ -18,7 +18,14 @@ body {
 }
 
 .btn-group .dropdown-menu {
-    width: 52.7px;
+    left: auto;
+    right: 0;
+}
+
+#page-number-input {
+    width: 75%; 
+    margin: auto; 
+    padding: 0.3rem;
 }
 
 table tbody [class^="article"], [class*="article"] {
