@@ -5,11 +5,31 @@
 #input-search {
     visibility: hidden;
     opacity: 0;
-    width: 175px;
     background-color: darkgray;
     color: lightgray;
 }
 
 #input-search::placeholder {
     color: lightgray;
+}
+
+/* Copy lại từ thư viện bootstrap */
+.form-inline .form-group {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+/* Khoảng cách trên và dưới của search-form 
+khi phần chuyên mục bị thu lại là 1 rem */
+@media (max-width: 1200px) {
+    .form-inline .form-group{
+        margin: 1rem 0;
+    }
 }
