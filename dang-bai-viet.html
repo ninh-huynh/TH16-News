@@ -51,7 +51,7 @@
 
                                 <!-- chuyên mục -->
                                 <div class="form-group row">
-                                    <label for="selectCategory" class="col-md-2 col-form-label">Chuyên mục</label>
+                                    <label for="selectCategory" class="col-md-2 col-form-label required">Chuyên mục</label>
                                     <div class="col-md-5">
                                         <select class="form-control" id="selectCategory" name="category">
                                             <option selected>Thời sự</option>
@@ -64,6 +64,9 @@
                                             <option>Giáo dục</option>
                                         </select>
                                     </div>
+                                    <div class="invalid-feedback">
+                                        Chưa chọn chuyên mục bạn ơi. <i class="fa fa-smile-o"></i>
+                                    </div>
 
                                     <div class="col-md-5">
                                         <select class="form-control" id="selectSubCategory" name="subCategory">
@@ -71,6 +74,9 @@
                                             <option>Giao thông</option>
                                             <option>Đô thị</option>
                                         </select>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Chưa chọn chuyên mục con. <i class="fa fa-smile-o"></i>
                                     </div>
                                 </div>
 
