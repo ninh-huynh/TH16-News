@@ -27,7 +27,7 @@
        </div>
 
        <div class="col-md-8 mt-3">
-           <h2 id="key-word">blanditiis</h2>
+           <h2 id="key-word"><%- page.keyword %></h2>
            <h5 class="text-muted" id="total-result">n kết quả phù hợp</h5>
 
            <div class="d-flex justify-content-between mt-5">
@@ -54,12 +54,7 @@
                                 <%- post.title %>
                             </a>
                         </p>
-                        <p class="article-summary">
-                        Lorem ipsum dolor, sit amet <em>blanditiis</em> consectetur adipisicing elit. Provident
-                        eius labore
-                       numquam ad
-                       reprehenderit, et eligendi odio nihil quasi.
-                        </p>
+                        <p class="article-summary"><%- post.abstract %></p>
                     </li>
                <% }); %>
            </ul>
