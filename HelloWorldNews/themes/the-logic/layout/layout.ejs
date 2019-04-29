@@ -15,7 +15,7 @@
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
 
-    <% if (is_home()) { %>
+    <% if (is_home() || is_post()) { %>
         <link rel="stylesheet" href="./css/menu-bar.css">
         <link rel="stylesheet" href="./css/layout.css">
     <% } else if (is_category() || is_tag()) { %>
@@ -59,7 +59,7 @@
 
 
     <%# Các đoạn script tự viết thêm %>
-    <% if (is_home()) { %>
+    <% if (is_home() || is_post()) { %>
         <script src="./scripts/lazysizes.min.js" async=""></script>
         <script src="./scripts/menu-bar.js"></script>
     <% } else if (is_category() || is_tag() ) { %>
