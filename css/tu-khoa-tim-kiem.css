@@ -1,0 +1,14 @@
+
+.custom-select{
+    width: initial;
+}
+
+#article-list img{
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+}
+
+em{
+    background: #ffffd7;
+}
