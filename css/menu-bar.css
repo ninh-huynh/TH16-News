@@ -1,6 +1,6 @@
-.dropdown:hover .dropdown-menu {
+/* .dropdown:hover .dropdown-menu {
     display: block;
-}
+} */
 
 #input-search {
     visibility: hidden;
@@ -24,6 +24,11 @@
     -ms-flex-align: center;
     align-items: center;
     margin-bottom: 0;
+}
+
+.navbar-nav.navbar-right .dropdown-menu {
+    position: absolute;
+    float: left;
 }
 
 .custom-hover:hover{
