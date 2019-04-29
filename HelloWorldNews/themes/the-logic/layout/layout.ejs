@@ -11,10 +11,19 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-  
-    <link rel="stylesheet" href="./css/menu-bar.css">
-    <link rel="stylesheet" href="./css/layout.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+
+    <% if (is_home()) { %>
+        <link rel="stylesheet" href="./css/menu-bar.css">
+        <link rel="stylesheet" href="./css/layout.css">
+    <% } else if (is_category()) { %>
+        <link rel="stylesheet" href="../../css/menu-bar.css">
+        <link rel="stylesheet" href="../../css/layout.css">
+    <% } %>
+
+
 </head>
 
 <body>
@@ -47,12 +56,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
-    <script src="./scripts/lazysizes.min.js" async=""></script>
 
 
     <%# Các đoạn script tự viết thêm %>
-    <script src="./scripts/menu-bar.js"></script>
-    <!-- <script src="scripts/index.js"></script> -->
+    <% if (is_home()) { %>
+        <script src="./scripts/lazysizes.min.js" async=""></script>
+        <script src="./scripts/menu-bar.js"></script>
+    <% } else if (is_category()) { %>
+        <script src="../../scripts/lazysizes.min.js" async=""></script>
+        <script src="../../scripts/menu-bar.js"></script>
+    <% } %>
+    
 </body>
 
 </html>
