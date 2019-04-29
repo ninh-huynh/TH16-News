@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
-
+    <%# Các file css dùng chung cho tất cả %>
     <% if (is_home() || is_post()) { %>
         <link rel="stylesheet" href="./css/menu-bar.css">
         <link rel="stylesheet" href="./css/layout.css">
@@ -23,7 +23,14 @@
         <link rel="stylesheet" href="../../css/layout.css">
     <% } %>
 
-
+    <%# Các file css dùng riêng cho từng loại trang cụ thể %>
+    <% if (is_home()) { %>
+        <link rel="stylesheet" href="./css/index.css">
+    <% } else if (is_category() || is_tag()) { %>
+        <link rel="stylesheet" href="../../css/chuyen-muc.css">
+    <% } else if (is_post()) { %>
+        <link rel="stylesheet" href="./css/tieu-de-bai-viet.css">
+    <% } %>
 </head>
 
 <body>
@@ -58,7 +65,7 @@
     </script>
 
 
-    <%# Các đoạn script tự viết thêm %>
+    <%# Các đoạn script dùng chung %>
     <% if (is_home() || is_post()) { %>
         <script src="./scripts/lazysizes.min.js" async=""></script>
         <script src="./scripts/menu-bar.js"></script>
@@ -67,6 +74,10 @@
         <script src="../../scripts/menu-bar.js"></script>
     <% } %>
     
+    <%# Các đoạn script dùng riêng ở đây %>
+    <% if (is_post()) { %>
+        <script src="./scripts/tieu-de-bai-viet.js"></script>
+    <% } %>
 </body>
 
 </html>
