@@ -4,6 +4,7 @@ categories:
 - Công nghệ
 tag: [Viettel thử nghiệm 5G, 5G, gói cước 5G, 5G viettel]
 head_img: https://znews-photo.zadn.vn/w660/Uploaded/fsmyy/2019_04_26/Hinh_anh_tram_5G_tai_Ha_Noi_2.jpg
+abstract: Lorem ipsum, dolor sit amet consectetur adipisicing elit. In fugit pariatur hic ipsa numquam eum consequatur temporibus asperiores ut? Ipsam?
 ---
 
 **Theo thử nghiệm từ nhà mạng Viettel, tốc độ kết nối 5G dao động từ 600 đến 700 Mbps.**

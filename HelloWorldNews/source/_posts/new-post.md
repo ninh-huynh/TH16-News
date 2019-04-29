@@ -3,6 +3,8 @@ title: Siêu anh hùng Marvel không viễn tưởng, họ chỉ đưa khoa họ
 categories: 
 - Công nghệ
 head_img: https://znews-photo.zadn.vn/w860/Uploaded/pcckpqmv/2019_04_22/feature.jpeg
+
+abstract: Lorem ipsum, dolor sit amet consectetur adipisicing elit. In fugit pariatur hic ipsa numquam eum consequatur temporibus asperiores ut? Ipsam?
 ---
 **Các phim siêu anh hùng đều dựa vào thành tựu khoa học nhiều hơn so với bạn nghĩ. Thực tế, con người đang cố hiện thực hoá năng lực của các siêu anh hùng.**
 

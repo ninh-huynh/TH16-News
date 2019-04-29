@@ -4,6 +4,7 @@ categories:
 - Giải trí
 - Sao Hollywood
 head_img: https://znews-photo.zadn.vn/w660/Uploaded/oqivovbt/2019_04_23/miley_1_1.jpg
+abstract: Lorem ipsum, dolor sit amet consectetur adipisicing elit. In fugit pariatur hic ipsa numquam eum consequatur temporibus asperiores ut? Ipsam?
 ---
 
 **Nữ ca sĩ và chồng, tài tử Liam Hemsworth, dự buổi công chiếu tại Los Angeles hôm 22/4 của phim bom tấn có anh trai Chris Hemsworth đóng vai Thor.**
