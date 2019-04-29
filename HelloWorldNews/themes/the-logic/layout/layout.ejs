@@ -2,8 +2,18 @@
 <html lang="en">
 
 <head>
-    <!--TODO: Cần tự động đổi tên title cho phù hợp page hiện tại-->
-    <title> <%- page.title %> </title>
+    <% if (is_home()) { %>
+        <title> <%- 'Trang chủ' %> </title>
+    <% } else if (is_category()) { %>
+        <title> <%- page.category %> </title>
+    <% } else if (is_tag()) { %>
+        <title> <%- page.tag %> </title>
+    <% } else if (is_post()) { %>
+        <title> <%- page.title %> </title>
+    <% } else if (path === 'search/index.html') { %>
+        <title> <%- `${page.keyword} - Tìm kiếm từ khóa` %> </title>
+    <% }; %>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,7 +31,7 @@
     <% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
         <link rel="stylesheet" href="../../css/menu-bar.css">
         <link rel="stylesheet" href="../../css/layout.css">
-    <% } %>
+    <% }; %>
 
     <%# Các file css dùng riêng cho từng loại trang cụ thể %>
     <% if (is_home()) { %>
@@ -30,11 +40,11 @@
         <link rel="stylesheet" href="../../css/chuyen-muc.css">
     <% } else if (is_post()) { %>
         <link rel="stylesheet" href="./css/tieu-de-bai-viet.css">
-    <% } %>
+    <% }; %>
     
     <% if (path === 'search/index.html') { %>
         <link rel="stylesheet" href="../../css/tu-khoa-tim-kiem.css">
-    <% } %>
+    <% }; %>
     
 
 </head>
@@ -78,16 +88,16 @@
     <% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
         <script src="../../scripts/lazysizes.min.js" async=""></script>
         <script src="../../scripts/menu-bar.js"></script>
-    <% } %>
+    <% }; %>
     
     <%# Các đoạn script dùng riêng ở đây %>
     <% if (is_post()) { %>
         <script src="./scripts/tieu-de-bai-viet.js"></script>
-    <% } %>
+    <% }; %>
 
     <% if (path === 'search/index.html') { %>
         <script src="../../scripts/tu-khoa-tim-kiem.js"></script>
-    <% } %>
+    <% }; %>
 </body>
 
 </html>
