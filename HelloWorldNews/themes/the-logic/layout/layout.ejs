@@ -18,7 +18,7 @@
     <% if (is_home() || is_post()) { %>
         <link rel="stylesheet" href="./css/menu-bar.css">
         <link rel="stylesheet" href="./css/layout.css">
-    <% } else if (is_category() || is_tag()) { %>
+    <% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
         <link rel="stylesheet" href="../../css/menu-bar.css">
         <link rel="stylesheet" href="../../css/layout.css">
     <% } %>
@@ -31,6 +31,12 @@
     <% } else if (is_post()) { %>
         <link rel="stylesheet" href="./css/tieu-de-bai-viet.css">
     <% } %>
+    
+    <% if (path === 'search/index.html') { %>
+        <link rel="stylesheet" href="../../css/tu-khoa-tim-kiem.css">
+    <% } %>
+    
+
 </head>
 
 <body>
@@ -69,7 +75,7 @@
     <% if (is_home() || is_post()) { %>
         <script src="./scripts/lazysizes.min.js" async=""></script>
         <script src="./scripts/menu-bar.js"></script>
-    <% } else if (is_category() || is_tag() ) { %>
+    <% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
         <script src="../../scripts/lazysizes.min.js" async=""></script>
         <script src="../../scripts/menu-bar.js"></script>
     <% } %>
