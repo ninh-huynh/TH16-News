@@ -18,7 +18,7 @@
     <% if (is_home()) { %>
         <link rel="stylesheet" href="./css/menu-bar.css">
         <link rel="stylesheet" href="./css/layout.css">
-    <% } else if (is_category()) { %>
+    <% } else if (is_category() || is_tag()) { %>
         <link rel="stylesheet" href="../../css/menu-bar.css">
         <link rel="stylesheet" href="../../css/layout.css">
     <% } %>
@@ -62,7 +62,7 @@
     <% if (is_home()) { %>
         <script src="./scripts/lazysizes.min.js" async=""></script>
         <script src="./scripts/menu-bar.js"></script>
-    <% } else if (is_category()) { %>
+    <% } else if (is_category() || is_tag() ) { %>
         <script src="../../scripts/lazysizes.min.js" async=""></script>
         <script src="../../scripts/menu-bar.js"></script>
     <% } %>
