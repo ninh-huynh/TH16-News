@@ -1,16 +1,13 @@
+var $table = $('#table');
+var $remove = $('#remove');
+var selections = [];
+var $ok = $('#ok')
+
 $(function () {
     $('#header').load('./reuse-html/header.html');
     $('#category-menu').load('./reuse-html/menu-bar.html');
     $('#footer').load('./reuse-html/footer.html');
 
- 
-});
-
-var $table = $('#table');
-var $remove = $('#remove');
-var selections = [];
-var $ok = $('#ok')
-$(function(){
     mounted();
 });
 

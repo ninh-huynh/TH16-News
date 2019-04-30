@@ -16,3 +16,7 @@ body {
 thead, .fixed-table-header {
     width: 100% !important;
 }
+
+.card.sticky-top {
+    top: 5rem;
+}
