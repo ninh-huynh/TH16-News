@@ -17,15 +17,16 @@ function getIdSelections() {
     })
 } 
       
-function responseHandler(res) {
-    $.each(res.rows, function (i, row) {
-        row.state = $.inArray(row.id, selections) !== -1
-    })
-    return res
-}
+// function responseHandler(res) {
+//     $.each(res.rows, function (i, row) {
+//         row.state = $.inArray(row.id, selections) !== -1
+//     })
+//     return res
+// }
 
 function detailFormatter(index, row) {
     var html = []
+    console.log(this.columns[1].field);
     $.each(row, function (key, value) {
       html.push('<p><b>' + key + ':</b> ' + value + '</p>')
     })
@@ -35,7 +36,7 @@ function detailFormatter(index, row) {
 function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
     height: 800,
-    locale: $('#locale').val(),
+    locale: 'vi-VN',
     pagination: true,
     search: true,
     showPaginationSwitch: true,
@@ -46,14 +47,16 @@ function initTable() {
     smartDisplay: true,
     detailView: true,
     detailFormatter: detailFormatter,
+
+    clickToSelect: true,
     
 
     columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  }, 
             {  field: 'name', title: 'Tên', align: 'center',  valign: 'middle', sortable: true, }, 
-            { field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true,  }, 
+            { field: 'Ngày tạo', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true,  }, 
             { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', }],
-        data: [{ "id": 1, "name": "Người dùng 1", "date": "1-1-2000", 'role': 'đọc giả',  },
+        data: [{ "id": 1, "name": "Người dùng 1", "Ngày tạo": "1-1-2000", 'role': 'đọc giả',  },
             { "id": 2, "name": "Người dùng 2", "date": "1-1-1998", 'role': 'phóng viên', },
             { "id": 3, "name": "Người dùng 3", "date": "18-4-2015", 'role': 'đọc giả', },
             { "id": 4, "name": "Người dùng 4",  "date": "13-7-1986", 'role': 'đọc giả', },
@@ -74,37 +77,37 @@ function initTable() {
             { "id": 19, "name": "Người dùng 19",  "date": "12-1-1998", 'role': 'đọc giả', },
             { "id": 20, "name": "Người dùng 20",  "date": "11-12-1999", 'role': 'đọc giả', }]
 
-    })
-    $table.on('check.bs.table uncheck.bs.table ' +
-        'check-all.bs.table uncheck-all.bs.table',
-        function () {
-        $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
-
-        // save your data, here just save the current page
-        selections = getIdSelections()
-        // push or splice the selections if you want to save all data selections
-    })
-    $table.on('all.bs.table', function (e, name, args) {
-        console.log(name, args)
-    })
-    $remove.click(function () {
-        var ids = getIdSelections()
-        $table.bootstrapTable('remove', {
-            field: 'id',
-            values: ids
         })
-        $remove.prop('disabled', true)
-    })
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+            $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+
+            // save your data, here just save the current page
+            selections = getIdSelections()
+            // push or splice the selections if you want to save all data selections
+        })
+
+        $table.on('all.bs.table', function (e, name, args) {
+            //console.log(name, args)
+        })
+
+        $table.on('click-row.bs.table', function(e, row, $element, field) {
+            console.log(row);
+            console.log($element);
+            console.log(field);
+        })
+
+        $remove.click(function () {
+            var ids = getIdSelections()
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            })
+            $remove.prop('disabled', true)
+        })
     }
           
-function queryParams() {
-    var params = {}
-    $('#toolbar').find('input[name]').each(function () {
-        params[$(this).attr('name')] = $(this).val()
-    })
-    return params
-}
-    
 function mounted() {
     initTable()
 
