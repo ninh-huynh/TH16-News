@@ -6,6 +6,12 @@
 
             <!-- Article thumbnail -->
             <div class="img-cont mr-3">
+                
+                <!-- Premium label -->
+                <% if (post.isPremium) { %>
+                    <div class="premium-label">Premium</div>
+                <% }; %>
+
                 <img data-src="<%- post.head_img %>" class="card-img lazyload" alt="...">
             </div>
         </div>

@@ -1,5 +1,14 @@
 #list-article .img-cont {
     height: 100%;
+    position: relative;
+}
+
+.premium-label{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: goldenrod;
+    color: lightgoldenrodyellow;
 }
 
 img {
