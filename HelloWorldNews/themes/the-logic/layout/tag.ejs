@@ -5,68 +5,7 @@
 
 <div class="row mt-3">
     <div class="col" id="list-article">
-
-        <% page.posts.each(function(post, i){ %>
-        <div class="d-flex">
-            <div class="row no-gutters align-items-strech">
-                <div class="col-4">
-                    <div class="img-cont mr-3">
-                        <img data-src="<%- post.head_img %>" class="card-img lazyload" alt="...">
-                    </div>
-                </div>
-                <div class="col-8">
-                    <div class="">
-
-                        <%# url_for() chỉ sử dụng vs hexo %>
-                        
-                        <a href="<%- url_for(post.path) %>" class="text-dark">
-                            <h5 class="card-title"><%- post.title %></h5>
-                        </a>
-                        
-                        <h6 class="card-subtitle mb-2 text-muted d-none d-sm-block">
-                            
-                            <%# url_for() chỉ sử dụng vs hexo %>
-                            <% post.categories.data.forEach((category) => { %>
-                                <a href="<%- url_for(category.path) %>" class="article-category badge badge-primary mr-3">
-                                    <%- category.name %>
-                                </a>
-                            <% }); %>
-                            
-                            <span class="article-date">
-                                <i class="far fa-calendar-alt mr-1"></i>
-                                <%- post.date.format(config.date_format) %>
-                            </span>
-                        </h6>
-                        
-                        <div class="card-text d-none d-md-block">
-                            <%- post.abstract %>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <% }); %>
-
-        <nav aria-label="...">
-            <ul class="pagination justify-content-center mt-3">
-                <li class="page-item disabled">
-                    <span class="page-link">Previous</span>
-                </li>
-                <li class="page-item active">
-                    <span class="page-link">
-                        1
-                    </span>
-                </li>
-                <li class="page-item"><a href="#" class="page-link">2</a>
-
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-
+        <%- partial('_partial/article-list',{}) %>        
     </div> <!-- col-8-->
     <div class="col-xl-4 d-none d-xl-block" id="right-side">
     </div> <!-- col-4-->
