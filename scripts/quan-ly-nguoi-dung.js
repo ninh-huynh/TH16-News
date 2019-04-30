@@ -1,7 +1,6 @@
 var $table = $('#table');
 var $remove = $('#remove');
 var selections = [];
-var $ok = $('#ok')
 
 $(function () {
     $('#header').load('./reuse-html/header.html');
@@ -16,17 +15,9 @@ function getIdSelections() {
         return row.id
     })
 } 
-      
-// function responseHandler(res) {
-//     $.each(res.rows, function (i, row) {
-//         row.state = $.inArray(row.id, selections) !== -1
-//     })
-//     return res
-// }
 
 function detailFormatter(index, row) {
     var html = []
-    console.log(this.columns[1].field);
     $.each(row, function (key, value) {
       html.push('<p><b>' + key + ':</b> ' + value + '</p>')
     })
@@ -110,9 +101,4 @@ function initTable() {
           
 function mounted() {
     initTable()
-
-    $('#locale').change(initTable);
-    $ok.click(function () {
-        $table.bootstrapTable('refresh')
-    })
 }
