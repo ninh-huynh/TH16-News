@@ -13,33 +13,10 @@ body {
     width: 100%;
 }
 
-.footer .container-fluid {
-    padding: 0;
+thead, .fixed-table-header {
+    width: 100% !important;
 }
 
-.btn-group .dropdown-menu {
-    left: auto;
-    right: 0;
-}
-
-#page-number-input {
-    width: 75%;
-    margin: auto; 
-    padding: 0.3rem;
-}
-
-
-.dropdown-menu {
-    width: 52.7px;
-}
-
-table .visible-on-hover, table .visible-on-hover a{
-    color: #00838f;
-}
-table tbody .checkbox-column {
-    width: 5%;
-}
-
-#context-menu {
-    background-color: #e9ecef;
+.card.sticky-top {
+    top: 5rem;
 }
