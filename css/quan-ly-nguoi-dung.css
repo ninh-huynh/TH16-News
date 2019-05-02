@@ -20,3 +20,7 @@ thead, .fixed-table-header {
 .card.sticky-top {
     top: 5rem;
 }
+
+#context-menu a:hover {
+    background-color: #dedede;
+}

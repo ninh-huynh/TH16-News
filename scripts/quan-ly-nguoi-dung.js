@@ -1,11 +1,13 @@
 var $table = $('#table');
 var $remove = $('#remove');
+var $add = $('#add');
 var selections = [];
 
 $(function () {
     $('#header').load('./reuse-html/header.html');
     $('#category-menu').load('./reuse-html/menu-bar.html');
     $('#footer').load('./reuse-html/footer.html');
+    $('#context-menu').hide();
 
     mounted();
 });
@@ -45,9 +47,9 @@ function initTable() {
     columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  }, 
             {  field: 'name', title: 'Tên', align: 'center',  valign: 'middle', sortable: true, }, 
-            { field: 'Ngày tạo', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true,  }, 
+            { field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true,  }, 
             { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', }],
-        data: [{ "id": 1, "name": "Người dùng 1", "Ngày tạo": "1-1-2000", 'role': 'đọc giả',  },
+        data: [{ "id": 1, "name": "Người dùng 1", "date": "1-1-2000", 'role': 'đọc giả',  },
             { "id": 2, "name": "Người dùng 2", "date": "1-1-1998", 'role': 'phóng viên', },
             { "id": 3, "name": "Người dùng 3", "date": "18-4-2015", 'role': 'đọc giả', },
             { "id": 4, "name": "Người dùng 4",  "date": "13-7-1986", 'role': 'đọc giả', },
@@ -69,36 +71,87 @@ function initTable() {
             { "id": 20, "name": "Người dùng 20",  "date": "11-12-1999", 'role': 'đọc giả', }]
 
         })
-        $table.on('check.bs.table uncheck.bs.table ' +
-            'check-all.bs.table uncheck-all.bs.table',
-            function () {
-            $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
-
-            // save your data, here just save the current page
-            selections = getIdSelections()
-            // push or splice the selections if you want to save all data selections
-        })
-
-        $table.on('all.bs.table', function (e, name, args) {
-            //console.log(name, args)
-        })
-
-        $table.on('click-row.bs.table', function(e, row, $element, field) {
-            console.log(row);
-            console.log($element);
-            console.log(field);
-        })
-
-        $remove.click(function () {
-            var ids = getIdSelections()
-            $table.bootstrapTable('remove', {
-                field: 'id',
-                values: ids
-            })
-            $remove.prop('disabled', true)
-        })
     }
+
+    $table.on('check.bs.table uncheck.bs.table ' +
+    'check-all.bs.table uncheck-all.bs.table',
+    function () {
+    $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+    $add.prop('disabled', $table.bootstrapTable('getSelections').length > 1);
+
+    // save your data, here just save the current page
+    selections = getIdSelections()
+    // push or splice the selections if you want to save all data selections
+})
+
+$table.on('all.bs.table', function (e, name, args) {
+    //console.log(name, args)
+})
+
+$table.on('click-row.bs.table', function(e, row, $element, field) {
+    console.log($table.find('thead th[data-field]').text());
+})
+
+// $table.on('dbl-click-row.bs.table', function(e, row, $element, field) {
+
+// });
+
+$remove.click(function () {
+    var ids = getIdSelections()
+    $table.bootstrapTable('remove', {
+        field: 'id',
+        values: ids
+    })
+    $remove.prop('disabled', true)
+})
           
 function mounted() {
     initTable()
 }
+
+// context-menu event (row clicking)
+$('#table').on('contextmenu', 'tr',  function(e) {
+    let dataIndex = parseInt($(this).attr('data-index'), 10);
+    let row = $table.bootstrapTable('getData', true)[dataIndex];
+    let ids;
+
+    ids = getIdSelections();
+    if (ids.length === 0) {
+        ids = [row.id, ];
+    }
+
+    $('#assign').hide();
+    $('#renew').hide();
+    switch(row.role.toUpperCase()) {
+        case "BIÊN TẬP VIÊN":
+            $('#assign').show();
+            break;
+
+        case "ĐỌC GIẢ":
+            $('#renew').show();
+            break;
+        default:
+    }
+
+    $('#context-menu').show();
+    $("#context-menu").offset({left:e.pageX, top:e.pageY});
+    e.preventDefault();
+
+    // item click handler
+
+    // remove event handler
+    $('#removeItem').click( function(e) {
+        $table.bootstrapTable('remove', {
+            field: 'id',
+            values: ids
+        })
+    });
+});
+
+$(document).click( function() {
+    $('#context-menu').hide();
+});
+
+$('#context-menu').click( function() {
+    $('#context-menu').hide();
+});

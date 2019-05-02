@@ -84,10 +84,18 @@
                                             <button id="remove" class="btn btn-danger" disabled="">
                                                 <i class="fa fa-trash"></i> Xóa
                                             </button>
-                                            <button id="add" class="btn btn-success">
+                                            <button id="add" class="btn btn-success" id="add">
                                                 <i class="fas fa-user-edit"></i> Sửa
                                             </button>
                                         </div> 
+                                    </div>
+                                    
+                                    <!-- context menu -->
+                                    <div class="dropdown-menu dropdown-menu-sm " id="context-menu" style="z-index: 1051;">
+                                        <a class="dropdown-item" id="editItem">Chỉnh Sửa</a>
+                                        <a class="dropdown-item" id="removeItem">Xóa</a>
+                                        <a class="dropdown-item" id="assign">Phân công</a>
+                                        <a class="dropdown-item" id="renew">Gia hạn</a>
                                     </div>
                                 </table>
                             </div>
