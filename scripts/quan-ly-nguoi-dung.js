@@ -20,8 +20,14 @@ function getIdSelections() {
 
 function detailFormatter(index, row) {
     var html = []
+    var header = $table.find('thead');
+
     $.each(row, function (key, value) {
-      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+        if (key === 'state') {
+            return true;
+        }
+
+      html.push('<p><b>' + header.find('[data-field=' + key + ']').text() + ':</b> ' + value + '</p>')
     })
     return html.join('')
   }
@@ -89,7 +95,8 @@ $table.on('all.bs.table', function (e, name, args) {
 })
 
 $table.on('click-row.bs.table', function(e, row, $element, field) {
-    console.log($table.find('thead th[data-field]').text());
+    var header = $table.find('thead');
+    console.log(header.find('[data-field="date"'));
 })
 
 // $table.on('dbl-click-row.bs.table', function(e, row, $element, field) {
