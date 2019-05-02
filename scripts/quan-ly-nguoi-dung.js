@@ -9,6 +9,8 @@ $(function () {
     $('#footer').load('./reuse-html/footer.html');
     $('#context-menu').hide();
 
+    $('.sidenav-badge').hide();
+
     mounted();
 });
 
@@ -161,4 +163,20 @@ $(document).click( function() {
 
 $('#context-menu').click( function() {
     $('#context-menu').hide();
+});
+
+$('#mySidenav a').mouseenter(function() {
+    $(this).find('.sidenav-after-icon').hide();
+    $(this).find('.sidenav-badge').show();
+
+    console.log($(this).find('i'));
+    console.log($(this).find('span'));
+});
+
+$('#mySidenav a').mouseleave(function() {
+    $(this).find('.sidenav-after-icon').show();
+    $(this).find('.sidenav-badge').hide();
+
+    console.log($(this).find('i'));
+    console.log($(this).find('span'));
 });
