@@ -2,7 +2,7 @@
 <% if (page.categories.length != 0) { %>
     <% postLastCategory = page.categories.data[0]; %>
     <a href="<%- url_for(postLastCategory.path) %>">
-        <h3>
+        <h3 class="mt-3">
             <%- postLastCategory.name %>
         </h3>
     </a>
@@ -13,18 +13,23 @@
  </h2>
  <div class="row">
      <div class="col">
-         <div class="text-muted mb-3">Ngày đăng <%- page.date.format(config.date_format) %></div>
+        <%# Tác giả - Thời gian đăng (hh:mm dd-mm-yyyy) %>
+         <div class="text-muted mb-3 d-inline-block">
+            <span class="font-weight-bold"><%- page.author %></span>
+            <span><%- '-' %></span>
+            <span><%- page.date.format(config.post_date_format) %></span>
+         </div>
 
          <%#TODO: Nút download file pdf, thêm vào thuộc tính href="#" khi đã đăng nhập %>
-         <a data-toggle="tooltip" data-placement="right" id="download-article-link" 
+         <a class="float-right" data-toggle="tooltip" data-placement="left" id="download-article-link" 
          download title="Bạn phải là thành viên mới có thể tải xuống file này">
             Tải xuống 
             <i class="fas fa-file-download"></i>
          </a>
 
          <!-- Nội dung chi tiết bài viết -->
-         <div id="article-detail" class="my-3">
-             <img src="<%- page.head_img %>" class="img-fluid">
+         <div id="article-detail" class="mb-3">
+             <img src="<%- page.head_img %>" class="w-100">
              <div class="container-fuild">
                  <%- page.content %>
              </div>

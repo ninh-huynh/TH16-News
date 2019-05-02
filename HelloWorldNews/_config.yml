@@ -64,6 +64,7 @@ tag_map:
 ## http://momentjs.com/docs/#/displaying/format/
 date_format: DD-MM-YYYY
 time_format: HH:mm:ss
+post_date_format: HH:mm DD-MM-YYYY
 
 # Pagination
 ## Set per_page to 0 to disable pagination
