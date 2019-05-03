@@ -7,7 +7,7 @@
 }
 
 
-/* Màu sắc của các đường link */
+/* Màu sắc của các đường link chứa tên bài viết*/
 a.article-title{
     color: #00171F !important;
     transition: 0.2s;
@@ -29,6 +29,8 @@ a.article-title:hover{
     text-decoration: underline;
 }
 
+
+/* Các màu sắc của trang quản lý */
 .bg-secondary{
     color: #007EA7;
 }
