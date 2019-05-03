@@ -1,0 +1,11 @@
+<% if (is_home()) { %>
+        <title> <%- 'Trang chủ' %> </title>
+    <% } else if (is_category()) { %>
+        <title> <%- page.category %> </title>
+    <% } else if (is_tag()) { %>
+        <title> <%- page.tag %> </title>
+    <% } else if (is_post()) { %>
+        <title> <%- page.title %> </title>
+    <% } else if (path === 'search/index.html') { %>
+        <title> <%- `${page.keyword} - Tìm kiếm từ khóa` %> </title>
+<% }; %>

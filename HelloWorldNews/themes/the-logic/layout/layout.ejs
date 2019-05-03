@@ -2,17 +2,7 @@
 <html lang="en">
 
 <head>
-    <% if (is_home()) { %>
-        <title> <%- 'Trang chủ' %> </title>
-    <% } else if (is_category()) { %>
-        <title> <%- page.category %> </title>
-    <% } else if (is_tag()) { %>
-        <title> <%- page.tag %> </title>
-    <% } else if (is_post()) { %>
-        <title> <%- page.title %> </title>
-    <% } else if (path === 'search/index.html') { %>
-        <title> <%- `${page.keyword} - Tìm kiếm từ khóa` %> </title>
-    <% }; %>
+    <%- partial('_partial/title') %>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -24,31 +14,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
-    <%# Các file css dùng chung cho tất cả %>
-    <% if (is_home() || is_post()) { %>
-        <link rel="stylesheet" href="./css/menu-bar.css">
-        <link rel="stylesheet" href="./css/layout.css">
-        <link rel="stylesheet" href="./css/hello-world-theme.css">
-    <% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
-        <link rel="stylesheet" href="../../css/menu-bar.css">
-        <link rel="stylesheet" href="../../css/layout.css">
-        <link rel="stylesheet" href="../../css/hello-world-theme.css">
-    <% }; %>
-
-    <%# Các file css dùng riêng cho từng loại trang cụ thể %>
-    <% if (is_home()) { %>
-        <link rel="stylesheet" href="./css/index.css">
-    <% } else if (is_category() || is_tag()) { %>
-        <link rel="stylesheet" href="../../css/chuyen-muc.css">
-    <% } else if (is_post()) { %>
-        <link rel="stylesheet" href="./css/tieu-de-bai-viet.css">
-    <% }; %>
-    
-    <% if (path === 'search/index.html') { %>
-        <link rel="stylesheet" href="../../css/tu-khoa-tim-kiem.css">
-    <% }; %>
-    
-
+   <%- partial('_partial/stylesheet') %>
 </head>
 
 <body>
@@ -82,24 +48,7 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 
-
-    <%# Các đoạn script dùng chung %>
-    <% if (is_home() || is_post()) { %>
-        <script src="./scripts/lazysizes.min.js" async=""></script>
-        <script src="./scripts/menu-bar.js"></script>
-    <% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
-        <script src="../../scripts/lazysizes.min.js" async=""></script>
-        <script src="../../scripts/menu-bar.js"></script>
-    <% }; %>
-    
-    <%# Các đoạn script dùng riêng ở đây %>
-    <% if (is_post()) { %>
-        <script src="./scripts/tieu-de-bai-viet.js"></script>
-    <% }; %>
-
-    <% if (path === 'search/index.html') { %>
-        <script src="../../scripts/tu-khoa-tim-kiem.js"></script>
-    <% }; %>
+    <%- partial('_partial/script') %>
 </body>
 
 </html>

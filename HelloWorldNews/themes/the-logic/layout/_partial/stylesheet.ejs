@@ -1,0 +1,23 @@
+ <%# Các file css dùng chung cho tất cả %>
+ <% if (is_home() || is_post()) { %>
+    <link rel="stylesheet" href="./css/menu-bar.css">
+    <link rel="stylesheet" href="./css/layout.css">
+    <link rel="stylesheet" href="./css/hello-world-theme.css">
+ <% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
+    <link rel="stylesheet" href="../../css/menu-bar.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/hello-world-theme.css">
+ <% }; %>
+
+ <%# Các file css dùng riêng cho từng loại trang cụ thể %>
+ <% if (is_home()) { %>
+    <link rel="stylesheet" href="./css/index.css">
+ <% } else if (is_category() || is_tag()) { %>
+    <link rel="stylesheet" href="../../css/chuyen-muc.css">
+ <% } else if (is_post()) { %>
+    <link rel="stylesheet" href="./css/tieu-de-bai-viet.css">
+ <% }; %>
+
+ <% if (path === 'search/index.html') { %>
+    <link rel="stylesheet" href="../../css/tu-khoa-tim-kiem.css">
+ <% }; %>

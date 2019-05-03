@@ -1,0 +1,17 @@
+<%# Các đoạn script dùng chung %>
+<% if (is_home() || is_post()) { %>
+    <script src="./scripts/lazysizes.min.js" async=""></script>
+    <script src="./scripts/menu-bar.js"></script>
+<% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
+    <script src="../../scripts/lazysizes.min.js" async=""></script>
+    <script src="../../scripts/menu-bar.js"></script>
+<% }; %>
+
+<%# Các đoạn script dùng riêng ở đây %>
+<% if (is_post()) { %>
+    <script src="./scripts/tieu-de-bai-viet.js"></script>
+<% }; %>
+
+<% if (path === 'search/index.html') { %>
+    <script src="../../scripts/tu-khoa-tim-kiem.js"></script>
+<% }; %>
