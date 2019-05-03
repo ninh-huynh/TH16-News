@@ -86,14 +86,18 @@
                         <div class="card-body">
                             <!-- table -->
                             <div class="table-reponsive">
+                                <!-- button -->
                                 <table id="table" data-toolbar="#toolbar">
                                     <div id="toolbar">
                                         <div class="justify-content-between">
                                             <button id="remove" class="btn btn-danger" disabled="">
                                                 <i class="fa fa-trash"></i> Xóa
                                             </button>
-                                            <button id="add" class="btn btn-success" id="add">
+                                            <button id="edit" class="btn btn-success">
                                                 <i class="fas fa-user-edit"></i> Sửa
+                                            </button>
+                                            <button id="add" class="btn btn-success">
+                                                <i class="fas fa-user-plus"></i>Thêm
                                             </button>
                                         </div> 
                                     </div>
@@ -132,10 +136,13 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
         </script>
+
+        <!-- Bootstrap-table + extensions-->
         <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/locale/bootstrap-table-vi-VN.min.js"></script>
         <script src="./scripts/quan-ly-nguoi-dung.js" type="text/javascript" language="javascript" class="init"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/accent-neutralise/bootstrap-table-accent-neutralise.js"></script>  
     </body>
 </html>

@@ -13,14 +13,11 @@ body {
     width: 100%;
 }
 
-.card.sticky-top {
-    top: 5rem;
-}
-
 #context-menu a:hover {
     background-color: #dedede;
 }
 
+  /* side bar */
 #mySidenav a {
     position: absolute;
     left: -190px;
@@ -61,6 +58,8 @@ body {
      top: 5rem;
  }
 
+
+ /* pagination */
  .jumpto .form-control {
      vertical-align: middle;
- }
+ }  

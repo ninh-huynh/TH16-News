@@ -1,7 +1,4 @@
 var $table = $('#table');
-var $remove = $('#remove');
-var $add = $('#add');
-var selections = [];
 
 $(function () {
     $('#header').load('./reuse-html/header.html');
@@ -44,6 +41,7 @@ function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
     height: 800,
     locale: 'vi-VN',
+    toolbar: '#toolbar',
     pagination: true,
     search: true,
     showPaginationSwitch: true,
@@ -59,6 +57,7 @@ function initTable() {
     stickyHeader: true,
     stickyHeaderOffsetY: 56,
     showJumpto: true,
+    searchAccentNeutralise: true,
 
     clickToSelect: true,
     
@@ -88,7 +87,8 @@ function initTable() {
             { "id": 17, "name": "Người dùng 17",  "date": "17-8-2000", 'role': 'đọc giả', },
             { "id": 18, "name": "Người dùng 18",  "date": "2-5-2000", 'role': 'biên tập viên', 'category': 'Giáo dục'},
             { "id": 19, "name": "Người dùng 19",  "date": "12-1-1998", 'role': 'đọc giả', },
-            { "id": 20, "name": "Người dùng 20",  "date": "11-12-1999", 'role': 'đọc giả', }]
+            { "id": 20, "name": "Nguyễn Văn A",  "date": "6-6-1999", 'role': 'đọc giả', },
+            { "id": 21, "name": "Người dùng 21",  "date": "11-12-1999", 'role': 'đọc giả', }]
 
         })
     }
@@ -96,11 +96,11 @@ function initTable() {
     $table.on('check.bs.table uncheck.bs.table ' +
     'check-all.bs.table uncheck-all.bs.table',
     function () {
-    $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
-    $add.prop('disabled', $table.bootstrapTable('getSelections').length > 1);
+    $('#remove').prop('disabled', !$table.bootstrapTable('getSelections').length);
+    $('#edit').prop('disabled', $table.bootstrapTable('getSelections').length > 1);
 
     // save your data, here just save the current page
-    selections = getIdSelections()
+    var selections = getIdSelections()
     // push or splice the selections if you want to save all data selections
 })
 
@@ -117,13 +117,13 @@ $table.on('click-row.bs.table', function(e, row, $element, field) {
 
 // });
 
-$remove.click(function () {
+$('#remove').click(function () {
     var ids = getIdSelections()
     $table.bootstrapTable('remove', {
         field: 'id',
         values: ids
     })
-    $remove.prop('disabled', true)
+    $('#remove').prop('disabled', true)
 })
           
 function mounted() {
