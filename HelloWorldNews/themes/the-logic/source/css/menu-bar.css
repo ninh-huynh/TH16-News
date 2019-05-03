@@ -5,7 +5,7 @@
 #input-search {
     visibility: hidden;
     opacity: 0;
-    background-color: darkgray;
+    background-color: transparent;
     color: lightgray;
 }
 
