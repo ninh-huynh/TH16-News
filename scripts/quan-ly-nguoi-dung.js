@@ -7,11 +7,17 @@ $(function () {
     $('#header').load('./reuse-html/header.html');
     $('#category-menu').load('./reuse-html/menu-bar.html');
     $('#footer').load('./reuse-html/footer.html');
+
+    // context menu
     $('#context-menu').hide();
 
+    // side bar
     $('.sidenav-badge').hide();
 
+    // table
     mounted();
+    $('.jumpto').find('.btn').prop('title', 'Đi').text('Đi');
+    $('.keep-open').find('.btn').prop('title', 'Columns');
 });
 
 function getIdSelections() {
@@ -49,8 +55,10 @@ function initTable() {
     detailView: true,
     detailFormatter: detailFormatter,
 
+    // extension
     stickyHeader: true,
     stickyHeaderOffsetY: 56,
+    showJumpto: true,
 
     clickToSelect: true,
     
@@ -174,15 +182,9 @@ $('#context-menu').click( function() {
 $('#mySidenav a').mouseenter(function() {
     $(this).find('.sidenav-after-icon').hide();
     $(this).find('.sidenav-badge').show();
-
-    console.log($(this).find('i'));
-    console.log($(this).find('span'));
 });
 
 $('#mySidenav a').mouseleave(function() {
     $(this).find('.sidenav-after-icon').show();
     $(this).find('.sidenav-badge').hide();
-
-    console.log($(this).find('i'));
-    console.log($(this).find('span'));
 });

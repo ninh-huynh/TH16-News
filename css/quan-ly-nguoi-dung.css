@@ -61,4 +61,6 @@ body {
      top: 5rem;
  }
 
- 
+ .jumpto .form-control {
+     vertical-align: middle;
+ }
