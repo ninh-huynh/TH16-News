@@ -29,7 +29,7 @@
 
          <!-- Nội dung chi tiết bài viết -->
          <div id="article-detail" class="mb-3">
-             <img src="<%- page.head_img %>" class="w-100">
+             <img src="<%- page.head_img %>">
              <div class="container-fuild">
                  <%- page.content %>
              </div>
@@ -75,7 +75,8 @@
              <ul class="list-group list-group-flush">
 
              <%# thay site bằng database thật %>
-             <% site.posts.forEach((post) => { %>
+             <% site.posts.forEach((post, index) => { %>
+                 <% if (index < 5) { %>
                  <li class="list-group-item">
                      <div class="">
                          <img data-src="<%- post.head_img %>" class="float-left mr-2 lazyload"
@@ -93,6 +94,7 @@
                          </p>
                      </div>
                  </li>
+                 <% }; %>
              <% }) %>
              </ul>
          </div>

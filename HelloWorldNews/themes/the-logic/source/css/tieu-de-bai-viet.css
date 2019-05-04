@@ -7,6 +7,11 @@
     object-fit: cover;
 }
 
+/* Tất cả các hình trong nội dung luôn có chiều rộng khớp với thẻ cha của nó */
+#article-detail img{
+    width: 100%;
+}
+
 @media (max-width: 576px) {
     h4 {
         font-size: 1rem;
