@@ -46,3 +46,21 @@ a.article-title:hover{
 .btn.btn-secondary:active{
     color: #007EA7;
 }
+
+.list-group-item.active {
+    z-index: 2;
+    color: rgba(255, 255, 255, .75);
+    background-color: #003459;
+    border-color: #003459;
+}
+
+.page-link {
+    color: #003459;
+    background-color: rgba(255, 255, 255, .75);
+}
+
+.page-item.active .page-link {
+    color: rgba(255, 255, 255, .75);
+    background-color: #003459;
+    border-color: #003459;
+}
