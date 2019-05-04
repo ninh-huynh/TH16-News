@@ -1,22 +1,16 @@
 <%# Các đoạn script dùng chung %>
-<% if (is_home() || is_post()) { %>
-    <script src="./scripts/lazysizes.min.js" async=""></script>
-    <script src="./scripts/menu-bar.js"></script>
-<% } else { %>
-    <%# Các trang còn lại mặc định sẽ có đường dẫn ./tên-trang/index.html %>
-    <script src="../../scripts/lazysizes.min.js" async=""></script>
-    <script src="../../scripts/menu-bar.js"></script>
-<% }; %>
+<%- js('scripts/lazysizes.min.js') %>
+<%- js('scripts/menu-bar.js') %>
 
 <%# Các đoạn script dùng riêng ở đây %>
 <% if (is_post()) { %>
-    <script src="./scripts/tieu-de-bai-viet.js"></script>
+    <%- js('scripts/tieu-de-bai-viet.js') %>
 <% }; %>
 
 <% if (path === 'search/index.html') { %>
-    <script src="../../scripts/tu-khoa-tim-kiem.js"></script>
+    <%- js('scripts/tu-khoa-tim-kiem.js') %>
 <% }; %>
 
 <% if (path === 'account-info/index.html') { %>
-    <script src="../../scripts/account-info.js"></script>
+    <%- js('scripts/account-info.js') %>
 <% }; %>
