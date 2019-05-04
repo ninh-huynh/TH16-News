@@ -63,3 +63,11 @@ body {
  .jumpto .form-control {
      vertical-align: middle;
  }  
+
+.fixed-table-header {
+  height: 90px !important;
+}
+
+.datepicker-dropdown {
+  z-index: 100000 !important;
+}
