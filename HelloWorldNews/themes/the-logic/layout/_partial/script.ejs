@@ -2,7 +2,8 @@
 <% if (is_home() || is_post()) { %>
     <script src="./scripts/lazysizes.min.js" async=""></script>
     <script src="./scripts/menu-bar.js"></script>
-<% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
+<% } else { %>
+    <%# Các trang còn lại mặc định sẽ có đường dẫn ./tên-trang/index.html %>
     <script src="../../scripts/lazysizes.min.js" async=""></script>
     <script src="../../scripts/menu-bar.js"></script>
 <% }; %>

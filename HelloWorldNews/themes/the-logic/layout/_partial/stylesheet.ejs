@@ -3,7 +3,9 @@
     <link rel="stylesheet" href="./css/menu-bar.css">
     <link rel="stylesheet" href="./css/layout.css">
     <link rel="stylesheet" href="./css/hello-world-theme.css">
- <% } else if (is_category() || is_tag() || (path === 'search/index.html')) { %>
+ <% } else { %>
+ 
+    <%# Các trang còn lại mặc định sẽ có đường dẫn ./tên-trang/index.html %>
     <link rel="stylesheet" href="../../css/menu-bar.css">
     <link rel="stylesheet" href="../../css/layout.css">
     <link rel="stylesheet" href="../../css/hello-world-theme.css">
