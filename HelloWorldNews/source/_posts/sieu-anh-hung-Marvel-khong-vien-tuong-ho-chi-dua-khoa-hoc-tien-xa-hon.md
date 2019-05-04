@@ -3,6 +3,7 @@ title: Siêu anh hùng Marvel không viễn tưởng, họ chỉ đưa khoa họ
 date: 2019/04/23 06:07 
 categories: 
 - Công nghệ
+tags: [khoa học trong phim Marvel, Marvel]
 author: Hữu Chiến
 head_img: https://znews-photo.zadn.vn/w860/Uploaded/pcckpqmv/2019_04_22/feature.jpeg
 

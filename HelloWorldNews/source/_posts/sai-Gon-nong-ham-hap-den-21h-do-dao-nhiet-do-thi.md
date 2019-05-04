@@ -4,7 +4,7 @@ date: 2019/04/22 11:32
 categories: 
 - Thời sự
 - Đô thị
-tag: [nắng nóng, nóng nực]
+tag: [Tp. Hồ Chí Minh, thời tiết nóng hầm hập, đảo nhiệt đô thị]
 author: Sỹ Đông
 head_img: https://znews-photo.zadn.vn/w660/Uploaded/yejutm/2019_04_22/Saigonnangnong.jpg
 abstract: Sau cả ngày hứng chịu nắng nóng lên đến gần 40 độ C, người dân Sài Gòn tiếp tục vật lộn với cái nóng hầm hập vào buổi tối.
