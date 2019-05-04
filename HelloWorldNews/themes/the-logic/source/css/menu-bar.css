@@ -31,6 +31,12 @@
     float: left;
 }
 
+.navbar-nav img{
+    object-fit: cover;
+    height: 40px;
+    width: 40px;
+}
+
 .custom-hover:hover {
     color: #42c5f5 !important;
     transition: 0.4s;

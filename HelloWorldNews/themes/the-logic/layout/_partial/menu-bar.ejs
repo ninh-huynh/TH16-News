@@ -11,7 +11,13 @@
         <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav">
                 <li class="nav-item" id="home">
-                    <a class="nav-link" href="./index.html">Home<span class="sr-only">(current)</span></a>
+                    <% if (is_home() || is_post()) { %>
+                        <a class="nav-link" href="./">Home</a>
+                    <% } else if (is_category() || is_tag()){ %>
+                        <a class="nav-link" href="../../">Home</a>
+                    <% } else { %>
+                         <a class="nav-link" href="../">Home</a>
+                    <% }; %>
                 </li>
 
                 <li class="nav-item dropdown" id="thoi-su">
@@ -101,7 +107,16 @@
         </div>
 
         <!-- Ô tìm kiếm, thay đổi màu sắc ở thẻ button (nếu cần thiết) -->
-        <form class="form-inline search-form ml-auto" id="search-form">
+        <% if (is_post() || is_home()) { %>
+            <form class="form-inline search-form ml-auto mr-1" id="search-form" action="./search">
+        <% } else if (is_category() || is_tag()) { %>
+            <form class="form-inline search-form ml-auto mr-1" id="search-form" action="../../search">
+        <% } else if (path === 'search/index.html'){ %>
+            <form class="form-inline search-form ml-auto mr-1" id="search-form" action="./">
+        <% } else { %>
+            <form class="form-inline search-form ml-auto mr-1" id="search-form" action="../search">
+        <% }; %>
+
             <div class="form-group">
                 <input type="search" name="keyword" id="input-search" class="form-control"
                     placeholder="Nội dung tìm kiếm...">
@@ -111,12 +126,13 @@
             </div>
         </form>
 
+        
 
         <!-- Các menu chức năng của từng loại user -->
         <!-- Cần thay thế lớp d-none/d-block của từng loại user khi đăng nhập vào -->
 
         <!-- guest/chưa đăng nhập -->
-        <div id="guestNavItem" class="navbar-nav navbar-right d-block">
+        <div id="guestNavItem" class="navbar-nav navbar-right d-none">
             <div class="dropdown" id="guestDropdownMenu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -187,5 +203,67 @@
                 </div>
             </div>
         </div>
+
+
+        <%# Gom lại phần chung của tất cả các người dùng, sau đó so sánh kiểm tra là để hiển thị khu vực 
+        riêng của người đó %>
+        <div id="accountNavItem" class="navbar-nav navbar-right">
+            <div class="dropdown" id="accountDropdown">
+                
+                <%# Icon đăng nhập / Avatar thành viên %>
+                <% if (page.isGuest) { %>
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span class="fa fa-user"></span>
+                    </a>
+                <% } else { %>
+                    <!-- Tạo Avatar random: http://pravatar.cc/ -->
+                    <img src="http://i.pravatar.cc/300" class="rounded-circle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                         aria-expanded="false">
+                <% }; %>
+
+                <%# Menu dropdown %>
+                <div class="dropdown-menu dropdown-menu-right">
+
+                    <!-- Chức năng chỉ dành cho khách vãng lai -->
+                    <a class="dropdown-item" href="#">Đăng nhập</a>
+                    <a class="dropdown-item" href="#">Đăng kí</a>
+                
+                    <!-- Các chức năng dành cho nhóm người dùng đã đăng nhập-->
+                    <!-- Tên người dùng-->
+                    <span id="userName" class="dropdown-item-text"></span>
+
+                    <!-- Cập nhật thông tin - Đổi mật khẩu -->
+                    <% if (path === 'account-info/index.html') { %>
+                        <a class="dropdown-item" href=".">Tài khoản</a>
+                    <% } else if (is_category() || is_tag()) { %>
+                        <a class="dropdown-item" href="../../account-info">Tài khoản</a>
+                    <% } else if (is_home() || is_post()) { %>
+                        <a class="dropdown-item" href="./account-info">Tài khoản</a>
+                    <% } else { %>
+                        <a class="dropdown-item" href="../account-info">Tài khoản</a>
+                    <% };%>
+                    <!-- Chức năng dành cho subscriber -->
+                    <a class="dropdown-item" href="#">Gia hạn</a>
+
+                    <!-- Chức năng dành cho writer -->
+                    <a class="dropdown-item" href="#">Đăng bài mới</a>
+
+                    <!-- Chức năng dành cho editor -->
+                    <a class="dropdown-item" href="#">Duyệt bài viết</a>
+                    
+                    <!-- Chức năng dành cho admin -->
+                    <a class="dropdown-item" href="#">Quản lý chuyên mục</a>
+                    <a class="dropdown-item" href="#">Quản lý nhân viên</a>
+                    <a class="dropdown-item" href="#">Quản lý bài viết</a>
+                    <a class="dropdown-item" href="#">Quản lý người dùng</a>
+                    
+                    <!-- Nút đăng xuất -->
+                    <a class="dropdown-item" href="#"> Đăng xuất </a>
+                   
+                </div>
+            </div>        
+        </div>
+
     </div>
 </nav>
