@@ -1,6 +1,6 @@
 
 function enableHoverDropdownMenu() {
-    $('.dropdown').hover(function () {
+    $('#collapsibleNavId .dropdown').hover(function () {
         var dropdownMenu = $(this).find('.dropdown-menu').first();
         dropdownMenu.css('display', 'block');
 
