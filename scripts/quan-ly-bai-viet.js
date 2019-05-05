@@ -50,7 +50,7 @@ function nameFormatter(value, row) {
 function statusFormatter(value, row, index) {
     if (value.toLowerCase() === 'đã được duyệt & chờ xuất bản'.toLowerCase()) {
         var html = [`
-            <select class='form-control category-dropdown-menu' style='text-align: center; text-align-last: center;' >
+            <select class='form-control status-dropdown-menu' style='text-align: center; text-align-last: center;' >
         `];
 
         for (var i = 0; i < statuses.length; i++) {
@@ -66,6 +66,12 @@ function statusFormatter(value, row, index) {
     }
     else {
         return value;
+    }
+}
+
+window.operateEvents = {
+    'change .status-dropdown-menu' : function (e, value, row, index) {
+        $table.bootstrapTable('updateCellById', {id: index + 1, field: 'status', value: $('tbody tr[data-index="' + index + '"]').find('select option:selected').text()})
     }
 }
 
@@ -97,7 +103,7 @@ function initTable() {
             {  field: 'title', title: 'Bài viết', align: 'center',  valign: 'middle', formatter: titleFormatter, sortable: true, },
             {  field: 'author', title: 'Tác giả', align: 'center',  valign: 'middle', width: '20%', formatter: nameFormatter, sortable: true, },
             {  field: 'publish_date', title: 'Ngày xuất bản', align: 'center',  valign: 'middle', width: '15%', sortable: true, },
-            {  field: 'status', title: 'Trạng thái', align: 'center',  valign: 'middle', width: '20%', formatter: statusFormatter, sortable: true, }],
+            {  field: 'status', title: 'Trạng thái', align: 'center',  valign: 'middle', width: '20%', formatter: statusFormatter, events: window.operateEvents, sortable: true, }],
     data: tableData,
         })
     }
