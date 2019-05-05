@@ -1,18 +1,17 @@
  <%# Các file css dùng chung cho tất cả %>
- <!-- css helper, tự động add root vào đằng trước thư mục-->
- <%- css('css/menu-bar.css') %>
- <%- css('css/layout.css') %>
- <%- css('css/hello-world-theme.css') %>
+<link rel="stylesheet" href="/css/menu-bar.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/hello-world-theme.css">
 
  <%# Các file css dùng riêng cho từng loại trang cụ thể %>
  <% if (is_home()) { %>
-   <%- css('css/index.css') %>
+   <link rel="stylesheet" href="/css/index.css">
  <% } else if (is_category() || is_tag()) { %>
-   <%- css('css/chuyen-muc.css') %>
+   <link rel="stylesheet" href="/css/chuyen-muc.css">
  <% } else if (is_post()) { %>
-   <%- css('css/tieu-de-bai-viet.css') %>
+   <link rel="stylesheet" href="/css/tieu-de-bai-viet.css">
  <% }; %>
 
  <% if (path === 'search/index.html') { %>
-    <%- css('css/tu-khoa-tim-kiem.css') %>
+    <link rel="stylesheet" href="/css/tu-khoa-tim-kiem.css">
  <% }; %>

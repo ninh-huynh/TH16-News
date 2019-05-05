@@ -1,16 +1,16 @@
 <%# Các đoạn script dùng chung %>
-<%- js('scripts/lazysizes.min.js') %>
-<%- js('scripts/menu-bar.js') %>
+<script src="/scripts/lazysizes.min.js"></script>
+<script src="/scripts/menu-bar.js"></script>
 
 <%# Các đoạn script dùng riêng ở đây %>
 <% if (is_post()) { %>
-    <%- js('scripts/tieu-de-bai-viet.js') %>
+    <script src="/scripts/tieu-de-bai-viet.js"></script>
 <% }; %>
 
 <% if (path === 'search/index.html') { %>
-    <%- js('scripts/tu-khoa-tim-kiem.js') %>
+    <script src="/scripts/tu-khoa-tim-kiem.js"></script>
 <% }; %>
 
 <% if (path === 'account-info/index.html') { %>
-    <%- js('scripts/account-info.js') %>
+    <script src="/scripts/account-info.js"></script>
 <% }; %>
