@@ -1,5 +1,9 @@
 <div id="newest">
-    <div class="h3">MỚI NHẤT</div>
+    <div class="d-flex justify-content-between">
+        <div class="h3">MỚI NHẤT</div>
+        <%- partial('_partial/simple-paginator') %>
+    </div>
+    
     <ul class="list-group list-group-flush">
         <% site.posts.forEach((post, index) => { %>
         <% if (index < 5) { %>
