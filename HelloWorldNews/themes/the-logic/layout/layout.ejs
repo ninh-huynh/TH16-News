@@ -14,6 +14,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
+    <!-- Bootstrap table + extension-->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/sticky-header/bootstrap-table-sticky-header.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/page-jump-to/bootstrap-table-page-jump-to.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/filter-control/bootstrap-table-filter-control.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+
    <%- partial('_partial/stylesheet') %>
 </head>
 
@@ -26,7 +33,11 @@
     </div>
 
     <div id="wrap">
-        <div id="main" class="container">
+        <% if (path.indexOf("manage") >= 0 || path === 'approve-draft/index.html' || path === 'my-post/index.html') { %>
+            <div id="main" class="container-fluid">
+        <% } else { %>
+            <div id="main" class="container">
+        <% }; %>
             <%- partial('_partial/forgot-pass') %>
             <%- partial('_partial/signup') %>
             <%- partial('_partial/login') %>
@@ -51,6 +62,19 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 
+    <!-- Bootstrap table + extension -->
+    <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/locale/bootstrap-table-vi-VN.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/accent-neutralise/bootstrap-table-accent-neutralise.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- CKEditor 5 -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.1.0/classic/ckeditor.js"></script>
+    
     <%- partial('_partial/script') %>
 </body>
 
