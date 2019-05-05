@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Danh sách chờ duyệt</title>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="./css/danh-sach-draft.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/sticky-header/bootstrap-table-sticky-header.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/page-jump-to/bootstrap-table-page-jump-to.min.css" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+    </head>
+
+    <body>
+
+        <!-- header -->
+        <header>
+            <div id="header"></div>
+        </header>
+        <!-- navigation bar -->
+        <div id="category-menu" class="sticky-top"></div>
+
+        <!-- refuse modal -->
+        <div class="modal" id="refuseModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Nêu lý do</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form role="form" class="needs-validation" id="refuseForm" novalidate>
+                        
+                        <div class="form-group row required">
+                            <div class="col-md-12">
+                                <textarea  class="form-control" name="inputReason" id="inputReason" spellcheck="false" rows="10" required></textarea>
+                                <div class="invalid-feedback">
+                                    Chưa nhập lý do <i class="fa fa-smile-o"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form float-right">
+                            <button type="submit" class="btn btn-primary btn-submit" >OK</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+
+                </div>
+                
+                </div>
+            </div>
+        </div>
+
+        <!-- approve modal -->
+        <div class="modal" id="approveModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Hiệu chỉnh thông tin</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form role="form" class="needs-validation" id="approveForm" novalidate>
+                        <!-- chọn chuyên mục -->
+                        <div class="form-group row required">
+                            <label for="selectParentCategory" class="col-md-3 col-form-label">Chuyên mục</label>
+                            <div class="col-md-4">
+                                <select class="form-control" id="selectParentCategory" name="selectParentCategory" required>
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-control" id="selectCategory" name="selectCategory" required>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- hiệu chỉnh tag-->
+                        <div class="form-group row">
+                            <label for="editTags" class="col-md-3 col-form-label">Nhãn</label>
+                            <div class="col-md-9">
+                                <textarea  class="form-control" name="editTags" id="editTags" spellcheck="false" rows="10"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row required">
+                            <label for="publishDate" class="col-md-3 col-form-label">Ngày xuất bản</label>
+                            <div class="date input-group col-md-9" id="datetimePicker">
+                                <input type="text" class="input-sm form-control" name="publishDate" id="publishDate" autocomplete="off" required/>
+                                <div class="input-group-addon">
+                                    <span class="input-group-text">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </span>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Chưa chọn ngày xuất bản <i class="fa fa-smile-o"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form float-right">
+                            <button type="submit" class="btn btn-primary btn-submit" >OK</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+
+                </div>
+                
+                </div>
+            </div>
+        </div>
+
+        <!-- main -->
+        <div id="main" class="container-fluid mt-4">
+
+            <div class="row justify-content-around">
+                <div class="col-lg-1 p-0">
+                </div>
+                <div class="col-lg-10">
+                        
+                    <div class="card" id="table-card">
+                        <div class="card-header h2 bg-secondary text-white text-center">Danh sách chờ duyệt</div>
+                        <div class="card-body">
+                            <!-- table -->
+                            <div class="table-reponsive">
+                                <!-- button -->
+                                <table id="table" data-toolbar="#toolbar">
+                                    <div id="toolbar">
+                                        <div class="justify-content-between">
+                                            <button id="approveBtn" class="btn btn-success" disabled="">
+                                                <i class="far fa-check-circle"></i> Duyệt
+                                            </button>
+                                            <button id="refuseBtn" class="btn btn-danger" disabled="">                                              
+                                                <i class="far fa-times-circle"></i> Từ chối
+                                            </button>
+                                        </div> 
+                                    </div>
+                                    
+                                    <!-- context menu -->
+                                    <div class="dropdown-menu dropdown-menu-sm " id="context-menu" style="z-index: 1051;">
+                                        <a class="dropdown-item" id="approveItem">Duyệt</a>
+                                        <a class="dropdown-item" id="refuseItem">Từ chối</a>
+                                    </div>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+
+                </div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div id="footer"></div>
+            </div>
+        </footer>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+
+        <!-- Bootstrap-table + extensions-->
+        <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/locale/bootstrap-table-vi-VN.min.js"></script>
+        <script src="./scripts/danh-sach-draft.js" type="text/javascript" language="javascript" class="init"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/accent-neutralise/bootstrap-table-accent-neutralise.js"></script>  
+
+        <!-- validation plugin -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>      
+
+    </body>
+</html>
