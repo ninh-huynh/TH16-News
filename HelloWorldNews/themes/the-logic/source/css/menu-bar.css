@@ -34,6 +34,11 @@
     width: 40px;
 }
 
+.dropdown-item img{
+    height: 50px;
+    width: 50px;
+}
+
 .navbar-nav img:hover{
     cursor: pointer;
 }
