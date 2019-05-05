@@ -13,37 +13,57 @@ body {
     width: 100%;
 }
 
-.footer .container-fluid {
-    padding: 0;
+#context-menu a:hover {
+    background-color: #dedede;
 }
 
-.btn-group .dropdown-menu {
-    left: auto;
-    right: 0;
+  /* side bar */
+#mySidenav a {
+    position: absolute;
+    left: -190px;
+    transition: 0.3s;
+    padding: 15px;
+    width: 250px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    border-radius: 0 5px 5px 0;
+  }
+  
+#mySidenav a:hover {
+    left: 0;
+}
+  
+#category {
+    top: 5rem;
+    background-color: #4CAF50;
+}
+  
+#tag {
+    top: 9.5rem;
+    background-color: #2196F3;
+}
+  
+#article {
+    top: 14rem;
+    background-color: #f44336;
+}
+  
+#user {
+    top: 18.5rem;
+    background-color: #555
 }
 
-#page-number-input {
-    width: 75%;
-    margin: auto; 
-    padding: 0.3rem;
+#mySidenav {
+     top: 5rem;
 }
 
+ /* pagination */
+.jumpto .form-control {
+     vertical-align: middle;
+}  
 
-table .visible-on-hover, table .visible-on-hover a{
-    color: #00838f;
-}
-table tbody .checkbox-column {
-    width: 5%;
-}
-
-table tbody .option-column {
-    width: 15%;
-}
-
-[class^="child-row"], [class*="child-row"]{
-    background-color: #e9ecef;
-}
-
-.category-name::first-letter {
-    text-transform: capitalize;
+.form-group.required .col-form-label::after{
+    content: " *";
+    color: red;
 }
