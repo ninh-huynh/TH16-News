@@ -154,8 +154,6 @@ $('#remove').click(function () {
         }
     });
 
-    console.log(full_ids);
-
     $table.bootstrapTable('remove', {
         field: 'id',
         values: full_ids
@@ -192,6 +190,15 @@ $('#table').on('contextmenu', 'tr',  function(e) {
     });
 
     $('#editItem').click(function(e) {
+        var selectionIds = getIdSelections();
+
+        if (selectionIds.length > 0) {
+            for (var i = 0; i < selectionIds.length; i++) {
+                $table.bootstrapTable('updateCellById', {id: selectionIds[i], field: 'state', value: false});
+            }
+        }
+        
+        $table.bootstrapTable('updateCellById', {id: dataIndex + 1, field: 'state', value: true});
         editCategory(dataIndex);
     });
 });
@@ -252,12 +259,16 @@ $("#addOrEditCategoryForm").submit( function(e) {
     if($(this).valid()) {
         e.preventDefault();
         if ($('#addOrEditCategoryForm').find('button').text().toUpperCase() === 'OK') {     // Cập nhật
-            var id = getIdSelections();
-            var index = id[0] - 1;
+            var ids = getIdSelections();
+            var index = ids[0] - 1;
             let row = $table.bootstrapTable('getData', true)[index];
             row.name = $('#inputCategoryName').val();
             row.parentCategory = $('#selectParentCategory').find(':selected').text();
             $table.bootstrapTable('updateRow', {index: index, row: row});
+
+            for (var i = 0; i < ids.length; i++) {
+                $table.bootstrapTable('updateCellById', {id: ids[i], field: 'state', value: false});
+            }
         }
         else {      // Thêm mới
             var row = {
