@@ -48,20 +48,25 @@ function nameFormatter(value, row) {
 }
 
 function statusFormatter(value, row, index) {
-    var html = [`
-        <select class='form-control category-dropdown-menu' style='text-align: center; text-align-last: center;' >
-    `];
+    if (value.toLowerCase() === 'đã được duyệt & chờ xuất bản'.toLowerCase()) {
+        var html = [`
+            <select class='form-control category-dropdown-menu' style='text-align: center; text-align-last: center;' >
+        `];
 
-    for (var i = 0; i < statuses.length; i++) {
-        html += '<option value="' + statuses[i] + '"';
-        if (value.toLowerCase() === statuses[i].toLowerCase()) {
-            html += ' selected="selected" ';
+        for (var i = 0; i < statuses.length; i++) {
+            html += '<option value="' + statuses[i] + '"';
+            if (value.toLowerCase() === statuses[i].toLowerCase()) {
+                html += ' selected="selected" ';
+            }
+            html += '>' + statuses[i].substr(0, 1).toUpperCase() + statuses[i].substr(1) + '</option>';
         }
-        html += '>' + statuses[i].substr(0, 1).toUpperCase() + statuses[i].substr(1) + '</option>';
-    }
-    html += '</select>';
+        html += '</select>';
 
-    return html;
+        return html;
+    }
+    else {
+        return value;
+    }
 }
 
 function initTable() {
