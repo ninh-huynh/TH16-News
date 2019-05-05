@@ -47,11 +47,31 @@ a.article-title:hover{
     background-color: #007EA7;
 }
 
+.text-secondary{
+    color: #007EA7 !important;    
+}
+
+a {
+    color: #007EA7;
+}
+
+a:hover {
+    color: #006889;
+}
+
+.form-control:focus {
+    border-color: #006889;
+}
+
+.dropdown-item:active{
+    background-color: #006889;
+}
+
 .list-group-item.active {
     z-index: 2;
-    color: rgba(255, 255, 255, .75);
-    background-color: #003459;
-    border-color: #003459;
+    color: #FFF;
+    background-color: #006889;
+    border-color: #006889;
 }
 
 .page-link {
