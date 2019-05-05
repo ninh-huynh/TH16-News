@@ -32,19 +32,19 @@ a.article-title:hover{
 
 /* Các màu sắc của trang quản lý */
 .bg-secondary{
-    color: #007EA7;
+    background-color: #007EA7;
 }
 
 .btn.btn-secondary{
-    color: #007EA7;
+    background-color: #007EA7;
 }
 
 .btn.btn-secondary:hover{
-    color: #006889;
+    background-color: #006889;
 }
 
 .btn.btn-secondary:active{
-    color: #007EA7;
+    background-color: #007EA7;
 }
 
 .list-group-item.active {
