@@ -26,6 +26,6 @@ body {
     min-height: 200px;
 }
 
-.form-group {
+#newPostForm .form-group {
     margin-top: 20px;
 }
