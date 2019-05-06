@@ -97,7 +97,7 @@ function initTable() {
 
     columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
-            {  field: 'article', title: 'Bài viết', align: 'center',  valign: 'middle', formatter: articleFormatter, sortable: true, },
+            {  field: 'article', title: 'Bài viết', align: 'left',  valign: 'middle', formatter: articleFormatter, sortable: true, },
             {  field: 'author', title: 'Tác giả', align: 'center',  valign: 'middle', width: '20%', formatter: nameFormatter, sortable: true, },
             {  field: 'publish_date', title: 'Ngày xuất bản', align: 'center',  valign: 'middle', width: '15%', sortable: true, },
             {  field: 'status', title: 'Trạng thái', align: 'center',  valign: 'middle', width: '20%', formatter: statusFormatter, events: window.operateEvents, sortable: true, }],
