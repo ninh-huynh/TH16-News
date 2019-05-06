@@ -44,9 +44,12 @@ function getIdSelections() {
 }
 
 function articleFormatter(value, row, index) {
-    return [
-        '<a href="' + value.href + '" target="_blank">' + value.title.substr(0, 1).toUpperCase() + value.title.substr(1) + '</a>'
-    ].join('');
+
+    if (row.status.toLowerCase() === ARTICLE_STATUS.published.label.toLowerCase()) {
+        return '<a href="' + value.href + '" target="_blank">' + value.title.substr(0, 1).toUpperCase() + value.title.substr(1) + '</a>';
+    }
+    
+    return value.title;
 }
 
 function nameFormatter(value, row) {
@@ -83,7 +86,10 @@ function statusFormatter(value, row, index) {
 window.operateEvents = {
     'change .status-dropdown-menu' : function (e, value, row, index) {
         var id = $table.bootstrapTable('getData', true)[index].id;
-        $table.bootstrapTable('updateCellById', {id: id, field: 'status', value: $('tbody tr[data-index="' + index + '"]').find('select option:selected').text()})
+        var date = new Date();
+        var publish_date = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+        $table.bootstrapTable('updateCellById', {id: id, field: 'status', value: $('tbody tr[data-index="' + index + '"]').find('select option:selected').text()});
+        $table.bootstrapTable('updateCellById', {id: id, field: 'publish_date', value: publish_date});
     }
 }
 
