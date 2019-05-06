@@ -3,7 +3,7 @@ const ARTICLE_STATUS = {
         label: 'đã xuất bản',
         color: 'limegreen',
     },
-    refuse : {
+    refused : {
         label: 'bị từ chối',
         color: 'red',
     },
@@ -19,18 +19,42 @@ const ARTICLE_STATUS = {
 
 var $table = $('#table');
 var tableData = [
-    {id: 1, article: {title: 'bài  viết 1', href: '../Hot-girl-Tram-Anh-tiep-tuc-bi-cat-song-khoi-game-show-tren-VTV.html' }, category: 'Thời sự', publish_date: "1-1-2019", status: ARTICLE_STATUS.published.label},
-    {id: 2, article: {title: 'bài  viết 2', href: '#' }, category: 'Thể thao', publish_date: "", status: ARTICLE_STATUS.pending_publish.label},
-    {id: 3, article: {title: 'bài  viết 3', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: ARTICLE_STATUS.refuse.label },
-    {id: 4, article: {title: 'bài  viết 4', href: '#' }, category: 'Thời sự', publish_date: "4-4-2019", status: ARTICLE_STATUS.published.label},
-    {id: 5, article: {title: 'bài  viết 5', href: '#' }, category: 'Sức khỏe  ', publish_date: "", status: ARTICLE_STATUS.pending_approval.label},
-    {id: 6, article: {title: 'bài  viết 6', href: '#' }, category: 'Kinh doanh', publish_date: "", status: ARTICLE_STATUS.pending_publish.label},
-    {id: 7, article: {title: 'bài  viết 7', href: '#' }, category: 'Thế giới', publish_date: "7-7-2019", status: ARTICLE_STATUS.published.label},
-    {id: 8, article: {title: 'bài  viết 8', href: '#' }, category: 'Thể thao', publish_date: "5-4-2019", status: ARTICLE_STATUS.published.label},
-    {id: 9, article: {title: 'bài  viết 9', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: ARTICLE_STATUS.refuse.label},
-    {id: 10, article: {title: 'bài  viết 10', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label},
-    {id: 11, article: {title: 'bài  viết 11', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label},
-    {id: 12, article: {title: 'bài  viết 12', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label}
+    {id: 1, article: {title: 'Hot girl Trâm Anh tiếp tục bị cắt sóng khỏi game show trên VTV', 
+        href: '../Hot-girl-Tram-Anh-tiep-tuc-bi-cat-song-khoi-game-show-tren-VTV.html' }, 
+        category: 'Giải trí', publish_date: "1-1-2019", status: ARTICLE_STATUS.published.label},
+    {id: 2, article: {title: 'Cãi nhau với vợ xong, con rể sang đốt nhà bố vợ cháy rụi', 
+        href: '#' }, 
+        category: 'Thể thao', publish_date: "", status: ARTICLE_STATUS.pending_publish.label},
+    {id: 3, article: {title: 'Tuyển LMHT PVB của Việt Nam phải tranh vé vớt ngay trên sân nhà', 
+        href: '../edit-post/' }, 
+        category: 'Thể thao', publish_date: "", status: ARTICLE_STATUS.refused.label },
+    {id: 4, article: {title: 'Sài Gòn nóng hầm hập đến 21h do đảo nhiệt đô thị', 
+        href: '../sai-Gon-nong-ham-hap-den-21h-do-dao-nhiet-do-thi.html' }, 
+        category: 'Thời sự', publish_date: "4-4-2019", status: ARTICLE_STATUS.published.label},
+    {id: 5, article: {title: 'Tỷ phú Jeff Bezos đã giàu lại càng giàu hơn nhờ cổ phiếu Uber', 
+        href: '#' }, 
+        category: 'Kinh doanh  ', publish_date: "", status: ARTICLE_STATUS.pending_approval.label},
+    {id: 6, article: {title: 'Triều Tiên thử tên lửa: Kịch bản cũ và bước ngoặt chiến lược', 
+        href: '#' }, 
+        category: 'Thế giới', publish_date: "", status: ARTICLE_STATUS.pending_publish.label},
+    {id: 7, article: {title: 'Siêu anh hùng Marvel không viễn tưởng, họ chỉ đưa khoa học tiến xa hơn', 
+        href: '../sieu-anh-hung-Marvel-khong-vien-tuong-ho-chi-dua-khoa-hoc-tien-xa-hon.html' }, 
+        category: 'Giải trí', publish_date: "7-7-2019", status: ARTICLE_STATUS.published.label},
+    {id: 8, article: {title: 'Huyền thoại MU chỉ ra sai lầm chuyển nhượng của đội nhà', 
+        href: '#' }, 
+        category: 'Thể thao', publish_date: "5-4-2019", status: ARTICLE_STATUS.published.label},
+    {id: 9, article: {title: 'YouTube "nuôi" kênh bẩn nhờ dòng tiền từ doanh nghiệp Việt Nam', 
+        href: '../edit-post/' }, 
+        category: 'Giải trí', publish_date: "", status: ARTICLE_STATUS.refused.label},
+    {id: 10, article: {title: 'Loạt smartphone giảm giá mạnh dịp 30/4', 
+        href: '../Loat-smartphone-giam-gia-manh-dip-30-4.html' }, 
+        category: 'Công nghệ', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label},
+    {id: 11, article: {title: '13,3 tỷ năm lịch sử vũ trụ "thu bé" lại trong bức ảnh này', 
+        href: '../13-3-ty-nam-lich-su-vu-tru-thu-be-lai-trong-buc-anh-nay.html' }, 
+        category: 'Thời sự', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label},
+    {id: 12, article: {title: 'Từ cậu bé mồ côi ốm yếu đến thiên tài Isaac Newton', 
+        href: '../Tu-cau-be-mo-coi-om-yeu-den-thien-tai-Isaac-Newton.html' }, 
+        category: 'Giáo dục', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label}
 ];
 
 var statuses = ['đã xuất bản', 'đã được duyệt & chờ xuất bản'];
@@ -82,7 +106,7 @@ function statusFormatter(value, row, index, field) {
 }
 
 function checkFormatter(value, row, index, field) {
-    if (row.status.toLocaleLowerCase() !== ARTICLE_STATUS.refuse.label.toLowerCase()) {
+    if (row.status.toLocaleLowerCase() !== ARTICLE_STATUS.refused.label.toLowerCase()) {
         return { disabled: true, };
     }
 
@@ -117,7 +141,7 @@ function initTable() {
 
     columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', formatter: checkFormatter, }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
-            {  field: 'article', title: 'Bài viết', align: 'center',  valign: 'middle', formatter: articleFormatter, sortable: true, },
+            {  field: 'article', title: 'Bài viết', align: 'left',  valign: 'middle', formatter: articleFormatter, sortable: true, },
             {  field: 'category', title: 'Chuyên mục', align: 'center',  valign: 'middle', width: '20%', formatter: categoryFormatter, sortable: true, filterControl: 'select', },
             {  field: 'publish_date', title: 'Ngày xuất bản', align: 'center',  valign: 'middle', width: '15%', sortable: true,},
             {  field: 'status', title: 'Trạng thái', align: 'center',  valign: 'middle', width: '20%', formatter: statusFormatter, sortable: true, filterControl: 'select'}],
