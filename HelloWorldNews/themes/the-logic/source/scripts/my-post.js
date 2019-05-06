@@ -2,13 +2,13 @@ var $table = $('#table');
 var tableData = [
     {id: 1, article: {title: 'bài  viết 1', href: '#' }, category: 'Thời sự', publish_date: "1-1-2019", status: 'Đã xuất bản'},
     {id: 2, article: {title: 'bài  viết 2', href: '#' }, category: 'Thể thao', publish_date: "", status: 'Đã được duyệt & chờ xuất bản'},
-    {id: 3, article: {title: 'bài  viết 3', href: './chinh-sua-bai-viet.html' }, category: 'Giải trí', publish_date: "", status: 'Bị từ chối' },
+    {id: 3, article: {title: 'bài  viết 3', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: 'Bị từ chối' },
     {id: 4, article: {title: 'bài  viết 4', href: '#' }, category: 'Thời sự', publish_date: "4-4-2019", status: 'Đã xuất bản'},
     {id: 5, article: {title: 'bài  viết 5', href: '#' }, category: 'Sức khỏe  ', publish_date: "", status: 'chưa được duyệt'},
     {id: 6, article: {title: 'bài  viết 6', href: '#' }, category: 'Kinh doanh', publish_date: "", status: 'Đã được duyệt & chờ xuất bản'},
     {id: 7, article: {title: 'bài  viết 7', href: '#' }, category: 'Thế giới', publish_date: "7-7-2019", status: 'Đã xuất bản'},
     {id: 8, article: {title: 'bài  viết 8', href: '#' }, category: 'Thể thao', publish_date: "5-4-2019", status: 'Đã xuất bản'},
-    {id: 9, article: {title: 'bài  viết 9', href: './chinh-sua-bai-viet.html' }, category: 'Giải trí', publish_date: "", status: 'Bị từ chối'},
+    {id: 9, article: {title: 'bài  viết 9', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: 'Bị từ chối'},
     {id: 10, article: {title: 'bài  viết 10', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: 'Đã xuất bản'},
     {id: 11, article: {title: 'bài  viết 11', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: 'Đã xuất bản'},
     {id: 12, article: {title: 'bài  viết 12', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: 'Đã xuất bản'}
