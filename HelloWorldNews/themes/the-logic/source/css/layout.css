@@ -19,3 +19,10 @@ body {
 .footer .container-fluid {
     padding: 0;
 }
+
+/* Form validate */
+.form-group.required .col-form-label::after,
+.form-group.required label::after {
+    content: " *";
+    color: red;
+}

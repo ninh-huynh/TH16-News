@@ -11,22 +11,31 @@
             </div>
             <div class="modal-body">
 
-                <form action="" method="post" name="accountForm" id="accountForm" class="">
-                    <div class="form-group">
+                <form action="" method="post" name="accountForm" id="accountForm" class="needs-validation" novalidate>
+                    <div class="form-group required">
                         <label for="txtFullName">Họ tên</label>
                         <input type="text" class="form-control" name="fullName" id="txtFullName"
-                            aria-describedby="helpId" placeholder="">
+                            aria-describedby="helpId" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Hãy nhập tên thật của bạn
+                        </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="txtEmail">Email</label>
                         <input type="email" class="form-control" name="email" id="txtEmail"
-                            aria-describedby="emailHelpId" placeholder="">
+                            aria-describedby="emailHelpId" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Hãy nhập địa chỉ email
+                        </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <label for="newPass">Mật khẩu</label>
-                        <input type="password" class="form-control" name="newPass" id="newPass" placeholder="****">
+                        <input type="password" class="form-control" name="newPass" id="newPass" placeholder="****" required>
+                        <div class="invalid-feedback">
+                            Hãy nhập mật khẩu
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -35,7 +44,7 @@
                             aria-describedby="helpId">
                     </div>
 
-                    <button type="button" class="btn btn-outline-success float-right">Đăng ký</button>
+                    <button type="submit" class="btn btn-outline-success float-right">Đăng ký</button>
                 </form>
             </div>
 
