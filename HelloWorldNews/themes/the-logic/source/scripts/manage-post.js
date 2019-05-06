@@ -1,3 +1,14 @@
+const ARTICLE_STATUS = {
+    published : {
+        label: 'đã xuất bản',
+        color: 'limegreen',
+    },
+    pending_publish: {
+        label: 'đã được duyệt & chờ xuất bản',
+        color: 'orange',
+    }
+}
+
 var $table = $('#table');
 var tableData = [
     {id: 1, article: {title: 'bài  viết 1', href: '#' }, author: 'tác giả 1', publish_date: "1-1-2019", status: 'Đã xuất bản'},
@@ -44,24 +55,28 @@ function nameFormatter(value, row) {
 }
 
 function statusFormatter(value, row, index) {
-    if (value.toLowerCase() === 'đã được duyệt & chờ xuất bản'.toLowerCase()) {
-        var html = [`
-            <select class='form-control status-dropdown-menu' style='text-align: center; text-align-last: center;' >
-        `];
+    if (value.toLowerCase() === ARTICLE_STATUS.pending_publish.label.toLowerCase()) {     // đã được duyệt và chờ xuất bản
+        var html = `<select class="form-control status-dropdown-menu font-weight-bold" 
+                    style="text-align: center; text-align-last: center; color: ` + ARTICLE_STATUS.pending_publish.color + ` ; " >`
 
-        for (var i = 0; i < statuses.length; i++) {
-            html += '<option value="' + statuses[i] + '"';
-            if (value.toLowerCase() === statuses[i].toLowerCase()) {
+        $.each (ARTICLE_STATUS, function(key, status) {
+            html += '<option value="' + status.label.toLowerCase() + '"';
+            if (value.toLowerCase() === status.label.toLowerCase()) {
                 html += ' selected="selected" ';
             }
-            html += '>' + statuses[i].substr(0, 1).toUpperCase() + statuses[i].substr(1) + '</option>';
-        }
+
+            if (status.label.toLowerCase() !== ARTICLE_STATUS.published.label.toLowerCase()) {
+                html += ' class="d-none" '
+            }
+            html += ' style="color: black; " >' + status.label.substr(0, 1).toUpperCase() + status.label.substr(1) + '</option>';
+        })
         html += '</select>';
+
 
         return html;
     }
     else {
-        return value;
+        return '<font class="font-weight-bold" color="limegreen">' + value + '</font>';
     }
 }
 
