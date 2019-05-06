@@ -97,10 +97,12 @@ $(function() {
 // make sure CKEditor toolbar could not be overlapped by navbar
 var myEditor;
 $(window).on('load', function(){ 
+    var navbarHeight = $('#category-menu > .navbar').outerHeight();
+
     ClassicEditor
         .create(document.querySelector('#editor'), {
             toolbar: {
-                viewportTopOffset: 80, // category-menu height
+                viewportTopOffset: navbarHeight, // category-menu height
             }
         })
         .catch(error => {
