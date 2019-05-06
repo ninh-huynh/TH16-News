@@ -19,7 +19,7 @@ const ARTICLE_STATUS = {
 
 var $table = $('#table');
 var tableData = [
-    {id: 1, article: {title: 'bài  viết 1', href: '#' }, category: 'Thời sự', publish_date: "1-1-2019", status: ARTICLE_STATUS.published.label},
+    {id: 1, article: {title: 'bài  viết 1', href: '../Hot-girl-Tram-Anh-tiep-tuc-bi-cat-song-khoi-game-show-tren-VTV.html' }, category: 'Thời sự', publish_date: "1-1-2019", status: ARTICLE_STATUS.published.label},
     {id: 2, article: {title: 'bài  viết 2', href: '#' }, category: 'Thể thao', publish_date: "", status: ARTICLE_STATUS.pending_publish.label},
     {id: 3, article: {title: 'bài  viết 3', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: ARTICLE_STATUS.refuse.label },
     {id: 4, article: {title: 'bài  viết 4', href: '#' }, category: 'Thời sự', publish_date: "4-4-2019", status: ARTICLE_STATUS.published.label},
@@ -51,9 +51,14 @@ function getIdSelections() {
 }
 
 function articleFormatter(value, row, index) {
-    return [
-        '<a href="' + value.href + '" target="_blank">' + value.title.substr(0, 1).toUpperCase() + value.title.substr(1) + '</a>'
-    ].join('');
+    var html;
+    if (row.status.toLowerCase() === ARTICLE_STATUS.published.label.toLocaleLowerCase()) { // đã xuất bản
+        html = '<a href="' + value.href + '" target="_blank">' + value.title.substr(0, 1).toUpperCase() + value.title.substr(1) + '</a>';
+    } else {
+        html = value.title;
+    }
+
+    return html;
 }
 
 function categoryFormatter(value, row) {
@@ -76,6 +81,14 @@ function statusFormatter(value, row, index, field) {
     return '<font class="font-weight-bold" color="' + color + '">' + value + '</font>';
 }
 
+function checkFormatter(value, row, index, field) {
+    if (row.status.toLocaleLowerCase() !== ARTICLE_STATUS.refuse.label.toLowerCase()) {
+        return { disabled: true, };
+    }
+
+    return value;
+}
+
 function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
     height: 800,
@@ -92,6 +105,7 @@ function initTable() {
     clickToSelect: true,
     undefinedText: ' ',
     uniqueId: 'id',
+    checkboxHeader: false,
     // extension
     stickyHeader: true,
     stickyHeaderOffsetY: 56,
@@ -101,10 +115,10 @@ function initTable() {
     filterControl: true,
     filterShowClear: true,
 
-    columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
+    columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', formatter: checkFormatter, }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
             {  field: 'article', title: 'Bài viết', align: 'center',  valign: 'middle', formatter: articleFormatter, sortable: true, },
-            {  field: 'category', title: 'Chuyên mục', align: 'center',  valign: 'middle', width: '20%', formatter: categoryFormatter, sortable: true, filterControl: 'select'},
+            {  field: 'category', title: 'Chuyên mục', align: 'center',  valign: 'middle', width: '20%', formatter: categoryFormatter, sortable: true, filterControl: 'select', },
             {  field: 'publish_date', title: 'Ngày xuất bản', align: 'center',  valign: 'middle', width: '15%', sortable: true,},
             {  field: 'status', title: 'Trạng thái', align: 'center',  valign: 'middle', width: '20%', formatter: statusFormatter, sortable: true, filterControl: 'select'}],
     data: tableData,
