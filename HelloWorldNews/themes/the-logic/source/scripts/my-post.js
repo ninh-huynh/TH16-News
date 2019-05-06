@@ -1,17 +1,36 @@
+const ARTICLE_STATUS = {
+    published : {
+        label: 'đã xuất bản',
+        color: 'limegreen',
+    },
+    refuse : {
+        label: 'bị từ chối',
+        color: 'red',
+    },
+    pending_approval: {
+        label: 'đang chờ duyệt',
+        color: 'gold',
+    },
+    pending_publish: {
+        label: 'đã được duyệt & chờ xuất bản',
+        color: 'orange',
+    }
+}
+
 var $table = $('#table');
 var tableData = [
-    {id: 1, article: {title: 'bài  viết 1', href: '#' }, category: 'Thời sự', publish_date: "1-1-2019", status: 'Đã xuất bản'},
-    {id: 2, article: {title: 'bài  viết 2', href: '#' }, category: 'Thể thao', publish_date: "", status: 'Đã được duyệt & chờ xuất bản'},
-    {id: 3, article: {title: 'bài  viết 3', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: 'Bị từ chối' },
-    {id: 4, article: {title: 'bài  viết 4', href: '#' }, category: 'Thời sự', publish_date: "4-4-2019", status: 'Đã xuất bản'},
-    {id: 5, article: {title: 'bài  viết 5', href: '#' }, category: 'Sức khỏe  ', publish_date: "", status: 'chưa được duyệt'},
-    {id: 6, article: {title: 'bài  viết 6', href: '#' }, category: 'Kinh doanh', publish_date: "", status: 'Đã được duyệt & chờ xuất bản'},
-    {id: 7, article: {title: 'bài  viết 7', href: '#' }, category: 'Thế giới', publish_date: "7-7-2019", status: 'Đã xuất bản'},
-    {id: 8, article: {title: 'bài  viết 8', href: '#' }, category: 'Thể thao', publish_date: "5-4-2019", status: 'Đã xuất bản'},
-    {id: 9, article: {title: 'bài  viết 9', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: 'Bị từ chối'},
-    {id: 10, article: {title: 'bài  viết 10', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: 'Đã xuất bản'},
-    {id: 11, article: {title: 'bài  viết 11', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: 'Đã xuất bản'},
-    {id: 12, article: {title: 'bài  viết 12', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: 'Đã xuất bản'}
+    {id: 1, article: {title: 'bài  viết 1', href: '#' }, category: 'Thời sự', publish_date: "1-1-2019", status: ARTICLE_STATUS.published.label},
+    {id: 2, article: {title: 'bài  viết 2', href: '#' }, category: 'Thể thao', publish_date: "", status: ARTICLE_STATUS.pending_publish.label},
+    {id: 3, article: {title: 'bài  viết 3', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: ARTICLE_STATUS.refuse.label },
+    {id: 4, article: {title: 'bài  viết 4', href: '#' }, category: 'Thời sự', publish_date: "4-4-2019", status: ARTICLE_STATUS.published.label},
+    {id: 5, article: {title: 'bài  viết 5', href: '#' }, category: 'Sức khỏe  ', publish_date: "", status: ARTICLE_STATUS.pending_approval.label},
+    {id: 6, article: {title: 'bài  viết 6', href: '#' }, category: 'Kinh doanh', publish_date: "", status: ARTICLE_STATUS.pending_publish.label},
+    {id: 7, article: {title: 'bài  viết 7', href: '#' }, category: 'Thế giới', publish_date: "7-7-2019", status: ARTICLE_STATUS.published.label},
+    {id: 8, article: {title: 'bài  viết 8', href: '#' }, category: 'Thể thao', publish_date: "5-4-2019", status: ARTICLE_STATUS.published.label},
+    {id: 9, article: {title: 'bài  viết 9', href: '../edit-post/' }, category: 'Giải trí', publish_date: "", status: ARTICLE_STATUS.refuse.label},
+    {id: 10, article: {title: 'bài  viết 10', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label},
+    {id: 11, article: {title: 'bài  viết 11', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label},
+    {id: 12, article: {title: 'bài  viết 12', href: '#' }, category: 'Thời sự', publish_date: "10-10-2019", status: ARTICLE_STATUS.published.label}
 ];
 
 var statuses = ['đã xuất bản', 'đã được duyệt & chờ xuất bản'];
@@ -42,9 +61,19 @@ function categoryFormatter(value, row) {
     return value;
 }
 
-function statusFormatter(value, row) {
-    value = value.substr(0,1).toUpperCase() + value.substr(1);
-    return value;
+function statusFormatter(value, row, index, field) {
+    var color;
+    value = value.toLowerCase();
+    $.each(ARTICLE_STATUS, function(key, status) {
+        if (status.label.toLowerCase() === value) {
+            color = status.color;
+            return;
+        }
+    });
+
+    value = value.substr(0, 1).toUpperCase() + value.substr(1);
+
+    return '<font class="font-weight-bold" color="' + color + '">' + value + '</font>';
 }
 
 function initTable() {
