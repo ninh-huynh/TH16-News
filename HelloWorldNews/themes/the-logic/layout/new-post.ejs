@@ -1,0 +1,113 @@
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-header h2 bg-primary text-white text-center">Thêm bài viết mới</div>
+            <div class="card-body">
+                <form role="form" class="needs-validation" novalidate id="newPostForm">
+
+                    <!-- Tiêu đề bài viêt-->
+                    <div class="form-group row required">
+                        <label for="inputTitle" class="col-md-2 col-form-label">Tiêu đề</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="title"
+                                id="inputTitle" spellcheck="false" required>
+                            <div class="invalid-feedback">
+                                Thiếu tiêu đề<i class="fa fa-smile-o"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- chuyên mục -->
+                    <div class="form-group row">
+                        <label for="selectCategory" class="col-md-2 col-form-label required">Chuyên mục</label>
+                        <div class="col-md-5">
+                            <select class="form-control" id="selectCategory" name="category">
+                                <option selected>Thời sự</option>
+                                <option>Thế giới</option>
+                                <option id="kinhDoanh">Kinh doanh</option>
+                                <option>Công nghệ</option>
+                                <option>Thể thao</option>
+                                <option>Giải trí</option>
+                                <option>Sức khỏe</option>
+                                <option>Giáo dục</option>
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">
+                            Chưa chọn chuyên mục <i class="fa fa-smile-o"></i>
+                        </div>
+
+                        <div class="col-md-5">
+                            <select class="form-control" id="selectSubCategory" name="subCategory">
+                                <option>Chính trị</option>
+                                <option>Giao thông</option>
+                                <option>Đô thị</option>
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">
+                            Chưa chọn chuyên mục con. <i class="fa fa-smile-o"></i>
+                        </div>
+                    </div>
+
+                    <!-- tag -->
+                    <div class="form-group row" id="inputTag">
+                        <label for="inputTag" class="col-md-2 col-form-label">Tag</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="tag" id="inputTag" spellcheck="false">
+                            <span class="font-italic"><small>Các thẻ cách nhau bởi dấu chấm phẩy.</small></span>
+                        </div>
+                    </div>
+
+                    <!-- tải lên ảnh bìa -->
+                    <div class="form-group row required d-flex" id="uploadThumbnailFormGroup">
+                        <label for="uploadThumbnail" class="col-md-2 col-form-label">Ảnh bìa</label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" id="uploadThumbnailButton" required onchange="readURL(this)">
+                            <div class="invalid-feedback">
+                                Chưa có ảnh bìa. <i class="fa fa-smile-o"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- hiển thị ảnh bìa -->
+                    <div class="form-group row required d-none" id="displayThumbnailFormGroup">
+                        <label for="uploadThumbnail" class="col-md-2 col-form-label">Ảnh bìa</label>
+                        <div class="col-md-10">
+                            <img src="https://dummyimage.com/300x185/123456/fff" class="img-fluid" alt="ảnh bìa" id="thumbnail">
+                            <input type="file" class="form-control-file d-none" id="replaceThumbnailButton" onchange="readURL(this)">
+                        </div>
+                    </div>
+
+                    <!-- Tóm tắt -->
+                    <div class="form-group row required">
+                        <label for="inputAbstract" class="col-md-2 col-form-label">Tóm tắt</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" rows="5" id="inputAbstract" required></textarea>
+                            <div class="invalid-feedback">
+                                Chưa có tóm tắt. <i class="fa fa-smile-o"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung-->
+                    <div class="form-group row required" id="inputContent">
+                        <label for="inputContent" class="col-md-2 col-form-label">Nội dung</label>
+                        <div class="col-md-10">
+                            <textarea id="editor" placeholder="Thêm nội dung" required>
+                                
+                            </textarea>
+                        </div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <div class="form">
+                        <button id="btnSubmit" type="submit" class="btn btn-primary float-right">
+                            Đăng bài viết   
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            <div class="card-footer"></div>
+        </div>
+    </div>
+</div>

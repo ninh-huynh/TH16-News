@@ -1,0 +1,86 @@
+/* Quy định các màu sắc chính trong website */
+
+
+/* Màu sắc nav bar */
+.bg-primary {
+    background-color: #003459 !important;
+}
+
+
+/* Màu sắc của các đường link chứa tên bài viết*/
+a.article-title{
+    color: #00171F !important;
+    transition: 0.2s;
+}
+
+a.article-title:hover{
+    color: #00A8E8 !important;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+#hot-article a.article-title{
+    color: #fff !important;
+    text-decoration: none;
+}
+
+#hot-article a.article-title:hover {
+    color: #fff !important;
+    text-decoration: underline;
+}
+
+
+/* Các màu sắc của trang quản lý */
+.bg-secondary{
+    background-color: #007EA7 !important;
+}
+
+.btn.btn-secondary{
+    background-color: #007EA7;
+}
+
+.btn.btn-secondary:hover{
+    background-color: #006889;
+}
+
+.btn.btn-secondary:active{
+    background-color: #007EA7;
+}
+
+.text-secondary{
+    color: #007EA7 !important;    
+}
+
+a {
+    color: #007EA7;
+}
+
+a:hover {
+    color: #006889;
+}
+
+.form-control:focus {
+    border-color: #006889;
+}
+
+.dropdown-item:active{
+    background-color: #006889;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #FFF;
+    background-color: #006889;
+    border-color: #006889;
+}
+
+.page-link {
+    color: #003459;
+    background-color: rgba(255, 255, 255, .75);
+}
+
+.page-item.active .page-link {
+    color: rgba(255, 255, 255, .75);
+    background-color: #003459;
+    border-color: #003459;
+}

@@ -1,0 +1,18 @@
+<!-- NỔI BẬT -->
+<%- partial('_widget/hot') %>
+
+<div class="row my-5">
+    <div class="col-lg-4 d-flex flex-column justify-content-between">
+        <!-- MỚI NHẤT -->
+        <%- partial('_widget/newest') %>
+        <%- partial('_widget/tags-cloud', {display: 'd-xl-block'}) %>
+    </div>
+
+    <div class="col-lg-8">
+        <!-- XEM NHIỀU -->
+        <%- partial('_widget/mostview') %>
+    </div>
+</div>
+
+<!-- TOP 10 CHUYÊN MỤC -->
+<%- partial('_widget/top10') %>

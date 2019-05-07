@@ -1,0 +1,73 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 200px; /* Margin bottom by footer height */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#context-menu a:hover {
+    background-color: #dedede;
+}
+
+  /* side bar */
+#mySidenav a {
+    position: absolute;
+    left: -190px;
+    transition: 0.3s;
+    padding: 15px;
+    width: 250px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    border-radius: 0 5px 5px 0;
+  }
+  
+#mySidenav a:hover {
+    left: 0;
+}
+  
+#category {
+    top: 5rem;
+    background-color: #4CAF50;
+}
+  
+#tag {
+    top: 9.5rem;
+    background-color: #2196F3;
+}
+  
+#article {
+    top: 14rem;
+    background-color: #f44336;
+}
+  
+#user {
+    top: 18.5rem;
+    background-color: #555
+}
+
+#mySidenav {
+     top: 5rem;
+}
+
+ /* pagination */
+.jumpto .form-control {
+     vertical-align: middle;
+}  
+
+.fixed-table-header {
+    height: 90px !important;
+}
+
+.form-group.required .col-form-label::after{
+    content: " *";
+    color: red;
+}

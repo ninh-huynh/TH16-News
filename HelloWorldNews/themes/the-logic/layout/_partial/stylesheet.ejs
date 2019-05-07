@@ -1,0 +1,44 @@
+ <%# Các file css dùng chung cho tất cả %>
+<link rel="stylesheet" href="/css/menu-bar.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/hello-world-theme.css">
+
+ <%# Các file css dùng riêng cho từng loại trang cụ thể %>
+<% if (is_home()) { %>
+  <link rel="stylesheet" href="/css/index.css">
+<% } else if (is_category() || is_tag()) { %>
+  <link rel="stylesheet" href="/css/chuyen-muc.css">
+<% } else if (is_post()) { %>
+  <link rel="stylesheet" href="/css/tieu-de-bai-viet.css">
+<% }; %>
+
+<% if (path === 'search/index.html') { %>
+  <link rel="stylesheet" href="/css/tu-khoa-tim-kiem.css">
+<% }; %>
+
+<% if (path === 'manage-tag/index.html') { %>
+  <link rel="stylesheet" href="/css/manage-tag.css">
+<% }; %>
+<% if (path === 'manage-category/index.html') { %>
+  <link rel="stylesheet" href="/css/manage-category.css">
+<% }; %>
+<% if (path === 'manage-user/index.html') { %>
+  <link rel="stylesheet" href="/css/manage-user.css">
+<% }; %>
+<% if (path === 'manage-post/index.html') { %>
+  <link rel="stylesheet" href="/css/manage-post.css">
+<% }; %>
+<% if (path === 'new-post/index.html') { %>
+  <link rel="stylesheet" href="/css/new-post.css">
+<% }; %>
+<% if (path === 'my-post/index.html') { %>
+  <link rel="stylesheet" href="/css/my-post.css">
+<% }; %>
+
+<% if (path === 'approve-draft/index.html') { %>
+  <link rel="stylesheet" href="/css/approve-draft.css">
+<% }; %>
+
+<% if (path === 'edit-post/index.html') { %>
+  <link rel="stylesheet" href="/css/edit-post.css">
+<% }; %>

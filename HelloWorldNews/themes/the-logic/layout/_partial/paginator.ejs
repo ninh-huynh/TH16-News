@@ -1,0 +1,86 @@
+<nav aria-label="...">
+    <ul class="pagination justify-content-center mt-3">
+
+        <%# Nút previous %> 
+        <%# page.prev là biến kiểu Number, == 0 khi không có trang trước đó %>
+        <% if (page.current === 1) { %>
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+        <% } else { %>
+            <li class="page-item">
+                <a class="page-link" href="<%- url_for(page.prev_link) %>">Previous</a>
+            </li>
+        <% }; %>
+            
+
+        <%# Là trang đầu tiên %>
+        <% if (page.current === 1) { %>
+            <li class="page-item active">
+                <span class="page-link">
+                    1
+                </span>
+            </li>
+
+            <% if(page.next !== 0) { %>
+                <li class="page-item">
+                    <a class="page-link" href="<%- url_for(page.next_link) %>">
+                        <%- page.next %>
+                    </a>
+                </li>
+            <% }; %>            
+
+        <!-- Là trang cuối cùng -->
+        <% } else if (page.current === page.total) { %>
+
+            <% if(page.prev !== 0) { %>
+                <li class="page-item">
+                    <a class="page-link" href="<%- url_for(page.prev_link) %>">
+                        <%- page.prev %>
+                    </a>
+                </li>
+            <% }; %>
+            
+            <li class="page-item active">
+               <span class="page-link">
+                    <%- page.current %>
+                </span>
+            </li>
+
+        <!-- Có đủ prev và next -->
+        <% } else { %>
+            <li class="page-item">
+               <a class="page-link" href="<%- url_for(page.prev_link) %>">
+                    <%- page.prev %>
+               </a>
+            </li>
+        
+            <li class="page-item active">
+                 <span class="page-link">
+                    <%- page.current %>
+                </span>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" href="<%- url_for(page.next_link) %>">
+                    <%- page.next %>
+                </a>
+            </li>
+
+        <% }; %>
+
+
+        <%# Nút next %> 
+        <%# page.next là biến kiểu Number, == 0 khi không có trang sau nó %>
+        <% if (page.current === page.total) { %>
+            <li class="page-item disabled">
+                <span class="page-link">Next</span>
+            </li>
+        <% } else { %>
+            <li class="page-item">
+                <a class="page-link" href="<%- url_for(page.next_link) %>">Next</a>
+            </li>
+        <% }; %>       
+    
+    </ul>
+</nav>

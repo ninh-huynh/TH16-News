@@ -1,0 +1,57 @@
+
+#input-search {
+    visibility: hidden;
+    opacity: 0;
+    background-color: transparent;
+    color: lightgray;
+}
+
+#input-search::placeholder {
+    color: lightgray;
+}
+
+/* Copy lại từ thư viện bootstrap */
+.form-inline .form-group {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.navbar-nav.navbar-right .dropdown-menu {
+    position: absolute;
+    float: left;
+}
+
+.navbar-nav img{
+    object-fit: cover;
+    height: 40px;
+    width: 40px;
+}
+
+.dropdown-item img{
+    height: 50px;
+    width: 50px;
+}
+
+.navbar-nav img:hover{
+    cursor: pointer;
+}
+
+.custom-hover:hover {
+    color: #42c5f5 !important;
+    transition: 0.4s;
+}
+
+/* Khoảng cách trên và dưới của search-form 
+khi phần chuyên mục bị thu lại là 1 rem */
+@media (max-width: 1200px) {
+    .form-inline .form-group {
+        margin: 1rem 0;
+    }
+}

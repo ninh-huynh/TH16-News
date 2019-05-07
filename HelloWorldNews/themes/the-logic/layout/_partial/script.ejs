@@ -1,0 +1,50 @@
+<%# Các đoạn script dùng chung %>
+<script src="/scripts/lazysizes.min.js"></script>
+<script src="/scripts/menu-bar.js"></script>
+<script src="/scripts/layout.js"></script>
+
+<%# Các đoạn script dùng riêng ở đây %>
+<% if (is_post()) { %>
+    <script src="/scripts/tieu-de-bai-viet.js"></script>
+<% }; %>
+
+<% if (path === 'search/index.html') { %>
+    <script src="/scripts/tu-khoa-tim-kiem.js"></script>
+<% }; %>
+
+<% if (path === 'account-info/index.html') { %>
+    <script src="/scripts/account-info.js"></script>
+<% }; %>
+
+<% if (path === 'manage-tag/index.html') { %>
+    <script src="/scripts/manage-tag.js"></script> 
+<% }; %>
+
+<% if (path === 'manage-category/index.html') { %>
+    <script src="/scripts/manage-category.js"></script> 
+<% }; %>
+
+<% if (path === 'manage-user/index.html') { %>
+    <script src="/scripts/manage-user.js"></script> 
+    <script src="/scripts/table-filter.js"></script> 
+<% }; %>
+
+<% if (path === 'manage-post/index.html') { %>
+    <script src="/scripts/manage-post.js"></script> 
+<% }; %>
+
+<% if (path === 'new-post/index.html') { %>
+    <script src="/scripts/new-post.js"></script> 
+<% }; %>
+
+<% if (path === 'edit-post/index.html') { %>
+    <script src="/scripts/edit-post.js"></script> 
+<% }; %>
+
+<% if (path === 'my-post/index.html') { %>
+    <script src="/scripts/my-post.js"></script> 
+<% }; %>
+
+<% if (path === 'approve-draft/index.html') { %>
+    <script src="/scripts/approve-draft.js"></script> 
+<% }; %>

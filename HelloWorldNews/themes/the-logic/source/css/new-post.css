@@ -1,0 +1,28 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 200px; /* Margin bottom by footer height */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer .container-fluid {
+    padding: 0;
+}
+
+
+
+.ck-editor__editable_inline {
+    min-height: 200px;
+}
+
+#newPostForm .form-group {
+    margin-top: 20px;
+}
