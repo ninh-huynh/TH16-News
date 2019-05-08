@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    <%- partial('_partial/title') %>
+    <%# Ở file view, thêm vào contentFor('title') %>
+    <title><%-defineContent('title')%></title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -14,40 +15,34 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
-    <!-- Bootstrap table + extension-->
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/sticky-header/bootstrap-table-sticky-header.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/page-jump-to/bootstrap-table-page-jump-to.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/filter-control/bootstrap-table-filter-control.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+    <!-- Common css  -->
+   <link rel="stylesheet" href="/stylesheets/menu-bar.css">
+   <link rel="stylesheet" href="/stylesheets/layout.css">
+   <link rel="stylesheet" href="/stylesheets/hello-world-theme.css">
 
-   <%- partial('_partial/stylesheet') %>
+    <%# Đặt các file css ở đầu file view cụ thể, sẽ đc tự động di chuyển đến đây %>
+   <%- style %>
 </head>
 
 <body>
-    <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
-
+    <%- include('../_partial/header') %>
     <!-- Tái sử dụng menu bar -->
     <div id="category-menu" class="sticky-top">
-        <%- partial('_partial/menu-bar', null, {cache: !config.relative_link}) %>
+        <%- include('../_partial/menu-bar') %>
     </div>
 
     <div id="wrap">
-        <% if (path.indexOf("manage") >= 0 || path === 'approve-draft/index.html' || path === 'my-post/index.html') { %>
-            <div id="main" class="container-fluid">
-        <% } else { %>
-            <div id="main" class="container">
-        <% }; %>
-            <%- partial('_partial/forgot-pass') %>
-            <%- partial('_partial/signup') %>
-            <%- partial('_partial/login') %>
+        <div id="main" class="container">
+            <%- include('../_partial/forgot-pass') %>
+            <%- include('../_partial/signup') %>
+            <%- include('../_partial/login') %>
             <%- body %>
         </div>
     </div>
 
     <footer class="footer">
         <div class="container-fluid">
-            <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
+            <%- include('../_partial/footer') %>
         </div>
     </footer>
 
@@ -62,20 +57,15 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
 
-    <!-- Bootstrap table + extension -->
-    <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/locale/bootstrap-table-vi-VN.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/sticky-header/bootstrap-table-sticky-header.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/page-jump-to/bootstrap-table-page-jump-to.min.js"></script>    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/accent-neutralise/bootstrap-table-accent-neutralise.js"></script>  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.14.2/extensions/filter-control/bootstrap-table-filter-control.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 
-    <!-- CKEditor 5 -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/12.1.0/classic/ckeditor.js"></script>
-    
-    <%- partial('_partial/script') %>
+    <%# Các đoạn script dùng chung %>
+    <script src="/javascripts/lazysizes.min.js"></script>
+    <script src="/javascripts/menu-bar.js"></script>
+    <script src="/javascripts/layout.js"></script>
+
+    <%# Đặt các file js ở đầu file view cụ thể, sẽ đc tự động di chuyển đến đây %>    
+    <%- script %>
 </body>
 
 </html>
