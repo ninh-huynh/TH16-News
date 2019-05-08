@@ -30,6 +30,13 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-unused-vars":[
+            "error",
+            {
+                "args": "none"
+            }
+        ],
+        "no-console": "off"
     }
 }
