@@ -17,8 +17,7 @@
   },
   "homepage": "https://github.com/kim-ninh/TH16-News#readme",
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "nodemon": "^1.18.11"
+    "eslint": "^5.16.0"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
