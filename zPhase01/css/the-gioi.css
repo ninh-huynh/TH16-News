@@ -1,0 +1,23 @@
+#list-article .img-cont {
+    height: 100%;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 0%;
+}
+
+/* Không cần set height thủ công  */
+#list-article {
+    display: grid;
+    grid-template-columns: auto;
+    /* 1 cột duy nhất*/
+
+    grid-auto-rows: 1fr;
+    /*Tự động lấy chiều cao lớn nhất và áp cho tất cả các dòng*/
+
+    grid-row-gap: 10px;
+    /*khoảng cách giữa các dòng*/
+}
