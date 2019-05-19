@@ -21,7 +21,7 @@ app.set('layout extractStyles', true);                      // same as above
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));           // for parsing req.body infomation
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));    // set 'public' folder as folder contain static file: css, script, image...
 

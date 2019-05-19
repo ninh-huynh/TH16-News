@@ -250,9 +250,9 @@ function editCategory(index) {
 }
 'use strict';
 $('#addOrEditCategoryForm').submit( function(e) {
-    e.preventDefault();    
+    
     if(this.checkValidity()) {
-        e.preventDefault();
+        // Nếu hợp lệ thì để gọi submit mặc định
         if ($('#addOrEditCategoryForm').find('button').text().toUpperCase() === 'OK') {     // Cập nhật
             var ids = getIdSelections();
             var index = ids[0] - 1;

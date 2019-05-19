@@ -13,11 +13,12 @@
         
         <!-- Modal body -->
         <div class="modal-body">
-            <form role="form" class="needs-validation" id="addOrEditCategoryForm" novalidate>
+            <form role="form" class="needs-validation" id="addOrEditCategoryForm" 
+            name="category" action="/admin/categories" method="post" novalidate>
                 <div class="form-group row required">
                     <label for="inputCategoryName" class="col-md-4 col-form-label">Tên chuyên mục</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" name="inputCategoryName" id="inputCategoryName" spellcheck="false" required>
+                        <input type="text" class="form-control" name="name" id="inputCategoryName" spellcheck="false" required>
                         <div class="invalid-feedback">
                             Chưa nhập tên <i class="fa fa-smile-o"></i>
                         </div>
@@ -27,7 +28,9 @@
                 <div class="form-group row">
                     <label for="selectParentCategory" class="col-md-4 col-form-label">Chuyên mục cha</label>
                     <div class="col-md-8">
-                        <select class="form-control" id="selectParentCategory" name="category">
+                        <select class="form-control" id="selectParentCategory" name="parentID">
+                            <%#TODO: Đổ dữ liệu vào theo định dạng này %>
+                            <%# <option value="id1">Tên chuyên mục cha 1</option> %>
                         </select>
                     </div>
                 </div>

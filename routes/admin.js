@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var category = require('../models/category');           // import category model
 
+// handle read category
 router.get('/categories', function (req, res, next) {
 
 
@@ -18,6 +19,27 @@ router.get('/categories', function (req, res, next) {
             res.end('');
         });
 
+});
+
+// handle add, update, delete category
+router.post('/categories', function (req, res, next) {
+    var newCategory = {
+        name: req.body.name,
+        // parentID: parseInt(req.body.parentID) //TODO: set the <option value="id">  this id is the category id.
+    };
+    
+    var promise = category.add(newCategory);
+
+    promise
+        .then(insertedID => {
+            console.log(insertedID);
+            res.redirect('/admin/categories');
+            // TODO: should pop-up a toast to notify success or not
+        })
+        .catch(err => {
+            console.log(err);
+            res.end('');
+        });
 });
 
 // TODO: implement the 'path' below so when the user access localhost:3000/admin/'path', 
