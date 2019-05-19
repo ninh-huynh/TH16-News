@@ -50,17 +50,17 @@ $(function () {
     var forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
     var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
+        form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
     });
 
     // init modal form
-    $('#selectParentCategory').append($('<option>', {value: "", text: ""}));
+    $('#selectParentCategory').append($('<option>', {value: '', text: ''}));
     $.each(mainCategories, function (i, category) {
         category = category.substr(0,1).toUpperCase()+category.substr(1);
         $('#selectParentCategory').append($('<option>', { 
@@ -72,8 +72,8 @@ $(function () {
 
 function getIdSelections() {
     return $.map($table.bootstrapTable('getSelections'), function (row) {
-        return row.id
-    })
+        return row.id;
+    });
 }
 
 function nameFormatter(value, row) {
@@ -83,54 +83,54 @@ function nameFormatter(value, row) {
 
 function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
-    height: 800,
-    locale: 'vi-VN',
-    toolbar: '#toolbar',
-    pagination: true,
-    search: true,
-    showPaginationSwitch: true,
-    showRefresh: true,
-    showToggle: true,
-    showColumns: true,
-    showFullscreen: true,
-    smartDisplay: true,
-    clickToSelect: true,
-    undefinedText: ' ',
-    uniqueId: 'id',
-    // extension
-    stickyHeader: true,
-    stickyHeaderOffsetY: 56,
-    showJumpto: true,
-    searchAccentNeutralise: true,
-    //filter
-    filterControl: true,
-    filterShowClear: true,
-    // editable
-    editable: true,
+        height: 800,
+        locale: 'vi-VN',
+        toolbar: '#toolbar',
+        pagination: true,
+        search: true,
+        showPaginationSwitch: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+        showFullscreen: true,
+        smartDisplay: true,
+        clickToSelect: true,
+        undefinedText: ' ',
+        uniqueId: 'id',
+        // extension
+        stickyHeader: true,
+        stickyHeaderOffsetY: 56,
+        showJumpto: true,
+        searchAccentNeutralise: true,
+        //filter
+        filterControl: true,
+        filterShowClear: true,
+        // editable
+        editable: true,
 
-    columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
+        columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
             {  field: 'parentCategory', title: 'Chuyên mục lớn', align: 'center',  valign: 'middle', formatter: nameFormatter, sortable: true, width: '20%', filterControl: 'select', },
             {  field: 'name', title: 'Tên', align: 'center',  valign: 'middle', formatter: nameFormatter, sortable: true, }],
-    data: tableData,
-        })
-    }
+        data: tableData,
+    });
+}
 
-    $table.on('check.bs.table uncheck.bs.table ' +
+$table.on('check.bs.table uncheck.bs.table ' +
     'check-all.bs.table uncheck-all.bs.table',
-    function () {
+function () {
     var selections = $table.bootstrapTable('getSelections');
     $('#remove').prop('disabled', !selections.length);
     $('#edit').prop('disabled', selections.length !== 1);
 
     // save your data, here just save the current page
-    var idSelections = getIdSelections()
+    var idSelections = getIdSelections();
     // push or splice the selections if you want to save all data selections
-})
+});
 
 $table.on('all.bs.table', function (e, name, args) {
 
-})
+});
 
 $('#remove').click(function () {
     var ids = getIdSelections();
@@ -153,12 +153,12 @@ $('#remove').click(function () {
     $table.bootstrapTable('remove', {
         field: 'id',
         values: full_ids
-    })
-    $('#remove').prop('disabled', true)
-})
+    });
+    $('#remove').prop('disabled', true);
+});
           
 function mounted() {
-    initTable()
+    initTable();
 }
 
 // context-menu event (row clicking)
@@ -173,7 +173,7 @@ $('#table').on('contextmenu', 'tr',  function(e) {
     }
 
     $('#context-menu').show();
-    $("#context-menu").offset({left:e.pageX, top:e.pageY});
+    $('#context-menu').offset({left:e.pageX, top:e.pageY});
     e.preventDefault();
 
     // item click handler
@@ -182,7 +182,7 @@ $('#table').on('contextmenu', 'tr',  function(e) {
         $table.bootstrapTable('remove', {
             field: 'id',
             values: ids
-        })
+        });
     });
 
     $('#editItem').click(function(e) {
@@ -222,20 +222,20 @@ $('#mySidenav a').mouseleave(function() {
 $('#add').on('click',function() {
     $('#addOrEditCategoryForm').find('button').text('Thêm');
 
-    $('#inputCategoryName').val("");
+    $('#inputCategoryName').val('');
     $('#selectParentCategory option .selected').attr('selected', '');
     $('#selectParentCategory option:contains(""):first').attr('selected', 'selected');
 
-    $("#addOrEditCategoryForm").removeClass('was-validated').attr('novalidate', '');
+    $('#addOrEditCategoryForm').removeClass('was-validated').attr('novalidate', '');
     $('#addOrEditCategoryModal').modal('show');
-})
+});
 
 // edit category
 $('#edit').on('click', function() {
     var id = getIdSelections();
     
     editCategory(id[0] - 1);
-})
+});
 
 function editCategory(index) {
     let row = $table.bootstrapTable('getData', true)[index];
@@ -245,13 +245,12 @@ function editCategory(index) {
     $('#selectParentCategory option[selected="selected"]').attr('selected', '');
     $('#selectParentCategory option:contains("' + parentCategory +'")').attr('selected', 'selected');
 
-    $("#addOrEditCategoryForm").removeClass('was-validated').attr('novalidate', '');
+    $('#addOrEditCategoryForm').removeClass('was-validated').attr('novalidate', '');
     $('#addOrEditCategoryModal').modal('show');
 }
 'use strict';
-$("#addOrEditCategoryForm").submit( function(e) {
+$('#addOrEditCategoryForm').submit( function(e) {
     e.preventDefault();    
-
     if(this.checkValidity()) {
         e.preventDefault();
         if ($('#addOrEditCategoryForm').find('button').text().toUpperCase() === 'OK') {     // Cập nhật
@@ -271,10 +270,10 @@ $("#addOrEditCategoryForm").submit( function(e) {
                 'id': $table.bootstrapTable('getData').length + 1,
                 'parentCategory': $('#selectParentCategory').find(':selected').text(),
                 'name': $('#inputCategoryName').val()
-            }
+            };
             $table.bootstrapTable('append', [row]);
         }
-       $('#addOrEditCategoryModal').modal('hide');
+        $('#addOrEditCategoryModal').modal('hide');
     } else {
         e.preventDefault();
         e.stopPropagation();
