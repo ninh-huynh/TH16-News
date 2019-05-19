@@ -2,9 +2,9 @@ var mysql = require('mysql');
 
 function createConnection() {
     return mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
+        host: '13.67.104.190',
+        user: 'guest',
+        password: '&JE#ZE*0B*3t',
         database: 'th16_news'
     });
 }
