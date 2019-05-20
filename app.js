@@ -8,6 +8,7 @@ var expressLayouts = require('express-ejs-layouts');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
+var menu_bar = require('./middleware/menu_bar');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));           // for parsing req.b
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));    // set 'public' folder as folder contain static file: css, script, image...
 
+app.use(menu_bar);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);

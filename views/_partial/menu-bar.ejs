@@ -13,90 +13,21 @@
                 <li class="nav-item" id="home">
                     <a href="/" class="nav-link">Home</a>
                 </li>
+                <% categories.forEach(category => { %>
+                    <li class="nav-item dropdown" id="<%= category.id %>">
+                        <a class="nav-link dropdown-toggle" href="<%= category.link %>" id="dropdownId"><%= category.name %></a>
+                        <div class="dropdown-menu">
+                            <% if (category.child.length === 0) { %>
+                                <span class="dropdown-item-text">Trống</span>
+                            <% } else { %>
+                                <% category.child.forEach(subCategory => { %>
+                                    <a class="dropdown-item" href="<%= category.link %>"><%= subCategory.name %></a>
+                                <% }); %>
+                            <% } %>
+                        </div>
+                    </li>
+                <% }); %>
 
-                <li class="nav-item dropdown" id="thoi-su">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId"  aria-haspopup="true"
-                    aria-expanded="false">Thời sự</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Chính trị</a>
-                        <a class="dropdown-item" href="#">Giao thông</a>
-                        <a class="dropdown-item" href="#">Đô thị</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown" id="the-gioi">
-                    <a class="nav-link dropdown-toggle" href="../the-gioi.html" id="dropdownId" 
-                        aria-haspopup="true" aria-expanded="false">Thế giới</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Quân sự</a>
-                        <a class="dropdown-item" href="#">Tư liệu</a>
-                        <a class="dropdown-item" href="#">Phân tích</a>
-                        <a class="dropdown-item" href="#">Người Việt 4 phương</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown" id="kinh-doanh">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId"  aria-haspopup="true" 
-                        aria-expanded="false">Kinh doanh</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Bất động sản</a>
-                        <a class="dropdown-item" href="#">Hàng không</a>
-                        <a class="dropdown-item" href="#">Tài chính</a>
-                        <a class="dropdown-item" href="#">Doanh nhân</a>
-                        <a class="dropdown-item" href="#">Tiêu dùng</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" aria-haspopup="true"
-                        aria-expanded="false">Công nghệ</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Mobile</a>
-                        <a class="dropdown-item" href="#">AI</a>
-                        <a class="dropdown-item" href="#">SmartHome</a>
-                        <a class="dropdown-item" href="#">Startup</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" aria-haspopup="true"
-                        aria-expanded="false">Thể thao</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Thể thao Việt Nam</a>
-                        <a class="dropdown-item" href="#">Thể thao Thế giới</a>
-                        <a class="dropdown-item" href="#">Bóng đá Việt Nam</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" aria-haspopup="true" 
-                        aria-expanded="false">Giải trí</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Sao Việt</a>
-                        <a class="dropdown-item" href="#">Sao Châu Á</a>
-                        <a class="dropdown-item" href="#">Sao Hollywood</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" aria-haspopup="true" 
-                        aria-expanded="false">Sức khỏe</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Làm đẹp</a>
-                        <a class="dropdown-item" href="#">Khỏe đẹp mỗi ngày</a>
-                        <a class="dropdown-item" href="#">Giới tính</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" aria-haspopup="true" 
-                        aria-expanded="false">Giáo dục</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Tuyển sinh 2019</a>
-                        <a class="dropdown-item" href="#">Du học</a>
-                        <a class="dropdown-item" href="#">Chọn nghề</a>
-                        <a class="dropdown-item" href="#">Chọn trường</a>
-                    </div>
-                </li>
             </ul>
         </div>
 
