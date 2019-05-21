@@ -18,7 +18,7 @@ set DEBUG=th16-news:* & npm start   #trên CMD
 1. ~~Cài đặt MySQL version 8 trở lên~~
 2. Phân quyền nhóm người dùng *Guest/subscriber/writer/editor/admin*
 3. Convert html -> file PDF (subscriber tải về)
-4. Truy vấn đệ quy (Các chuyên mục)
+4. ~~Truy vấn đệ quy (Các chuyên mục)~~
 5. Phân trang các bài viết (phân trên server)
 
    Mục đích tối ưu hệ thống, không được `SELECT * FROM TALBE` mà mỗi lần lấy chỉ lấy một phần nhỏ (tự quy định số lượng).
