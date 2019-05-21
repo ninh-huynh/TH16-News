@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var category = require('../models/category');
+var category = require('../models/categories');
 
 router.use((req, res, next) => {
 
