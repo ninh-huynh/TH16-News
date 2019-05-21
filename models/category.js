@@ -1,5 +1,4 @@
 var db = require('../utils/db');
-var vnLanguageTool = require('../utils/vnLanguageTool');
 const tableName = 'CATEGORY';
 
 module.exports = {
@@ -46,12 +45,4 @@ FROM cte`);
         return db.remove(category, tableName);
     },
 
-    //TODO: Need to save the path to DB
-    getLink: (categoryName) => {
-        var categoryLink = '/category/';
-        categoryName = categoryName.toLowerCase();
-        categoryName = categoryName.replace(/ /g, '-');
-        categoryName = vnLanguageTool.remove_tone(categoryName);
-        return categoryLink + categoryName;
-    }
 };

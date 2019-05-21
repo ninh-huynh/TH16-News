@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var menu_bar = require('./middleware/menu_bar');
+var linkHelper = require('./utils/linkHelper');
 
 var app = express();
 
@@ -19,6 +20,8 @@ app.use(expressLayouts);
 app.set('layout', 'layouts/main');                          // explicit default layout: main.ejs
 app.set('layout extractScripts', true);                     // move all script tag to the script section in layout file
 app.set('layout extractStyles', true);                      // same as above
+
+app.locals.concatToLink = linkHelper.concatToLink;          // pass concatToLink() to view, able to call directly in any view
 
 app.use(logger('dev'));
 app.use(express.json());

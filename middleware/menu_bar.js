@@ -25,7 +25,6 @@ router.use((req, res, next) => {
                 .then(childArr => {
                     rows.forEach((row, index) => {
                         row.child = childArr[index];
-                        row.link = category.getLink(row.name);
                     });
                     
                     //Đối tượng res.locals lưu giữ các biến local trong 1 request,

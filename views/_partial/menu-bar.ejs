@@ -15,13 +15,13 @@
                 </li>
                 <% categories.forEach(category => { %>
                     <li class="nav-item dropdown" id="<%= category.id %>">
-                        <a class="nav-link dropdown-toggle" href="<%= category.link %>" id="dropdownId"><%= category.name %></a>
+                        <a class="nav-link dropdown-toggle" href="<%= concatToLink(['category', category.name]) %>" id="dropdownId"><%= category.name %></a>
                         <div class="dropdown-menu">
                             <% if (category.child.length === 0) { %>
                                 <span class="dropdown-item-text">Trống</span>
                             <% } else { %>
                                 <% category.child.forEach(subCategory => { %>
-                                    <a class="dropdown-item" href="<%= category.link %>"><%= subCategory.name %></a>
+                                    <a class="dropdown-item" href="<%= concatToLink(['category', subCategory.name]) %>"><%= subCategory.name %></a>
                                 <% }); %>
                             <% } %>
                         </div>
