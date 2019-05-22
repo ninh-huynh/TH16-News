@@ -65,7 +65,7 @@ module.exports = {
     loadTopCategory: (totalRow, rowBegin) => {
         return db.load(`
         SELECT  title,
-                cat.name AS category 
+                cat.name AS category, 
                 publicationDate, 
                 coverImageURL
         FROM (( ${tableName}
