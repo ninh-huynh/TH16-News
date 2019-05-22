@@ -1,12 +1,17 @@
 var express = require('express');
+var articles = require('../models/article');
 var router = express.Router();
-var db = require('../utils/db');
 
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    
-    res.render('index');
+    Promise.all([
+        articles.loadWeeklyTrend(5, 0)])
+        .then(([weeklyTrendRows]) => {
+            var obj = { articles: weeklyTrendRows };
+            res.render('index', obj);
+        })
+        .catch(next);
 });
 
 module.exports = router;

@@ -10,44 +10,81 @@
                         <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
                     </ol>
                     <div class="carousel-inner">
-                        <% site.posts.forEach((post, index) => { %>
+                        <% articles.forEach((article, index) => { %>
                         <% if (index < 3) { %>
                         <div class="carousel-item <% if (index === 0) { %> <%= 'active' %> <% } %>">
-                            <img data-src="<%- post.head_img %>" class="d-block w-100 lazyload" height="600"
+                            <img data-src="<%= article.coverImageURL %>" class="d-block w-100 lazyload" height="600"
                                 alt="...">
                             <div class="carousel-caption d-md-block">
                                 <h6 class="text-light font-weight-light">
-                                    <a href="<%- post.categories.data[0].path %>" class="badge badge-primary mr-3"><%- post.categories.data[0].name %></a>
-                                    <%- post.date.format(config.date_format) %>
+                                    <a href="<%= concatToLink('category', article.categoryName) %>" class="badge badge-primary mr-3"><%= article.categoryName %></a>
+                                    <%= moment(article.publicationDate).format(publicDateFormat) %>
                                 </h6>
-                                <a href="<%- post.path %>" class="text-light article-title">
-                                    <h3><%- post.title %></h3>
+                                <a href="<%= concatToLink(article.title) %>" class="text-light article-title">
+                                    <h3><%= article.title %></h3>
                                 </a>
                             </div>
                         </div>
                         <% }; %>
                         <% }); %>
+
+                        <%# Chưa có bài viết %>
+                        <% if (articles.length === 0) {%>
+                            <% for (var index = 0; index < 3; index++) { %>
+                                <div class="carousel-item <% if (index === 0) { %> <%= 'active' %> <% } %>">
+                                    <img data-src="https://dummyimage.com/600x400/918b91/ffffff&text=Image+not+found" class="d-block w-100 lazyload" height="600"
+                                        alt="...">
+                                    <div class="carousel-caption d-md-block">
+                                        <h6 class="text-light font-weight-light">
+                                            <a href="#" class="badge badge-primary mr-3"><%= 'Trống' %></a>
+                                            <%= moment().format(publicDateFormat) %>
+                                        </h6>
+                                        <a href="#" class="text-light article-title">
+                                            <h3><%= 'Trống' %></h3>
+                                        </a>
+                                    </div>
+                                </div>                                
+                            <% }; %>
+                        <% }; %>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-4 pl-1 d-flex flex-column justify-content-between align-content-stretch">
-            <% site.posts.forEach((post, index) => { %>
+            <% articles.forEach((article, index) => { %>
             <% if ((index < 5) && (index > 2)) { %>
             <div class="trending-item">
-                <img data-src="<%- post.head_img %>" class="lazyload w-100" alt="">
+                <img data-src="<%= article.coverImageURL %>" class="lazyload w-100" alt="">
                 <div class="trending-caption">
                     <h6 class="text-light font-weight-light">
-                        <a href="<%- post.categories.data[0].path %>" class="badge badge-info mr-3"><%- post.categories.data[0].name %></a>
-                        <%- post.date.format(config.date_format) %>
+                        <a href="<%= concatToLink('category', article.categoryName) %>" class="badge badge-info mr-3"><%= article.categoryName %></a>
+                        <%= moment(article.publicationDate).format(publicDateFormat) %>
                     </h6>
-                    <a href="<%- post.path %>" class="text-light article-title">
-                        <h5><%- post.title %></h5>
+                    <a href="<%= concatToLink(article.title) %>" class="text-light article-title">
+                        <h5><%= article.title %></h5>
                     </a>
                 </div>
             </div>
             <% }; %>
             <% }); %>
+            
+            <%# Chưa có bài viết%>
+            <% if (articles.length < 3) { %>
+                <% for (var index = 0; index < 2; index++) { %>
+                <div class="trending-item">
+                    <img data-src="https://dummyimage.com/600x400/918b91/ffffff&text=Image+not+found" class="lazyload w-100" alt="">
+                    <div class="trending-caption">
+                        <h6 class="text-light font-weight-light">
+                            <a href="#" class="badge badge-info mr-3"><%= 'Trống' %></a>
+                            <%= moment().format(publicDateFormat) %>
+                        </h6>
+                        <a href="#" class="text-light article-title">
+                            <h5><%= 'Trống' %></h5>
+                        </a>
+                    </div>
+                </div>
+                <% }; %>            
+            <% }; %>
         </div>
     </div>
 </div>

@@ -22,6 +22,8 @@ app.set('layout extractScripts', true);                     // move all script t
 app.set('layout extractStyles', true);                      // same as above
 
 app.locals.concatToLink = linkHelper.concatToLink;          // pass concatToLink() to view, able to call directly in any view
+app.locals.moment = require('moment');
+app.locals.publicDateFormat = 'DD/MM/YYYY';
 
 app.use(logger('dev'));
 app.use(express.json());
