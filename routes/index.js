@@ -1,7 +1,7 @@
 var express = require('express');
 var articles = require('../models/article');
 var router = express.Router();
-
+var tags = require('../models/tags');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -9,13 +9,15 @@ router.get('/', function (req, res, next) {
         articles.loadWeeklyTrend(5, 0),
         articles.loadNewest(10, 0),
         articles.loadMostViewed(10, 0),
-        articles.loadTopCategory(10, 0)])
-        .then(([weeklyTrendRows, newestRows, mostViewedRows, topCatRows]) => {
+        articles.loadTopCategory(10, 0),
+        tags.load()])
+        .then(([weeklyTrendRows, newestRows, mostViewedRows, topCatRows, tagRows]) => {
             var obj = {
                 articles: weeklyTrendRows,
                 newestArticles: newestRows,
                 mostViewedArticles: mostViewedRows,
-                topCatArticles: topCatRows
+                topCatArticles: topCatRows,
+                tags: tagRows
             };
             res.render('index', obj);
         })
