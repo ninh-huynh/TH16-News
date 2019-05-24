@@ -20,27 +20,37 @@ $(function () {
     // side bar
     $('.sidenav-badge').hide();
 
+    // get data from server
+    
+    //let promise = new Promise((resolve, reject) => {
+    // $.get('/admin/categories/json', function(data, status) {
+    //     console.log(data);
+    // });
+    //});
+
+
+
     // table
-    let count = 0;
-    for (var i = 0; i < categories.length; i++) {
-        var parentCategory = categories[i][0];
-        tableData.push({
-            'id': count + 1,
-            'parentCategory': '',
-            'name': parentCategory
-        });
-        count++;
+    // let count = 0;
+    // for (var i = 0; i < categories.length; i++) {
+    //     var parentCategory = categories[i][0];
+    //     tableData.push({
+    //         'id': count + 1,
+    //         'parentCategory': '',
+    //         'name': parentCategory
+    //     });
+    //     count++;
         
-        // add sub-categories row
-        for (var j = 1; j < categories[i].length; j++) {
-            tableData.push({
-                'id': count + 1,
-                'parentCategory': parentCategory,
-                'name': categories[i][j]
-            });
-            count++;
-        }
-    }
+    //     // add sub-categories row
+    //     for (var j = 1; j < categories[i].length; j++) {
+    //         tableData.push({
+    //             'id': count + 1,
+    //             'parentCategory': parentCategory,
+    //             'name': categories[i][j]
+    //         });
+    //         count++;
+    //     }
+    // }
     mounted();  
     $('#edit').prop('disabled', true);
 
@@ -107,12 +117,27 @@ function initTable() {
         filterShowClear: true,
         // editable
         editable: true,
+        url: 'load',
+        responseHandler: res => {
+            const parentCategories = res.filter(category => category.parentID === null);
+            const parentCategoryNames = parentCategories.reduce((o, category) => Object.assign(o, {[category.id]: category.name}), {});
+            //group rows
+            let categories = parentCategories
+                .reduce((arr, parentCategory) => {
+                    return arr.concat(res.filter(category => category.id === parentCategory.id || category.parentID === parentCategory.id));
+                }, []);
+            
+            categories =  categories.map(category => 
+                (Object.assign({'id': category.id, 'name': category.name, }, {'parentCategory': category.parentID === null ? '' : parentCategoryNames[category.parentID]})));
+            console.log(categories);
+            return categories;
+        },
 
         columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
             {  field: 'parentCategory', title: 'Chuyên mục lớn', align: 'center',  valign: 'middle', formatter: nameFormatter, sortable: true, width: '20%', filterControl: 'select', },
             {  field: 'name', title: 'Tên', align: 'center',  valign: 'middle', formatter: nameFormatter, sortable: true, }],
-        data: tableData,
+        //data: tableData,
     });
 }
 

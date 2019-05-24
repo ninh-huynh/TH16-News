@@ -3,7 +3,7 @@ const tableName = 'CATEGORY';
 
 module.exports = {
     load: () => {
-        return db.load(`SELECT * FROM ${tableName}`);
+        return db.load(`SELECT * FROM ${tableName} GROUP BY name, parentID`);
     },
 
     // Get all root category
