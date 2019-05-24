@@ -7,9 +7,9 @@ var knex = require('../utils/queryBuilder');
 const th16_news = require('../utils/th16_news');
 
 // Other model used
-var tag = require('../models/tags');
-var categories = require('../models/categories');
-var comment = require('../models/comment');
+var tag = require('./tags');
+var categories = require('./categories');
+var comment = require('./comments');
 
 // Database table name, column name (avoid typo)
 const ARTICLE = th16_news.ARTICLE;

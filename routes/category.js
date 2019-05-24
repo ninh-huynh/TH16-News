@@ -1,6 +1,6 @@
 var express = require('express');
 var route = express.Router();
-var article = require('../models/article');
+var article = require('../models/articles');
 var categories = require('../models/categories');
 
 route.get('/:name', (req, res, next) => {
