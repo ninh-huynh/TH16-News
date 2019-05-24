@@ -1,26 +1,23 @@
+<%- contentFor('title') %>
+<%= category.name %>
+
+<%- contentFor('body') %>
 <h1 class="display-4 text-center my-3">
-    <%- page.category %>
+    <%= category.name %>
 </h1>
 
 <ul class="nav justify-content-center" id="sub-category-list">
-    <li class="nav-item">
-        <a class="nav-link" href="#">Chuyên mục con 1</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Chuyên mục con 2</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Chuyên mục con 3</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Chuyên mục con 4</a>
-    </li>
+    <% category.child.forEach(subCat => { %>
+        <li class="nav-item">
+            <a class="nav-link" href="<%= concatToLink(['category', subCat.name]) %>"><%= subCat.name %></a>
+        </li>        
+    <% }); %>
 </ul>
 
 <div class="row mt-3">
     <div class="col" id="list-article">
-        <%- partial('_partial/article-list',{}) %>
-        <%- partial('_partial/paginator') %>
+        <%- include('_partial/article-list',{}) %>
+        <%# include('_partial/paginator') %>
     </div> <!-- col-8-->
 
     <div class="col-xl-4 d-none d-xl-block" id="right-side">

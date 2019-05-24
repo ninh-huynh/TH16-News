@@ -8,6 +8,7 @@ var expressLayouts = require('express-ejs-layouts');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
+var categoryRouter = require('./routes/category');
 var menu_bar = require('./middleware/menu_bar');
 var linkHelper = require('./utils/linkHelper');
 
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));    // set 'public' fold
 
 app.use(menu_bar);
 app.use('/', indexRouter);
+app.use('/category', categoryRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 
