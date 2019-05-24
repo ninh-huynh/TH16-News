@@ -33,7 +33,7 @@ FROM cte`);
 }
 
 module.exports = {
-    load: () => knex.select().from(tableName),
+    load: () => knex.select().from(tableName).groupBy('name', 'parentID'),
 
     loadChild: (parentID) => loadChild(parentID),
 

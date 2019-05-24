@@ -8,7 +8,7 @@ const th16_news = require('../utils/th16_news');
 
 // Other model used
 var tag = require('../models/tags');
-var category = require('../models/category');
+var categories = require('../models/categories');
 var comment = require('../models/comment');
 
 // Database table name, column name (avoid typo)
@@ -45,7 +45,7 @@ module.exports = {
     // and relation property like:
     // .tags    : The tags array
     loadByCategoryLink: (link) => {
-        return category.loadByLink(link)
+        return categories.loadByLink(link)
             .then(categoryEntity => {
                 return knex.queryBuilder()
                     .select()

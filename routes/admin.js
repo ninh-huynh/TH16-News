@@ -1,24 +1,24 @@
 var express = require('express');
 var router = express.Router();
-var category = require('../models/category');           // import category model
+var category = require('../models/categories');           // import category model
 
 // handle read category
 router.get('/categories', function (req, res, next) {
+    // render file path auto prefix with /views/
+    // override default 'main' layout, use 'manage' layout
+    res.render('admin/categories', { layout: 'layouts/manage' }); 
+});
 
-
+router.get('/categories/load', (req, res, next) => {
     var promise = category.load();
     promise
         .then(rows => {
-            // render file path auto prefix with /views/
-            // override default 'main' layout, use 'manage' layout
-            res.render('admin/manage-category', { layout: 'layouts/manage', rows: rows }); 
-
+            res.send(rows); 
         })
         .catch(err => {
             console.log(err);
             res.end('');
         });
-
 });
 
 // handle add, update, delete category
