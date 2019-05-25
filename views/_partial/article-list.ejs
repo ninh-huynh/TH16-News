@@ -1,5 +1,5 @@
 <%# Template này dành cho việc hiển thị danh sách bài viết ở trang chuyên mục và tag %>
-<% page.posts.each(function(post, i){ %>
+<% articles.forEach(function(article, i){ %>
 <div class="d-flex">
     <div class="row no-gutters align-items-strech">
         <div class="col-4">
@@ -8,49 +8,46 @@
             <div class="img-cont mr-3">
                 
                 <!-- Premium label -->
-                <% if (post.isPremium) { %>
+                <% if (article.isPremium) { %>
                     <div class="premium-label">Premium</div>
                 <% }; %>
 
-                <img data-src="<%- post.head_img %>" class="card-img lazyload" alt="...">
+                <img data-src="<%= article.coverImageURL %>" class="card-img lazyload" alt="...">
             </div>
         </div>
         <div class="col-8">
             <div class="">
 
                 <!-- Article title  -->
-                <a href="<%- url_for(post.path) %>" class="text-dark">
-                    <h5 class="card-title"><%- post.title %></h5>
+                <a href="<%= concatToLink(article.title) %>" class="text-dark">
+                    <h5 class="card-title"><%= article.title %></h5>
                 </a>
 
                 <!-- Article meta data -->
                 <h6 class="card-subtitle mb-2 text-muted d-none d-sm-block">
 
                     <!-- Article category(only for tag page) -->
-                    <% if (is_tag()) { %>
-                        <% if (post.categories.data.length > 0) { %>
-                        <% var category = post.categories.data[0]; %>
-                            <a href="<%- url_for(category.path) %>" class="article-category badge badge-primary mr-3">
-                                <%- category.name %>
+                    <% if (tag !== undefined) { %>
+                            <a href="<%= concatToLink('category', article.category) %>" class="article-category badge badge-primary mr-3">
+                                <%= article.category %>
                             </a>
-                        <% }; %>
                     <% }; %>
 
                     <!-- Article date -->
                     <span class="article-date">
                         <i class="far fa-calendar-alt mr-1"></i>
-                        <%- post.date.format(config.date_format) %>
+                        <%= moment(article.publicationDate).format(publicDateFormat) %>
                     </span>
 
                 </h6>
 
                 <!-- Article tags (only for category page) -->
-                <% if (is_category()) { %>
+                <% if (category !== undefined ) { %>
                     <h6 class="article-tags d-none d-sm-block">
                         <i class="fas fa-tags mr-2"></i>
-                        <% post.tags.data.forEach((tag) => { %>
-                            <a href="<%- url_for(tag.path) %>" class="badge badge-dark">
-                                <%- tag.name %>
+                        <% article.tags.forEach((tag) => { %>
+                            <a href="<%= concateToLink('tags', tag.name) %>" class="badge badge-dark">
+                                <%= tag.name %>
                             </a>
                         <% }); %>
                     </h6>
@@ -58,7 +55,7 @@
                 
                 <!-- Article summary content -->
                 <div class="card-text d-none d-md-block">
-                    <%- post.abstract %>
+                    <%= article.summary %>
                 </div>
             </div>
         </div>

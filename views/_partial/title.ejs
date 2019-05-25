@@ -1,7 +1,4 @@
 <% if (is_home()) { %>
-        <title> <%- 'Trang chủ' %> </title>
-    <% } else if (is_category()) { %>
-        <title> <%- page.category %> </title>
     <% } else if (is_tag()) { %>
         <title> <%- page.tag %> </title>
     <% } else if (is_post()) { %>
@@ -18,8 +15,6 @@
         <title> <%- 'Danh sách bài đã viết' %> </title>
     <% } else if (path === 'approve-draft/index.html') { %>
         <title> <%- 'Duyệt bài viết' %> </title>
-    <% } else if (path === 'categories/index.html') { %>
-        <title> <%- 'Quản lý chuyên mục' %> </title>
     <% } else if (path === 'posts/index.html') { %>
         <title> <%- 'Quản lý bài viết' %> </title>
     <% } else if (path === 'users/index.html') { %>

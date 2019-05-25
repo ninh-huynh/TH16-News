@@ -1,0 +1,52 @@
+<div id="newest">
+    <div class="d-flex justify-content-between">
+        <div class="h3">MỚI NHẤT</div>
+        <%- include('../_partial/simple-paginator') %>
+    </div>
+    
+    <ul class="list-group list-group-flush">
+        <% newestArticles.forEach((article, index) => { %>
+        <% if (index < 5) { %>
+        
+        <li class="list-group-item">
+            <div class="media">
+                <img data-src="<%= article.coverImageURL %>" class="align-self-center mr-3 lazyload"
+                    alt="...">
+                <div class="media-body align-self-center">
+                    <a href="<%= concatToLink(article.title) %>" class="text-dark article-title">
+                        <h6><%= article.title %></h6>
+                    </a>
+
+                    <h6 class="card-subtitle mt-2 text-muted">
+                        <a href="<%= concatToLink('category', article.categoryName) %>" class="badge badge-primary mr-3"><%= article.categoryName %></a>
+                        <%= moment(article.publicationDate).format(publicDateFormat) %>
+                    </h6>
+                </div>
+            </div>
+        </li>
+
+        <% }; %>
+        <% }); %>
+
+        <% if (newestArticles.length === 0) { %>
+            <% for (var index = 0; index < 5; index++) { %>
+            <li class="list-group-item">
+                <div class="media">
+                    <img data-src="https://dummyimage.com/600x400/918b91/ffffff&text=Image+not+found" class="align-self-center mr-3 lazyload"
+                        alt="...">
+                    <div class="media-body align-self-center">
+                        <a href="#" class="text-dark article-title">
+                            <h6>Trống</h6>
+                        </a>
+
+                        <h6 class="card-subtitle mt-2 text-muted">
+                            <a href="#" class="badge badge-primary mr-3">Trống</a>
+                            <%= moment().format(publicDateFormat) %>
+                        </h6>
+                    </div>
+                </div>
+            </li>
+            <% }; %>        
+        <% }; %>
+    </ul>
+</div>

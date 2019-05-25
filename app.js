@@ -8,6 +8,7 @@ var expressLayouts = require('express-ejs-layouts');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
+var categoryRouter = require('./routes/category');
 var menu_bar = require('./middleware/menu_bar');
 var linkHelper = require('./utils/linkHelper');
 
@@ -22,6 +23,8 @@ app.set('layout extractScripts', true);                     // move all script t
 app.set('layout extractStyles', true);                      // same as above
 
 app.locals.concatToLink = linkHelper.concatToLink;          // pass concatToLink() to view, able to call directly in any view
+app.locals.moment = require('moment');
+app.locals.publicDateFormat = 'DD/MM/YYYY';
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -31,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));    // set 'public' fold
 
 app.use(menu_bar);
 app.use('/', indexRouter);
+app.use('/category', categoryRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 

@@ -1,16 +1,23 @@
 var mysql = require('mysql');
+var connectionInfo = {
+    host: '13.67.104.190',
+    user: 'admin',
+    password: 'R&ci!oD$WuCe',
+    database: 'th16_news'
+};
 
 //TODO: Change the user name and password for specific role (guest, admin, ...)
 var pool = mysql.createPool({
     connectionLimit: 10,
-    host: '13.67.104.190',
-    user: 'admin',              
-    password: 'R&ci!oD$WuCe',
-    database: 'th16_news'
+    host: connectionInfo.host,
+    user: connectionInfo.user,
+    password: connectionInfo.password,
+    database: connectionInfo.database
 });
 
 module.exports = {
 
+    connectionInfo,
     // For testing purpose only, will remove it from the future
     testConnection: () => {
         return new Promise((resolve, reject) => {

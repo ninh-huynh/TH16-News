@@ -3,5 +3,21 @@
 Trang chủ
 
 <%- contentFor('body') %>
-<h1><%= 'express' %></h1>
-<p>Welcome to <%= 'express' %></p>
+<!-- NỔI BẬT -->
+<%- include('_widget/hot') %>
+
+<div class="row my-5">
+    <div class="col-lg-4 d-flex flex-column justify-content-between">
+        <!-- MỚI NHẤT -->
+        <%- include('_widget/newest') %>
+        <%- include('_widget/tags-cloud', {display: 'd-xl-block'}) %>
+    </div>
+
+    <div class="col-lg-8">
+        <!-- XEM NHIỀU -->
+        <%- include('_widget/mostview') %>
+    </div>
+</div>
+
+<!-- TOP 10 CHUYÊN MỤC -->
+<%- include('_widget/top10') %>

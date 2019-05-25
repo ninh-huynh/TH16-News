@@ -1,0 +1,61 @@
+<div id="most-viewed">
+    <div class="d-flex justify-content-between">
+        <div class="h3">XEM NHIỀU</div>
+        <%- include('../_partial/simple-paginator') %>    
+    </div>
+
+    <% mostViewedArticles.forEach((article, index) => { %>
+    <% if (index < 5) { %>
+        <% if (index === 4) { %>    
+            <div class="card">
+        <% } else { %>
+            <div class="card mb-3">
+        <% }; %>
+        <div class="row no-gutters align-items-center">
+            <div class="col-md-4">
+                <div class="img-cont">
+                    <%# 458 x 300 %>
+                    <img data-src="<%= article.coverImageURL %>" class="card-img lazyload" alt="...">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <a href="<%= concatToLink('category', article.categoryName) %>" class="badge badge-primary mr-3"> <%= article.categoryName %> </a>
+                        <%= moment(article.publicationDate).format(publicDateFormat) %>
+                    </h6>
+                    <a href="<%= concatToLink(article.title) %>" class="text-dark article-title">
+                        <h5 class="card-title"> <%= article.title %> </h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }; %>
+    <% }); %>
+
+    <%# Danh sách rỗng %>
+    <% if (mostViewedArticles.length === 0) { %>
+    <div class="card mb-3">
+        <div class="row no-gutters align-items-center">
+            <div class="col-md-4">
+                <div class="img-cont">
+                    <%# 458 x 300 %>
+                    <img data-src="https://dummyimage.com/600x400/918b91/ffffff&text=Image+not+found" class="card-img lazyload" alt="...">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <a href="#" class="badge badge-primary mr-3"> <%= 'Trống' %> </a>
+                        <%= moment().format(publicDateFormat) %>
+                    </h6>
+                    <a href="#" class="text-dark article-title">
+                        <h5 class="card-title"> <%= 'Trống' %> </h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>        
+    <% }; %>
+</div>
