@@ -159,25 +159,25 @@ $table.on('all.bs.table', function (e, name, args) {
 
 $('#remove').click(function () {
     var ids = getIdSelections();
-    var full_ids = ids;
-    var data = $table.bootstrapTable('getData');
+    // var full_ids = ids;
+    // var data = $table.bootstrapTable('getData');
 
-    $.each(ids, function(i, id) {
-        if ($table.bootstrapTable('getRowByUniqueId', id).parentCategory < 1) {
-            $.each(data, function(j, row) {
-                if (row.parentCategory.length > 0) {
-                    if (row.parentCategory.toLowerCase() === 
-                    $table.bootstrapTable('getRowByUniqueId', id).name.toLowerCase()) {
-                        full_ids.push(row.id);
-                    }
-                }
-            });
-        }
-    });
+    // $.each(ids, function(i, id) {
+    //     if ($table.bootstrapTable('getRowByUniqueId', id).parentCategory < 1) {
+    //         $.each(data, function(j, row) {
+    //             if (row.parentCategory.length > 0) {
+    //                 if (row.parentCategory.toLowerCase() === 
+    //                 $table.bootstrapTable('getRowByUniqueId', id).name.toLowerCase()) {
+    //                     full_ids.push(row.id);
+    //                 }
+    //             }
+    //         });
+    //     }
+    // });
 
     $table.bootstrapTable('remove', {
         field: 'id',
-        values: full_ids
+        values: ids
     });
     $('#remove').prop('disabled', true);
 });
@@ -189,7 +189,7 @@ function mounted() {
 // context-menu event (row clicking)
 $('#table').on('contextmenu', 'tr',  function(e) {
     let dataIndex = parseInt($(this).attr('data-index'), 10);
-    let row = $table.bootstrapTable('getData', true)[dataIndex];
+    let row = $table.bootstrapTable('getData')[dataIndex];
     let ids;
 
     ids = getIdSelections();
@@ -213,14 +213,15 @@ $('#table').on('contextmenu', 'tr',  function(e) {
     $('#editItem').click(function(e) {
         var selectionIds = getIdSelections();
 
+        // uncheck checked row
         if (selectionIds.length > 0) {
             for (var i = 0; i < selectionIds.length; i++) {
                 $table.bootstrapTable('updateCellById', {id: selectionIds[i], field: 'state', value: false});
             }
         }
         
-        $table.bootstrapTable('updateCellById', {id: dataIndex + 1, field: 'state', value: true});
-        editCategory(dataIndex);
+        $table.bootstrapTable('updateCellById', {id: row.id, field: 'state', value: true});
+        editCategory(row.id);
     });
 });
 
@@ -259,16 +260,24 @@ $('#add').on('click',function() {
 $('#edit').on('click', function() {
     var id = getIdSelections();
     
-    editCategory(id[0] - 1);
+    editCategory(id[0]);
 });
 
-function editCategory(index) {
-    let row = $table.bootstrapTable('getData', true)[index];
-    var parentCategory = row.parentCategory.substr(0,1).toUpperCase() + row.parentCategory.substr(1);
+function editCategory(id) {
+    let row = $table.bootstrapTable('getRowByUniqueId', id);
+    let options = $('#selectParentCategory option').toArray();
 
     $('#inputCategoryName').val(row.name);
-    $('#selectParentCategory option[selected="selected"]').attr('selected', '');
-    $('#selectParentCategory option:contains("' + parentCategory +'")').attr('selected', 'selected');
+
+    options.forEach((option, index, arr) => {
+        if(option.selected === true) {
+            arr[index].selected = false;
+        }
+
+        if (option.value === row.parentCategory.toLowerCase()) {
+            arr[index].selected = true;
+        }
+    });
 
     $('#addOrEditCategoryForm').removeClass('was-validated').attr('novalidate', '');
     $('#addOrEditCategoryModal').modal('show');
