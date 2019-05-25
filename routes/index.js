@@ -17,7 +17,8 @@ router.get('/', function (req, res, next) {
                 newestArticles: newestRows,
                 mostViewedArticles: mostViewedRows,
                 topCatArticles: topCatRows,
-                tags: tagRows
+                tags: tagRows,
+                isHome: true
             };
             res.render('index', obj);
         })
