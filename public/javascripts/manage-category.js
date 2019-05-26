@@ -158,28 +158,7 @@ $table.on('all.bs.table', function (e, name, args) {
 });
 
 $('#remove').click(function () {
-    var ids = getIdSelections();
-    // var full_ids = ids;
-    // var data = $table.bootstrapTable('getData');
-
-    // $.each(ids, function(i, id) {
-    //     if ($table.bootstrapTable('getRowByUniqueId', id).parentCategory < 1) {
-    //         $.each(data, function(j, row) {
-    //             if (row.parentCategory.length > 0) {
-    //                 if (row.parentCategory.toLowerCase() === 
-    //                 $table.bootstrapTable('getRowByUniqueId', id).name.toLowerCase()) {
-    //                     full_ids.push(row.id);
-    //                 }
-    //             }
-    //         });
-    //     }
-    // });
-
-    $table.bootstrapTable('remove', {
-        field: 'id',
-        values: ids
-    });
-    $('#remove').prop('disabled', true);
+    removeCategories(getIdSelections());
 });
           
 function mounted() {
@@ -204,10 +183,7 @@ $('#table').on('contextmenu', 'tr',  function(e) {
     // item click handler
     // remove event handler
     $('#removeItem').click( function(e) {
-        $table.bootstrapTable('remove', {
-            field: 'id',
-            values: ids
-        });
+        removeCategories(ids);
     });
 
     $('#editItem').click(function(e) {
@@ -313,3 +289,36 @@ $('#addOrEditCategoryForm').submit( function(e) {
         e.stopPropagation();
     }
 });
+
+function removeCategories(ids) {
+    const url = 'delete';
+    const data = $table.bootstrapTable('getData');
+    
+    ids = ids.reduce((new_ids, curId) => {
+        if (data.filter(category => category.id === curId)[0].parentCategory.length > 0) {     // không là mục chính
+            if (new_ids.filter(id => id === curId).length > 0);
+
+            return new_ids;
+        } else {        // là chuyên mục chính => thêm id các chuyên mục con vào danh sách xóa
+            const parentCategory = data.filter(category => category.id === curId)[0].name;
+            new_ids.push(...data.filter(category => category.parentCategory.toLowerCase() === parentCategory.toLowerCase()).map(category => category.id), curId);
+
+            return new_ids;
+        }
+    }, []);
+
+    $.ajax({
+        url: url,
+        type: 'delete',
+        data: { ids: JSON.stringify(ids) },
+        cache: false,
+        error: e => console.log(e),
+        success: () => {
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            });
+            $('#remove').prop('disabled', true);
+        }
+    });
+}

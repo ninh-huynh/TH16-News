@@ -11,6 +11,7 @@ router.get('/categories', function (req, res, next) {
 
 router.get('/categories/load', (req, res, next) => {
     var promise = category.load();
+    
     promise
         .then(rows => {
             res.send(rows); 
@@ -18,6 +19,20 @@ router.get('/categories/load', (req, res, next) => {
         .catch(err => {
             console.log(err);
             res.end('');
+        });
+});
+
+router.delete('/categories/delete', (req, res, next) => {
+    let ids = JSON.parse(req.body.ids);
+    var promise = category.remove(ids);
+
+    promise
+        .then(() => {
+            res.status(200).send({ success: true });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).send({ error: err });
         });
 });
 

@@ -45,8 +45,12 @@ module.exports = {
         return db.update(category, tableName);
     },
 
-    remove: (category) => {
-        return db.remove(category, tableName);
+    // remove: (category) => {
+    //     return db.remove(category, tableName);
+    // },
+
+    remove: (ids) => {
+        return knex(tableName).whereIn('id', ids).delete();
     },
 
     // Get all root category, include these child
