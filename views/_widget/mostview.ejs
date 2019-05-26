@@ -21,7 +21,7 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h6 class="card-subtitle mb-2 text-muted">
-                        <a href="<%= concatToLink('category', article.categoryName) %>" class="badge badge-primary mr-3"> <%= article.categoryName %> </a>
+                        <a href="<%= article.categoryPath %>" class="badge badge-primary mr-3"> <%= article.category %> </a>
                         <%= moment(article.publicationDate).format(publicDateFormat) %>
                     </h6>
                     <a href="<%= concatToLink(article.title) %>" class="text-dark article-title">

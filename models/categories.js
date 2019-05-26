@@ -13,17 +13,19 @@ function loadMain() {
 function loadChild(parentId) {
 
     return db.load(`
-WITH RECURSIVE cte(id, name, parentID) AS
+WITH RECURSIVE cte(id, name, parentID, path) AS
 (
 	SELECT 	id,
 			name,
-			parentID
+            parentID,
+            path
 	FROM ${tableName}
     WHERE parentID = ${parentId}
     UNION ALL
     SELECT 	cat.id,
 			cat.name,
-			cat.parentID
+            cat.parentID,
+            cat.path
     FROM ${tableName} cat
     INNER JOIN cte 
 		ON cat.parentID = cte.id

@@ -45,7 +45,7 @@ set DEBUG=th16-news:* & npm start   #trên CMD
 STT | Đường dẫn router xử lý | Nội dung
 ---: | --- | ---
 1 | / | Trang chủ
-2 | /category/ten-chuyen-muc | Danh sách chuyên mục
+2 | /categories/ten-chuyen-muc | Danh sách chuyên mục
 3 | /tags/ten-nhan | Danh sách nhãn
 4 | /ten-bai-viet | Chi tiết bài viết
 5 | /search&keyword= | Từ khóa tìm kiếm

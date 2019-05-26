@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));    // set 'public' fold
 
 app.use(menu_bar);
 app.use('/', indexRouter);
-app.use('/category', categoryRouter);
+app.use('/categories', categoryRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 

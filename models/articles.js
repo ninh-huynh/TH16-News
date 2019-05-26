@@ -106,7 +106,7 @@ module.exports = {
                     .whereIn(ARTICLE.id, subQuery1).as('art');
 
                 return knex.queryBuilder()
-                    .select(['art.*', { category: 'cat.name' }]).from(subQuery2)
+                    .select(['art.*', { category: 'cat.name', categoryPath: 'cat.path' }]).from(subQuery2)
                     .innerJoin(`${CATEGORY._} as cat `, 'art.categoryID', 'cat.id')
                     .whereIn(ARTICLE.statusID, queryGetPublicId);
             });
@@ -153,7 +153,7 @@ module.exports = {
             .as('art');
 
         return knex.queryBuilder()
-            .select(['art.*', 'cat.name as category'])
+            .select(['art.*', 'cat.name as category', 'cat.path as categoryPath'])
             .from(queryPublicArticle)
             .innerJoin(`${CATEGORY._} as cat`, 'art.categoryID', 'cat.id')
             .orderBy(ARTICLE.publicationDate, 'desc')
@@ -168,7 +168,7 @@ module.exports = {
             .orderBy('total_view', 'desc').as('most_view');
 
         return knex.queryBuilder()
-            .select(['art.*', 'cat.name as category'])
+            .select(['art.*', 'cat.name as category', 'cat.path as categoryPath'])
             .from(queryMostView)
             .join(`${ARTICLE._} as art`, 'most_view.articleId', 'art.id')
             .join(`${CATEGORY._} as cat`, 'art.categoryID', 'cat.id');
@@ -188,7 +188,7 @@ module.exports = {
             .as('art');
 
         return knex.queryBuilder()
-            .select(['art.*', 'cat.name as category'])
+            .select(['art.*', 'cat.name as category', 'cat.path as categoryPath'])
             .from(queryTopCat)
             .join(`${CATEGORY._} as cat`, 'categoryID', 'cat.id')
             .limit(totalRow).offset(rowBegin);
@@ -217,7 +217,7 @@ module.exports = {
             .as('art');
         
         return knex.queryBuilder()
-            .select('art.*', 'cat.name as category')
+            .select('art.*', 'cat.name as category', 'cat.path as categoryPath')
             .from(queryWeekly)
             .join(`${CATEGORY._} as cat`, 'art.categoryID', 'cat.id')
             .limit(totalRow).offset(rowBegin);
