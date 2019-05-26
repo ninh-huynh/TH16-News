@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var category = require('../models/categories');           // import category model
+var linkHelper = require('../utils/linkHelper');
 
 // handle read category
 router.get('/categories', function (req, res, next) {
@@ -26,6 +27,7 @@ router.post('/categories', function (req, res, next) {
     var newCategory = {
         name: req.body.name,
         // parentID: parseInt(req.body.parentID) //TODO: set the <option value="id">  this id is the category id.
+        path: '/categories/' + req.body.name
     };
     
     var promise = category.add(newCategory);

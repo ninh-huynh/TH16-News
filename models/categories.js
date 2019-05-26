@@ -80,17 +80,14 @@ module.exports = {
     },
 
     loadByLink: (categoryLink) => {
-        return knex(tableName).select()
+        return knex.queryBuilder()
+            .select()
+            .from('CATEGORY')
+            .where('path', categoryLink)
             .then(rows => {
-                var category;
-                rows.forEach(row => {
-                    if (linkHelper.concatToLink([row.name]) ===
-                        '/'.concat(categoryLink).concat('/')) {
-                        category = row;
-                    }
-                });
+                var category = rows[0];
                 if (category === undefined)
-                    throw new Error(`category/${categoryLink} not found!`);
+                    throw new Error(`${categoryLink} not found!`);
                 
                 return loadChild(category.id)
                     .then(child => {

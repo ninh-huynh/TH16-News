@@ -4,9 +4,11 @@ var article = require('../models/articles');
 var categories = require('../models/categories');
 
 route.get('/:name', (req, res, next) => {
-
-    Promise.all([categories.loadByLink(req.params.name),
-        article.loadByCategoryLink(req.params.name)])
+    var categoryName = req.params.name;
+    var categoryPath = '/categories/' + categoryName;
+    
+    Promise.all([categories.loadByLink(categoryPath),
+        article.loadByCategoryLink(categoryPath)])
         .then(([categoryEntity, articles]) => {
             var obj = {
                 articles: articles,
