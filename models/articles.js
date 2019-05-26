@@ -44,7 +44,7 @@ module.exports = {
     // Each article have default property as database column
     // and relation property like:
     // .tags    : The tags array
-    loadByCategoryLink: (link) => {
+    loadByCategoryLink: (link, totalRow, rowBegin) => {
         return categories.loadByLink(link)
             .then(categoryEntity => {
                 return knex.queryBuilder()
@@ -54,6 +54,7 @@ module.exports = {
                         builder.whereIn('statusID', queryGetPublicId);
                     })
                     .andWhere({ categoryID: categoryEntity.id })
+                    .limit(totalRow).offset(rowBegin)
                     .then(rows => {
                         // these article rows didn't include tags property
                         // Below code will add the tags property to each row
@@ -238,4 +239,20 @@ module.exports = {
     addTag: (tagID, articleID) => {
         return db.add({ tagID, articleID }, 'article_tag');
     },
+
+    countTotalByCategory_public: (categoryLink) => {
+        return categories.loadByLink(categoryLink)
+            .then(categoryEntity => {
+                return knex.queryBuilder()
+                    .select(knex.raw('COUNT(*) AS total'))
+                    .from(ARTICLE._)
+                    .where((builder) => {
+                        builder.whereIn('statusID', queryGetPublicId);
+                    })
+                    .andWhere({ categoryID: categoryEntity.id })
+                    .then(rows => {
+                        return rows[0].total;
+                    });
+            });
+    }
 };

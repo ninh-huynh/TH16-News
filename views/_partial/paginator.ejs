@@ -1,6 +1,7 @@
+<% if (page.total !== 0) { %>
 <nav aria-label="...">
     <ul class="pagination justify-content-center mt-3">
-        <% var page = {current: 1, next: 2, prev: 0 , total: 2}; %>
+    
         <%# Nút previous %> 
         <%# page.prev là biến kiểu Number, == 0 khi không có trang trước đó %>
         <% if (page.current === 1) { %>
@@ -9,7 +10,7 @@
             </li>
         <% } else { %>
             <li class="page-item">
-                <a class="page-link" href="<%= '#' %>">Previous</a>
+                <a class="page-link" href="<%=`?page=${page.prev}`%>">Previous</a>
             </li>
         <% }; %>
             
@@ -24,7 +25,7 @@
 
             <% if(page.next !== 0) { %>
                 <li class="page-item">
-                    <a class="page-link" href="<%= '#' %>">
+                    <a class="page-link" href="<%=`?page=${page.next}`%>">
                         <%- page.next %>
                     </a>
                 </li>
@@ -35,7 +36,7 @@
 
             <% if(page.prev !== 0) { %>
                 <li class="page-item">
-                    <a class="page-link" href="<%= '#' %>">
+                    <a class="page-link" href="<%=`?page=${page.prev}`%>">
                         <%- page.prev %>
                     </a>
                 </li>
@@ -50,7 +51,7 @@
         <!-- Có đủ prev và next -->
         <% } else { %>
             <li class="page-item">
-               <a class="page-link" href="<%= '#' %>">
+               <a class="page-link" href="<%=`?page=${page.prev}`%>">
                     <%- page.prev %>
                </a>
             </li>
@@ -62,7 +63,7 @@
             </li>
 
             <li class="page-item">
-                <a class="page-link" href="<%= '#' %>">
+                <a class="page-link" href="<%=?page=${page.next}%>">
                     <%- page.next %>
                 </a>
             </li>
@@ -78,9 +79,10 @@
             </li>
         <% } else { %>
             <li class="page-item">
-                <a class="page-link" href="<%= '#' %>">Next</a>
+                <a class="page-link" href="<%=?page=${page.next}%>">Next</a>
             </li>
         <% }; %>       
     
     </ul>
 </nav>
+<% }; %>
