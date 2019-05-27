@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var category = require('../models/categories');           // import category model
+var userModel = require('../models/users');
+var linkHelper = require('../utils/linkHelper');
 
 // handle read category
 router.get('/categories', function (req, res, next) {
@@ -64,6 +66,7 @@ router.post('/categories', function (req, res, next) {
         name: req.body.name,
         parentID: req.body.parentID === '' ? null : parseInt(req.body.parentID)
         // parentID: parseInt(req.body.parentID) //TODO: set the <option value="id">  this id is the category id.
+        path: linkHelper.concatToLink(['categories', req.body.name])
     };
     
     var promise = category.add(newCategory);
@@ -106,5 +109,15 @@ router.put('/categories/update', (req, res, next) => {
 // get('/tags')
 // get('/posts')
 // get('/users') may be later, didn't have User table yet.
+router.get('/users', (req, res, next) => {
+    res.render('admin/users', { layout: 'layouts/manage' }); 
+});
+
+router.get('/users/load', (req, res, next) => {
+    userModel.load()
+        .then(rows => {
+            res.send(rows);
+        });
+});
 
 module.exports = router;

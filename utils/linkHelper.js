@@ -5,9 +5,12 @@ module.exports = {
     // Ex: ['category', 'Thế giới'] => '/category/the-gioi'
     concatToLink: (args) => {
         var link = '/';
-        args.forEach(str => {
-            link = link + str + '/';
-        });
+        var i = 0;
+        for (i = 0; i < args.length - 1; i++) {
+            link = link + args[i] + '/';
+        }
+        link = link + args[i];
+
         link = link.toLowerCase();
         link = link.replace(/ /g, '-');
         link = vnLanguageTool.remove_tone(link);
