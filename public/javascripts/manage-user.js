@@ -92,7 +92,17 @@ function initTable() {
             { field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true, width: '20%', }, 
             { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', sortable: true, width: '15%', filterControl: 'select'},
             { field: 'category', title: 'Chuyên mục', align: 'center', valign: 'center', filterControl: 'select', width: '15%', formatter: categoryFormatter}],
-        data: tableData,
+        //data: tableData,
+        url: 'load',
+        responseHandler: (rows) => {
+            rows.forEach(row => {
+                row.date = '18-09-2018';
+                row.role = 'biên tập viên';
+                row.category = 'Công nghệ';
+            });
+
+            return rows;
+        }
     });
 }
 

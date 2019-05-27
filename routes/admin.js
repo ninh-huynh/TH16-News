@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var category = require('../models/categories');           // import category model
+var userModel = require('../models/users');
 var linkHelper = require('../utils/linkHelper');
 
 // handle read category
@@ -51,5 +52,15 @@ router.post('/categories', function (req, res, next) {
 // get('/tags')
 // get('/posts')
 // get('/users') may be later, didn't have User table yet.
+router.get('/users', (req, res, next) => {
+    res.render('admin/users', { layout: 'layouts/manage' }); 
+});
+
+router.get('/users/load', (req, res, next) => {
+    userModel.load()
+        .then(rows => {
+            res.send(rows);
+        });
+});
 
 module.exports = router;
