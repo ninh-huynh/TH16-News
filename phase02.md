@@ -24,14 +24,14 @@ set DEBUG=th16-news:* & npm start   #trên CMD
    Mục đích tối ưu hệ thống, không được `SELECT * FROM TALBE` mà mỗi lần lấy chỉ lấy một phần nhỏ (tự quy định số lượng).
    Sẽ có 2 hướng: chia trang tải trang mới và không tải lại trang
  
-   Tải trang mới: thêm vào đuôi đường dẫn hiện tại query string **&page=n** và nhận xử lý ở router bình thường..
+   ~Tải trang mới: thêm vào đuôi đường dẫn hiện tại query string **&page=n** và nhận xử lý ở router bình thường..~
    Không tải trang: nghiên cứu dùng AJAX để gửi request lên server và nhận dữ liệu từ Server về, thêm dữ liệu đã nhận từ javascript client
 
 
 6. Kỹ thuật tìm kiếm *Full-text search*
 7. Các vấn đề liên quan mật khẩu tài khoản: `bcrypt`, email OTP
 8. Đăng nhập qua tài khoản *The-Logic-News*, *FB*, *Google+*, *Github* <http://www.passportjs.org/>
-9. Viết API cho việc truy xuất DB thuận lợi hơn *(Lớp View sẽ gọi API lớp Model, lớp model sẽ gọi API DB, do đó sẽ có 2 bộ API)*
+9. ~Viết API cho việc truy xuất DB thuận lợi hơn *(Lớp View sẽ gọi API lớp Model, lớp model sẽ gọi API DB, do đó sẽ có 2 bộ API)*~
 10. Thiết kế các trang báo lỗi (ít nhất là 2): **404**, **500**, 403, 401. (Không cần đẹp xuất sắc nhưng phải có, gọi `next()` để request chuyển tiếp tới các router error khi có lỗi )
 
 # Các task cơ bản
@@ -42,10 +42,10 @@ set DEBUG=th16-news:* & npm start   #trên CMD
 3. render template trả cho browser (View)
 
 
-STT | Đường dẫn router xử lý | Nội dung
----: | --- | ---
-1 | / | Trang chủ
-2 | /categories/ten-chuyen-muc | Danh sách chuyên mục
+STT | Đường dẫn router xử lý | Nội dung | Trạng thái
+---: | --- | --- | ---
+1 | / | Trang chủ | ✔️
+2 | /categories/ten-chuyen-muc | Danh sách chuyên mục | ✔️
 3 | /tags/ten-nhan | Danh sách nhãn
 4 | /ten-bai-viet | Chi tiết bài viết
 5 | /search&keyword= | Từ khóa tìm kiếm
