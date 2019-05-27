@@ -1,58 +1,27 @@
 var $table = $('#table');
-var tableData = [];
-const mainCategories = ['thời sự', 'Thế giới', 'Kinh doanh', 'Công nghệ', 'Thể thao', 'Giải trí', 'Sức khỏe', 'Giáo dục'];
-var categories = [
-    ['Thời sự', 'Chính trị', 'Giao thông', 'Đô thị'],
-    ['Thế giới', 'Quân sự', 'Tư liệu', 'Phân tích', 'Người Việt 4 phương'],
-    ['kinh doanh', 'bất động sản', 'hàng không', 'tài chính', 'doanh nhân', 'tiêu dùng'],
-    ['công nghệ', 'mobile', 'AI', 'smartHome', 'startup'],
-    ['thể thao', 'thể thao Việt Nam', 'thể thao Thế giới', 'bóng đá Việt Nam'],
-    ['sao Việt', 'sao châu Á', 'sao Hollywood'],
-    ['sức khỏe', 'làm đẹp', 'khỏe đẹp mỗi ngày', 'giới tính'],
-    ['giáo dục', 'tuyển sinh 2019', 'du học', 'chọn nghề', 'chọn trường']
-];
+var parentCategories;
 
 $(function () {
-    var html = [];
     // context menu
     $('#context-menu').hide();
 
     // side bar
     $('.sidenav-badge').hide();
 
-    // get data from server
-    
-    //let promise = new Promise((resolve, reject) => {
-    // $.get('/admin/categories/json', function(data, status) {
-    //     console.log(data);
-    // });
-    //});
-
-
-
-    // table
-    // let count = 0;
-    // for (var i = 0; i < categories.length; i++) {
-    //     var parentCategory = categories[i][0];
-    //     tableData.push({
-    //         'id': count + 1,
-    //         'parentCategory': '',
-    //         'name': parentCategory
-    //     });
-    //     count++;
-        
-    //     // add sub-categories row
-    //     for (var j = 1; j < categories[i].length; j++) {
-    //         tableData.push({
-    //             'id': count + 1,
-    //             'parentCategory': parentCategory,
-    //             'name': categories[i][j]
-    //         });
-    //         count++;
-    //     }
-    // }
+    // init table
     mounted();  
     $('#edit').prop('disabled', true);
+
+    // get parent categories
+    $.ajax({
+        url: '/admin/categories/load',
+        method: 'get',
+        data: {
+            load: 'parent'
+        },
+        error: err => console.log(err),
+        success: res => parentCategories = res
+    });
 
     /* form validation */
     'use strict';
@@ -61,22 +30,9 @@ $(function () {
     // Loop over them and prevent submission
     var validation = Array.prototype.filter.call(forms, function(form) {
         form.addEventListener('submit', function(event) {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
+            event.preventDefault();
             form.classList.add('was-validated');
         }, false);
-    });
-
-    // init modal form
-    $('#selectParentCategory').append($('<option>', {value: '', text: ''}));
-    $.each(mainCategories, function (i, category) {
-        category = category.substr(0,1).toUpperCase()+category.substr(1);
-        $('#selectParentCategory').append($('<option>', { 
-            value: category.toLowerCase(),
-            text : category,
-        }));
     });
 });
 
@@ -118,26 +74,37 @@ function initTable() {
         // editable
         editable: true,
         url: 'load',
+        queryParams: (params) => {
+            params.load = 'all';
+            
+            return params;
+        },
         responseHandler: res => {
-            const parentCategories = res.filter(category => category.parentID === null);
-            const parentCategoryNames = parentCategories.reduce((o, category) => Object.assign(o, {[category.id]: category.name}), {});
+            const parentCategories = res
+                .filter(category => category.parentID === null)
+                .reduce((o, category) => Object.assign(o, {[category.id]: category}), {});
+            
             //group rows
-            let categories = parentCategories
+            let categories = res.filter(category => category.parentID === null)
                 .reduce((arr, parentCategory) => {
                     return arr.concat(res.filter(category => category.id === parentCategory.id || category.parentID === parentCategory.id));
                 }, []);
-            
-            categories =  categories.map(category => 
-                (Object.assign({'id': category.id, 'name': category.name, }, {'parentCategory': category.parentID === null ? '' : parentCategoryNames[category.parentID]})));
-            console.log(categories);
+
+            categories =  categories.map(category => {
+                let parentCategory = category.parentID === null ? { id: null, name: '' } : { id: category.parentID, name: parentCategories[category.parentID].name };
+                return Object.assign({ id: category.id, name: category.name, state: false, parentCategoryId: parentCategory.id, parentCategory: parentCategory.name });
+            });
+
             return categories;
         },
 
         columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
-            {  field: 'parentCategory', title: 'Chuyên mục lớn', align: 'center',  valign: 'middle', formatter: nameFormatter, sortable: true, width: '20%', filterControl: 'select', },
+            { field: 'parentCategoryId', visible: false }, 
+            {  field: 'parentCategory', title: 'Chuyên mục lớn', align: 'center',  valign: 'middle', 
+                formatter: nameFormatter, sortable: true, width: '20%', filterControl: 'select', },
             {  field: 'name', title: 'Tên', align: 'center',  valign: 'middle', formatter: nameFormatter, sortable: true, }],
-        //data: tableData,
+        //data: $table.bootstrapTable('getData'),
     });
 }
 
@@ -147,14 +114,10 @@ function () {
     var selections = $table.bootstrapTable('getSelections');
     $('#remove').prop('disabled', !selections.length);
     $('#edit').prop('disabled', selections.length !== 1);
-
-    // save your data, here just save the current page
-    var idSelections = getIdSelections();
-    // push or splice the selections if you want to save all data selections
 });
 
-$table.on('all.bs.table', function (e, name, args) {
-
+$table.on('page-change.bs.table', (number, size) => {
+    $table.bootstrapTable('uncheckAll');
 });
 
 $('#remove').click(function () {
@@ -222,6 +185,7 @@ $('#mySidenav a').mouseleave(function() {
 
 // add category
 $('#add').on('click',function() {
+    updateModalForm();
     $('#addOrEditCategoryForm').find('button').text('Thêm');
 
     $('#inputCategoryName').val('');
@@ -234,54 +198,90 @@ $('#add').on('click',function() {
 
 // edit category
 $('#edit').on('click', function() {
-    var id = getIdSelections();
+    var id = getIdSelections(); 
     
     editCategory(id[0]);
 });
 
 function editCategory(id) {
+    updateModalForm();
     let row = $table.bootstrapTable('getRowByUniqueId', id);
     let options = $('#selectParentCategory option').toArray();
+    let form = $('#addOrEditCategoryForm');
 
     $('#inputCategoryName').val(row.name);
-
     options.forEach((option, index, arr) => {
         if(option.selected === true) {
             arr[index].selected = false;
         }
 
-        if (option.value === row.parentCategory.toLowerCase()) {
+        if (parseInt(option.value) === row.parentCategoryId) {
             arr[index].selected = true;
         }
     });
 
-    $('#addOrEditCategoryForm').removeClass('was-validated').attr('novalidate', '');
+    $(form).removeClass('was-validated').attr('novalidate', '');
     $('#addOrEditCategoryModal').modal('show');
 }
 'use strict';
 $('#addOrEditCategoryForm').submit( function(e) {
-    
+    let form = $('#addOrEditCategoryForm');
+
     if(this.checkValidity()) {
         // Nếu hợp lệ thì để gọi submit mặc định
-        if ($('#addOrEditCategoryForm').find('button').text().toUpperCase() === 'OK') {     // Cập nhật
-            var ids = getIdSelections();
-            var index = ids[0] - 1;
-            let row = $table.bootstrapTable('getData', true)[index];
+        if ($(form).find('button').text().toUpperCase() === 'OK') {     // Cập nhật
+            let ids = getIdSelections();
+            let row = $table.bootstrapTable('getRowByUniqueId', ids[0]);
+            const URL = 'update';
+
             row.name = $('#inputCategoryName').val();
             row.parentCategory = $('#selectParentCategory').find(':selected').text();
-            $table.bootstrapTable('updateRow', {index: index, row: row});
+            row.parentCategoryId = parseInt($('#selectParentCategory').find(':selected').attr('value'));
 
+            $.ajax({
+                url: URL,
+                method: 'put',
+                data: { id: ids[0], name: row.name, parentID: row.parentCategoryId },
+                error: err => console.log(err),
+                success: () => {
+                    $table.bootstrapTable('updateByUniqueId', { id: row.id, row: row });
+
+                    if (row.parentCategoryId === null && parentCategories.some(category => category.id === ids[0])) {
+                        parentCategories.filter(category => category.id === ids[0])[0] = { id: ids[0], name: row.name, parentID: null };
+                    }
+                }
+            });
+
+            // uncheck all checked rows
             for (var i = 0; i < ids.length; i++) {
-                $table.bootstrapTable('updateCellById', {id: ids[i], field: 'state', value: false});
+                $table.bootstrapTable('updateCellById', { id: ids[i], field: 'state', value: false });
             }
+            $table.bootstrapTable('uncheckAll');
         }
         else {      // Thêm mới
+            const URL = '/admin/categories';
+            var parentCategoryOption = $('#selectParentCategory').find(':selected');
+            
             var row = {
-                'id': $table.bootstrapTable('getData').length + 1,
-                'parentCategory': $('#selectParentCategory').find(':selected').text(),
-                'name': $('#inputCategoryName').val()
+                parentCategory: parentCategoryOption.text(),
+                parentCategoryId: parentCategoryOption.attr('value') === '' ? null : parseInt(parentCategoryOption.attr('value')),
+                name: $('#inputCategoryName').val()
             };
-            $table.bootstrapTable('append', [row]);
+
+            // send add request
+            $.ajax({
+                url: URL,
+                method: 'post',
+                data: { name: row.name, parentID: row.parentCategoryId },
+                error: err => console.log(err),
+                success: res => {
+                    row.id = res.insertedID;
+                    $table.bootstrapTable('append', [row]);
+                    if (row.parentCategoryId === null) {
+                        parentCategories.push({ id: res.insertedID, name: row.name, parentID: row.parentCategoryId });
+                    }
+                }
+            });
         }
         $('#addOrEditCategoryModal').modal('hide');
     } else {
@@ -292,33 +292,70 @@ $('#addOrEditCategoryForm').submit( function(e) {
 
 function removeCategories(ids) {
     const url = 'delete';
-    const data = $table.bootstrapTable('getData');
+    let data;
+    let subCategoryIds = [];
+
+    $.ajax({
+        url: '/admin/categories/load',
+        method: 'get',
+        async: false,
+        data: {
+            load: 'all'
+        },
+
+        error: err => console.log(err),
+        complete: res => data = res.responseJSON
+    });
+
+    let parentCategoryIds = ids
+        .filter(id => parentCategories.some(parentCategory => parentCategory.id === id));
+
+    // với mỗi chuyên mục chính, lấy danh sách các chuyên mục con
+    if (parentCategoryIds.length > 0) {
+        subCategoryIds = parentCategoryIds.reduce((arr, parentID) => {
+            return arr.concat(data.filter(category => category.parentID === parentID).map(category => category.id));
+        }, []);
+    }
+
+    subCategoryIds = subCategoryIds.concat(
+        ids.reduce((arr, id) => {
+            arr.concat(data.filter(category => category.id === id && category.parentID !== null && subCategoryIds.indexOf(id) < 0).map(category => category.id))
+
+            return arr;
+        }, [])
+    );
     
-    ids = ids.reduce((new_ids, curId) => {
-        if (data.filter(category => category.id === curId)[0].parentCategory.length > 0) {     // không là mục chính
-            if (new_ids.filter(id => id === curId).length > 0);
-
-            return new_ids;
-        } else {        // là chuyên mục chính => thêm id các chuyên mục con vào danh sách xóa
-            const parentCategory = data.filter(category => category.id === curId)[0].name;
-            new_ids.push(...data.filter(category => category.parentCategory.toLowerCase() === parentCategory.toLowerCase()).map(category => category.id), curId);
-
-            return new_ids;
-        }
-    }, []);
-
     $.ajax({
         url: url,
         type: 'delete',
-        data: { ids: JSON.stringify(ids) },
+        data: { 
+            parentCategoryIds: JSON.stringify(parentCategoryIds),
+            subCategoryIds: JSON.stringify(subCategoryIds)
+        },
         cache: false,
-        error: e => console.log(e),
+        error: err => console.log(err),
         success: () => {
             $table.bootstrapTable('remove', {
                 field: 'id',
-                values: ids
+                values: parentCategoryIds.concat(subCategoryIds)
             });
             $('#remove').prop('disabled', true);
+            parentCategories = parentCategories.filter(category => parentCategoryIds.indexOf(category.id) < 0);
         }
     });
+}
+
+function updateModalForm() {
+    // init modal value
+    $('#selectParentCategory').empty();
+    $('#selectParentCategory').append($('<option>', {value: '', text: ''}));
+    $.each(parentCategories, function (i, category) {
+        category.name = category.name.substr(0,1).toUpperCase()+category.name.substr(1);
+        $('#selectParentCategory').append($('<option>', { 
+            value: category.id,
+            text : category.name,
+        }));
+    });
+
+    return true;
 }

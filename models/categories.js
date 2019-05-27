@@ -37,6 +37,8 @@ module.exports = {
 
     loadChild: (parentID) => loadChild(parentID),
 
+    loadParent: () => loadMain(),
+
     add: (newCategory) => {
         return db.add(newCategory, tableName);
     },
