@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var connectionInfo = {
-    host: '13.67.104.190',
-    user: 'admin',
-    password: 'R&ci!oD$WuCe',
-    database: 'th16_news'
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE
 };
 
 //TODO: Change the user name and password for specific role (guest, admin, ...)
