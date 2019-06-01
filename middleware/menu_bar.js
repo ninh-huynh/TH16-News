@@ -12,7 +12,10 @@ router.use((req, res, next) => {
             res.locals.category = null;
             next();     // Chuyển tiếp đến router thật sự (nếu có) hoặc chuyển đến router xử lý lỗi
         })
-        .catch(next);
+        .catch(err => {
+            // fix isHome is not defined
+            if (err) throw err;
+        });
 });
 
 module.exports = router;
