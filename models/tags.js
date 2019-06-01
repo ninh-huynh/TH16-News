@@ -2,7 +2,7 @@ var db = require('../utils/db');
 var th16_news = require('../utils/th16_news');
 var linkHelper = require('../utils/linkHelper');
 var article = require('./articles');
-var knex = require('../utils/queryBuilder');
+var knex = db.queryBuilder;
 
 var TAG = th16_news.TAG;
 var ARTICLE_TAG = th16_news.ARTICLE_TAG;

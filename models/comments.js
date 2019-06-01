@@ -1,6 +1,6 @@
 var db = require('../utils/db');
 var linkHelper = require('../utils/linkHelper');
-var knex = require('../utils/queryBuilder');
+var knex = db.queryBuilder;
 var th16_news = require('../utils/th16_news');
 var COMMENT = th16_news.COMMENT;
 var article = require('./articles');

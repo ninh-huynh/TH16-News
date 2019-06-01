@@ -1,51 +1,23 @@
-var mysql = require('mysql');
-var connectionInfo = {
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
-};
-
-//TODO: Change the user name and password for specific role (guest, admin, ...)
-var pool = mysql.createPool({
-    connectionLimit: 5,
-    host: connectionInfo.host,
-    user: connectionInfo.user,
-    password: connectionInfo.password,
-    database: connectionInfo.database
+var knex = require('knex')({
+    client: 'mysql',
+    version: '8.0',
+    connection: {
+        host: process.env.HOST,
+        user: process.env.USER,
+        password: process.env.PASSWORD,
+        database: process.env.DATABASE,
+    },
+    pool: { min: 0, max: 10 },
+    debug: false                 // set this value to true if you want to display all query
 });
 
 module.exports = {
-
-    connectionInfo,
-    // For testing purpose only, will remove it from the future
-    testConnection: () => {
-        return new Promise((resolve, reject) => {
-            pool.getConnection((err, connection) => {
-                if (err)
-                    reject(err);
-                else {
-                    resolve('Connect to DB Server successfully!');
-                    connection.release();
-                }
-            });
-        });
-    },
-
     // Retrieving rows from the table
     // sql: query string
 
     // Ex: sql = 'SELECT * FROM category'
     load: sql => {
-        return new Promise((resolve, reject) => {
-            // var pool = createPool();
-            pool.query(sql, (err, results, fields) => {
-                if (err)
-                    reject(err);
-                else
-                    resolve(results);
-            });
-        });
+        return knex.raw(sql);
     },
 
     // Add an entity (js object) to the table name `table`
@@ -55,14 +27,7 @@ module.exports = {
     //Ex: entity = {name: 'cat1', id: 1, parentId: null}
     //    table = 'category'
     add: (entity, table) => {
-        return new Promise((resolve, reject) => {
-            pool.query(`INSERT INTO ${table} SET ? `, entity, (err, results, fields) => {
-                if (err)
-                    reject(err);
-                else
-                    resolve(results.insertId);
-            });
-        });
+        return knex.insert(entity).into(table);
     },
 
     // Update a row in the table name `table`
@@ -72,16 +37,9 @@ module.exports = {
     //Ex: entity = {name: 'cat1', id: 1, parentId: null}
     //    table = 'category'
     update: (entity, table) => {
-        return new Promise((resolve, reject) => {
-            var id = entity.id;
-            delete entity['id'];
-            pool.query(`UPDATE ${table} SET ? WHERE id = ? `, [entity, id], (err, results, fields) => {
-                if (err)
-                    reject(err);
-                else
-                    resolve(results.changedRows);
-            });
-        });
+        var id = entity.id;
+        delete entity['id'];
+        return knex(table).where('id', id).update(entity);
     },
 
     // Delete a row in the table name `table`
@@ -91,14 +49,9 @@ module.exports = {
     //Ex: entity = {name: 'cat1', id: 1, parentId: null}
     //    table = 'category'
     remove: (entity, table) => {
-        return new Promise((resolve, reject) => {
-            var id = entity.id;
-            pool.query(`DELETE FROM ${table} WHERE id = ${id} `, (err, results, fields) => {
-                if (err)
-                    reject(err);
-                else
-                    resolve(results.affectedRows);
-            });
-        });
-    }
+        var id = entity.id;
+        return knex(table).where('id', id).del();
+    },
+
+    queryBuilder: knex
 };

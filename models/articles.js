@@ -3,7 +3,7 @@ var moment = require('moment');
 
 // Internal module
 var db = require('../utils/db');
-var knex = require('../utils/queryBuilder');
+var knex = db.queryBuilder;
 const th16_news = require('../utils/th16_news');
 
 // Other model used

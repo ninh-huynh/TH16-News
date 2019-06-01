@@ -1,5 +1,5 @@
 var db = require('../utils/db');
-var knex = require('../utils/queryBuilder');
+var knex = db.queryBuilder;
 var linkHelper = require('../utils/linkHelper');
 const tableName = 'CATEGORY';
 
@@ -11,27 +11,13 @@ function loadMain() {
 
 // Get all child category of a specific parentId
 function loadChild(parentId) {
-
-    return db.load(`
-WITH RECURSIVE cte(id, name, parentID, path) AS
-(
-	SELECT 	id,
-			name,
-            parentID,
-            path
-	FROM ${tableName}
-    WHERE parentID = ${parentId}
-    UNION ALL
-    SELECT 	cat.id,
-			cat.name,
-            cat.parentID,
-            cat.path
-    FROM ${tableName} cat
-    INNER JOIN cte 
-		ON cat.parentID = cte.id
-)
-SELECT *
-FROM cte`);
+    var query = knex.withRecursive('cte', (qb) => {
+        qb.select('*').from('CATEGORY').where('parentID', parentId).unionAll((qb) => {
+            qb.select('cat.*').from('CATEGORY as cat').join('cte', 'cat.parentID', 'cte.id');
+        });
+    }).select('*').from('cte');
+    //console.log(query.toString());  //debug
+    return query;
 }
 
 module.exports = {
