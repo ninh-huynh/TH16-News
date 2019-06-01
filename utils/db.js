@@ -8,7 +8,7 @@ var connectionInfo = {
 
 //TODO: Change the user name and password for specific role (guest, admin, ...)
 var pool = mysql.createPool({
-    connectionLimit: 10,
+    connectionLimit: 5,
     host: connectionInfo.host,
     user: connectionInfo.user,
     password: connectionInfo.password,
