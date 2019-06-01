@@ -64,7 +64,7 @@ router.delete('/categories/delete', (req, res, next) => {
 router.post('/categories', function (req, res, next) {
     var newCategory = {
         name: req.body.name,
-        parentID: req.body.parentID === '' ? null : parseInt(req.body.parentID)
+        parentID: req.body.parentID === '' ? null : parseInt(req.body.parentID),
         // parentID: parseInt(req.body.parentID) //TODO: set the <option value="id">  this id is the category id.
         path: linkHelper.concatToLink(['categories', req.body.name])
     };
