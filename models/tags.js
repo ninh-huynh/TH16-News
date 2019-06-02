@@ -16,19 +16,11 @@ module.exports = {
     },
 
     loadByLink: (link) => {
-        return knex(TAG._).select()
+        return knex.queryBuilder().select().from('TAG').where('path', link)
             .then(rows => {
-                var tag;
-                rows.forEach(row => {
-                    if (linkHelper.concatToLink([row.name]) ===
-                        '/'.concat(link).concat('/')) {
-                        tag = row;
-                    }
-                });
-                if (tag === undefined)
-                    throw new Error(`tags/${link} not found!`);
-
-                return tag;
+                if (rows.length === 0)
+                    throw new Error(`${link} not found!`);
+                return rows[0];
             });
     },
 

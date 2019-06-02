@@ -27,7 +27,7 @@
                 <h6 class="card-subtitle mb-2 text-muted d-none d-sm-block">
 
                     <!-- Article category(only for tag page) -->
-                    <% if (tag !== undefined) { %>
+                    <% if (typeof tag !== "undefined") { %>
                             <a href="<%= concatToLink('category', article.category) %>" class="article-category badge badge-primary mr-3">
                                 <%= article.category %>
                             </a>
@@ -42,7 +42,7 @@
                 </h6>
 
                 <!-- Article tags (only for category page) -->
-                <% if (category !== undefined ) { %>
+                <% if (typeof category !== "undefined" ) { %>
                     <h6 class="article-tags d-none d-sm-block">
                         <i class="fas fa-tags mr-2"></i>
                         <% article.tags.forEach((tag) => { %>

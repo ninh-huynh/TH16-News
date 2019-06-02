@@ -91,7 +91,7 @@ module.exports = {
     // Each article have default property as database column
     // and relation property like:
     // .category    : The category name of this article
-    loadByTagLink: (link) => {
+    loadByTagLink: (link, totalRow, rowBegin) => {
         return tag.loadByLink(link)
             .then(tagEntity => {
                 // get all article id with this tagID from tagEntity
@@ -109,7 +109,8 @@ module.exports = {
                 return knex.queryBuilder()
                     .select(['art.*', { category: 'cat.name', categoryPath: 'cat.path' }]).from(subQuery2)
                     .innerJoin(`${CATEGORY._} as cat `, 'art.categoryID', 'cat.id')
-                    .whereIn(ARTICLE.statusID, queryGetPublicId);
+                    .whereIn(ARTICLE.statusID, queryGetPublicId)
+                    .limit(totalRow).offset(rowBegin);
             });
     },
 
@@ -254,5 +255,27 @@ module.exports = {
                         return rows[0].total;
                     });
             });
+    },
+
+    countTotalByTag_public: (tagLink) => {
+        return tag.loadByLink(tagLink)
+            .then(tagEntity => {
+                // get all article id with this tagID from tagEntity
+
+                var subQuery1 = knex.queryBuilder()
+                    .select(ARTICLE_TAG.articleID)
+                    .from(ARTICLE_TAG._)
+                    .where(ARTICLE_TAG.tagID, tagEntity.id);
+
+                var subQuery2 = knex.queryBuilder()
+                    .select()
+                    .from(ARTICLE._)
+                    .whereIn(ARTICLE.id, subQuery1).as('art');
+
+                return knex.queryBuilder()
+                    .select(knex.raw('COUNT(*) AS total')).from(subQuery2)
+                    .whereIn(ARTICLE.statusID, queryGetPublicId);
+            });
     }
+
 };

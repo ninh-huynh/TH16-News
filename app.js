@@ -6,9 +6,9 @@ var logger = require('morgan');
 var expressLayouts = require('express-ejs-layouts');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var categoryRouter = require('./routes/category');
+var tagRouter = require('./routes/tag');
 var searchRouter = require('./routes/search');
 var menu_bar = require('./middleware/menu_bar');
 var form_validate = require('./middleware/form-validate');
@@ -38,7 +38,7 @@ app.use(menu_bar);
 app.use(form_validate);
 app.use('/', indexRouter);
 app.use('/categories', categoryRouter);
-app.use('/users', usersRouter);
+app.use('/tags', tagRouter);
 app.use('/admin', adminRouter);
 app.use('/search', searchRouter);
 
