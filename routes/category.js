@@ -49,7 +49,8 @@ route.get('/:name', (req, res, next) => {
                     res.render('category', obj);
                 })
                 .catch(next);
-        });
+        })
+        .catch(next);
 });
 
 module.exports = route;
