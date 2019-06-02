@@ -41,4 +41,36 @@ $(function () {
     });
     
     //TODO: loginForm, forgotPassForm
+
+    $('#loginForm').validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 5
+            }
+        },
+        messages: {
+            email: {
+                required: 'Hãy nhập địa chỉ email của bạn',
+                email: 'Email không hợp lệ',
+            },
+
+            password: {
+                required: 'Hãy nhập mật khẩu',
+                minlength: 'Mật khẩu phải có độ dài từ 5 kí tự'
+            }
+        },
+        errorClass: 'invalid',
+        validClass: 'valid',
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        }
+    });
 });
