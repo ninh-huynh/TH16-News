@@ -12,7 +12,7 @@ function enableHoverDropdownMenu() {
 }
 
 function SendKeyWordToServer(keyword) {
-    alert('Đang tìm kiếm ' + keyword);
+    
 }
 
 function detectMobile() {

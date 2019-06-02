@@ -1,3 +1,9 @@
+<link rel="stylesheet" href="/stylesheets/tu-khoa-tim-kiem.css">
+
+<%- contentFor('title') %>
+<%= `${keyword} - Tìm kiếm từ khóa` %>   
+
+<%- contentFor('body') %>
    <div class="row">
        <div class="col-auto mt-3">
            <div class="search-filter bg-light px-2 py-3 d-none d-md-block">
@@ -27,7 +33,7 @@
        </div>
 
        <div class="col-md-8 mt-3">
-           <h2 id="key-word"><%- page.keyword %></h2>
+           <h2 id="key-word"><%= keyword %></h2>
            <h5 class="text-muted" id="total-result">n kết quả phù hợp</h5>
 
            <div class="d-flex justify-content-between mt-5">
@@ -35,26 +41,26 @@
                    <option value="mới nhất">Mới nhất</option>
                    <option value="cũ nhất">Cũ nhất</option>
                </select>
-
+                <% var parentCategories = categories; %>
                <select class="custom-select">
                    <option value="tất cả">Tất cả chuyên mục</option>
-                   <option value="thời sự">Thời sự</option>
-                   <option value="thế giới">Thế giới</option>
-                   <option value="giải trí">Giải trí</option>
+                   <% parentCategories.forEach(category => { %>
+                      <option value="<%= category.ID %>"><%= category.name %></option> 
+                   <% }); %>
                </select>
            </div>
 
            <ul class="list-unstyled mt-4" id="article-list">
-               <%# Thay site.posts bằng biến chứa dữ liệu thật khi có csdl %>
-               <% site.posts.forEach((post) => { %>
+               <%# Thay site.articles bằng biến chứa dữ liệu thật khi có csdl %>
+               <% articles.forEach((article) => { %>
                     <li class="my-3 overflow-auto">
-                        <img src="<%- post.head_img %>" class="mr-2 float-left" alt="...">
+                        <img src="<%- article.head_img %>" class="mr-2 float-left" alt="...">
                         <p class="mb-0 article-title">
-                            <a href="<%- url_for(post.path) %>" class="font-weight-bold">
-                                <%- post.title %>
+                            <a href="<%- url_for(article.path) %>" class="font-weight-bold">
+                                <%- article.title %>
                             </a>
                         </p>
-                        <p class="article-summary"><%- post.abstract %></p>
+                        <p class="article-summary"><%- article.summary %></p>
                     </li>
                <% }); %>
            </ul>

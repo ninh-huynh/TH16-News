@@ -3,8 +3,6 @@
         <title> <%- page.tag %> </title>
     <% } else if (is_post()) { %>
         <title> <%- page.title %> </title>
-    <% } else if (path === 'search/index.html') { %>
-        <title> <%- `${page.keyword} - Tìm kiếm từ khóa` %> </title>
     <% } else if (path === 'account-info/index.html') { %>
         <title> <%- 'Thông tin tài khoản' %> </title>
     <% } else if (path === 'new-post/index.html') { %>
