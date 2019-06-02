@@ -1,4 +1,5 @@
 var db = require('../utils/db');
+var knex = db.queryBuilder;
 const tableName = 'USER';
 
 module.exports = {
@@ -17,5 +18,12 @@ module.exports = {
 
     remove: (user) => {
         return db.remove(user, tableName);
+    },
+
+    checkEmailExists: (email) => {
+        return knex.queryBuilder().select().from(tableName).where('email', email)
+            .then(rows => {
+                return rows.length === 1;
+            });
     },
 };

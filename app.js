@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var categoryRouter = require('./routes/category');
 var menu_bar = require('./middleware/menu_bar');
+var form_validate = require('./middleware/form-validate');
 var linkHelper = require('./utils/linkHelper');
 
 var app = express();
@@ -33,6 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));    // set 'public' folder as folder contain static file: css, script, image...
 
 app.use(menu_bar);
+app.use(form_validate);
 app.use('/', indexRouter);
 app.use('/categories', categoryRouter);
 app.use('/users', usersRouter);

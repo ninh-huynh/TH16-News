@@ -11,37 +11,28 @@
             </div>
             <div class="modal-body">
 
-                <form action="" method="post" name="accountForm" id="accountForm" class="needs-validation" novalidate>
+                <form action="" method="post" name="signupForm" id="signupForm" novalidate>
                     <div class="form-group required">
                         <label for="txtFullName">Họ tên</label>
-                        <input type="text" class="form-control" name="fullName" id="txtFullName"
-                            aria-describedby="helpId" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Hãy nhập tên thật của bạn
-                        </div>
+                        <input type="text" class="form-control" name="fullName" id="txtFullName">
+                        
                     </div>
 
                     <div class="form-group required">
                         <label for="txtEmail">Email</label>
-                        <input type="email" class="form-control" name="email" id="txtEmail"
-                            aria-describedby="emailHelpId" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Hãy nhập địa chỉ email
-                        </div>
+                        <input type="email" class="form-control" name="email" id="signupEmail">
+                        
                     </div>
 
                     <div class="form-group required">
                         <label for="newPass">Mật khẩu</label>
-                        <input type="password" class="form-control" name="newPass" id="newPass" placeholder="****" required>
-                        <div class="invalid-feedback">
-                            Hãy nhập mật khẩu
-                        </div>
+                        <input type="password" class="form-control" name="newPass" id="newPass" placeholder="****">
+                        
                     </div>
 
                     <div class="form-group">
                         <label for="txtBirthday">Ngày sinh</label>
-                        <input type="date" name="birthday" id="txtBirthday" class="form-control" placeholder=""
-                            aria-describedby="helpId">
+                        <input type="date" name="birthday" id="txtBirthday" class="form-control">
                     </div>
 
                     <button type="submit" class="btn btn-outline-success float-right">Đăng ký</button>
