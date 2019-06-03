@@ -1,15 +1,91 @@
 $(function () {
+    $('#newPostForm').validate({
+        rules: {
+            title: {
+                required: true,
+                maxlength: 20,
+                remote: {
+                    url: '/check-title-available',
+                    type: 'post',
+                    data: {
+                        title: function () {
+                            return $('#inputTitle').val();
+                        }
+                    }
+                }
+            },
 
+            category: {
+                required: true
+            },
+
+            subCategory: {
+                required: true
+            },
+
+            tag: {
+                pattern: /[\w\s\d]+;/
+            },
+
+            inputAbstract: {
+                required: true,
+                maxlength: 50
+            },
+
+            editor: {
+                required: true,
+                maxlength: 1024
+            }
+
+        },
+        messages: {
+            title: {
+                required: 'Thiếu tiêu đề',
+                maxlength: 'Độ dài tiêu đề tối đa là 20 kí tự',
+                remote: 'Đã có bài viết với tiêu đề này'
+            },
+
+            category: {
+                required: 'Chưa chọn chuyên mục'
+            },
+
+            subCategory: {
+                required: 'Chưa chọn chuyên mục con'
+            },
+
+            tag: {
+                pattern: ''
+            },
+
+            inputAbstract: {
+                required: 'Chưa có tóm tắt',
+                maxlength: 'Nội dung vượt quá 50 kí tự'
+            },
+
+            editor: {
+                required: 'Nội dung không được trống',
+                maxlength: 'Nội dung không được vượt quá 1024 kí tự'
+            }
+        },
+        errorClass: 'invalid',
+        validClass: 'valid',
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        }
+    });
 });
 
-$("#thumbnail").click(function() {
+$("#thumbnail").click(function () {
     $("#replaceThumbnailButton").click();
 });
 
 function readURL(input) {
 
     if (($('#uploadThumbnailButton').is(input))) {
-        
+
         $('#uploadThumbnailFormGroup').removeClass('d-flex').addClass('d-none');
         $('#displayThumbnailFormGroup').removeClass('d-none').addClass('d-flex');
     }
@@ -27,10 +103,10 @@ function readURL(input) {
 }
 
 /* fill select list */
-$('#selectCategory').change(function(event) {
+$('#selectCategory').change(function (event) {
     var values;
 
-    switch($(this).val()) {
+    switch ($(this).val()) {
         case 'Thời sự':
             values = ['Chính trị', 'Giao thông', 'Đô thị'];
             break;
@@ -71,14 +147,14 @@ $('#selectCategory').change(function(event) {
     for (var i = 0; i < values.length; i++) {
         $('#selectSubCategory').append('<option>' + values[i] + '</option>');
     }
-    
+
 });
 
 
 
 // make sure CKEditor toolbar could not be overlapped by navbar
 var myEditor;
-$(window).on('load', function(){ 
+$(window).on('load', function () {
     var navbarHeight = $('#category-menu > .navbar').outerHeight();
 
     ClassicEditor

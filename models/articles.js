@@ -276,6 +276,13 @@ module.exports = {
                     .select(knex.raw('COUNT(*) AS total')).from(subQuery2)
                     .whereIn(ARTICLE.statusID, queryGetPublicId);
             });
-    }
+    },
+
+    checkTitleExits: (title) => {
+        return knex.queryBuilder().select().from(ARTICLE._).where('title', title)
+            .then(rows => {
+                return rows.length === 1;
+            });
+    },
 
 };
