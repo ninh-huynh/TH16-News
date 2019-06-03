@@ -89,5 +89,12 @@ module.exports = {
                         return category;
                     });
             });
+    },
+
+    checkCategoryExits: (name) => {
+        return knex.queryBuilder().select().from('CATEGORY').where('name', name)
+            .then(rows => {
+                return rows.length === 1;
+            });
     }
 };

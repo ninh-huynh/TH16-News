@@ -1,5 +1,53 @@
 var $table = $('#table');
 var parentCategories;
+var validator;
+const validateOption = {
+    rules: {
+        name: {
+            required: true,
+            remote: {
+                url: '/check-category-available',
+                type: 'post',
+                data: {
+                    name: function () {
+                        return $('#inputCategoryName').val();
+                    }
+                }
+            }
+        },
+    },
+
+    messages: {
+        name: {
+            required: 'Chưa nhập tên',
+            remote: 'Đã tồn tại chuyên mục này'
+        }
+    },
+
+    errorElement: 'em',
+
+    errorPlacement: function (error, element) {
+        // Add the `invalid-feedback` class to the error element
+        error.addClass('invalid-feedback');
+        if (element.prop('type') === 'checkbox') {
+            error.insertAfter(element.next('label'));
+        } else {
+            error.insertAfter(element);
+        }
+    },
+
+    highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+
+    unhighlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-valid').removeClass('is-invalid');
+    },
+
+    submitHandler: (form) => {
+        ajaxSubmit(form);
+    },
+};
 
 $(function () {
     // context menu
@@ -24,16 +72,7 @@ $(function () {
     });
 
     /* form validation */
-    'use strict';
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function(form) {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            form.classList.add('was-validated');
-        }, false);
-    });
+    validator = $('#addOrEditCategoryForm').validate(validateOption);
 });
 
 function getIdSelections() {
@@ -192,7 +231,8 @@ $('#add').on('click',function() {
     $('#selectParentCategory option .selected').attr('selected', '');
     $('#selectParentCategory option:contains(""):first').attr('selected', 'selected');
 
-    $('#addOrEditCategoryForm').removeClass('was-validated').attr('novalidate', '');
+    //$('#addOrEditCategoryForm').removeClass('was-validated').attr('novalidate', '');
+    validator.resetForm();
     $('#addOrEditCategoryModal').modal('show');
 });
 
@@ -207,7 +247,6 @@ function editCategory(id) {
     updateModalForm();
     let row = $table.bootstrapTable('getRowByUniqueId', id);
     let options = $('#selectParentCategory option').toArray();
-    let form = $('#addOrEditCategoryForm');
 
     $('#inputCategoryName').val(row.name);
     options.forEach((option, index, arr) => {
@@ -220,75 +259,68 @@ function editCategory(id) {
         }
     });
 
-    $(form).removeClass('was-validated').attr('novalidate', '');
+    // $(form).removeClass('was-validated').attr('novalidate', '');
+    validator.resetForm();
     $('#addOrEditCategoryModal').modal('show');
 }
-'use strict';
-$('#addOrEditCategoryForm').submit( function(e) {
-    let form = $('#addOrEditCategoryForm');
 
-    if(this.checkValidity()) {
-        // Nếu hợp lệ thì để gọi submit mặc định
-        if ($(form).find('button').text().toUpperCase() === 'OK') {     // Cập nhật
-            let ids = getIdSelections();
-            let row = $table.bootstrapTable('getRowByUniqueId', ids[0]);
-            const URL = 'update';
+function ajaxSubmit(form) {
+    if ($(form).find('button').text().toUpperCase() === 'OK') {     // Cập nhật
+        let ids = getIdSelections();
+        let row = $table.bootstrapTable('getRowByUniqueId', ids[0]);
+        const URL = 'update';
 
-            row.name = $('#inputCategoryName').val();
-            row.parentCategory = $('#selectParentCategory').find(':selected').text();
-            row.parentCategoryId = parseInt($('#selectParentCategory').find(':selected').attr('value'));
+        row.name = $('#inputCategoryName').val();
+        row.parentCategory = $('#selectParentCategory').find(':selected').text();
+        row.parentCategoryId = parseInt($('#selectParentCategory').find(':selected').attr('value'));
 
-            $.ajax({
-                url: URL,
-                method: 'put',
-                data: { id: ids[0], name: row.name, parentID: row.parentCategoryId },
-                error: err => console.log(err),
-                success: () => {
-                    $table.bootstrapTable('updateByUniqueId', { id: row.id, row: row });
+        $.ajax({
+            url: URL,
+            method: 'put',
+            data: { id: ids[0], name: row.name, parentID: row.parentCategoryId },
+            error: err => console.log(err),
+            success: () => {
+                $table.bootstrapTable('updateByUniqueId', { id: row.id, row: row });
 
-                    if (row.parentCategoryId === null && parentCategories.some(category => category.id === ids[0])) {
-                        parentCategories.filter(category => category.id === ids[0])[0] = { id: ids[0], name: row.name, parentID: null };
-                    }
+                if (row.parentCategoryId === null && parentCategories.some(category => category.id === ids[0])) {
+                    parentCategories.filter(category => category.id === ids[0])[0] = { id: ids[0], name: row.name, parentID: null };
                 }
-            });
-
-            // uncheck all checked rows
-            for (var i = 0; i < ids.length; i++) {
-                $table.bootstrapTable('updateCellById', { id: ids[i], field: 'state', value: false });
             }
-            $table.bootstrapTable('uncheckAll');
-        }
-        else {      // Thêm mới
-            const URL = '/admin/categories';
-            var parentCategoryOption = $('#selectParentCategory').find(':selected');
-            
-            var row = {
-                parentCategory: parentCategoryOption.text(),
-                parentCategoryId: parentCategoryOption.attr('value') === '' ? null : parseInt(parentCategoryOption.attr('value')),
-                name: $('#inputCategoryName').val()
-            };
+        });
 
-            // send add request
-            $.ajax({
-                url: URL,
-                method: 'post',
-                data: { name: row.name, parentID: row.parentCategoryId },
-                error: err => console.log(err),
-                success: res => {
-                    row.id = res.insertedID;
-                    $table.bootstrapTable('append', [row]);
-                    if (row.parentCategoryId === null) {
-                        parentCategories.push({ id: res.insertedID, name: row.name, parentID: row.parentCategoryId });
-                    }
-                }
-            });
+        // uncheck all checked rows
+        for (var i = 0; i < ids.length; i++) {
+            $table.bootstrapTable('updateCellById', { id: ids[i], field: 'state', value: false });
         }
-        $('#addOrEditCategoryModal').modal('hide');
-    } else {
-        e.preventDefault();
-        e.stopPropagation();
+        $table.bootstrapTable('uncheckAll');
     }
-});
+    else {      // Thêm mới
+        const URL = '/admin/categories';
+        var parentCategoryOption = $('#selectParentCategory').find(':selected');
+            
+        var row = {
+            parentCategory: parentCategoryOption.text(),
+            parentCategoryId: parentCategoryOption.attr('value') === '' ? null : parseInt(parentCategoryOption.attr('value')),
+            name: $('#inputCategoryName').val()
+        };
+
+        // send add request
+        $.ajax({
+            url: URL,
+            method: 'post',
+            data: { name: row.name, parentID: row.parentCategoryId },
+            error: err => console.log(err),
+            success: res => {
+                row.id = res.insertedID;
+                $table.bootstrapTable('append', [row]);
+                if (row.parentCategoryId === null) {
+                    parentCategories.push({ id: res.insertedID, name: row.name, parentID: row.parentCategoryId });
+                }
+            }
+        });
+    }
+    $('#addOrEditCategoryModal').modal('hide');
+}
 
 function removeCategories(ids) {
     const url = 'delete';

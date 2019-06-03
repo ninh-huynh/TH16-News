@@ -15,15 +15,12 @@ Quản lý chuyên mục
         
         <!-- Modal body -->
         <div class="modal-body">
-            <form role="form" class="needs-validation" id="addOrEditCategoryForm" 
+            <form role="form" id="addOrEditCategoryForm" 
             name="category"  novalidate>
                 <div class="form-group row required">
                     <label for="inputCategoryName" class="col-md-4 col-form-label">Tên chuyên mục</label>
                     <div class="col-md-8">
                         <input type="text" class="form-control" name="name" id="inputCategoryName" spellcheck="false" required>
-                        <div class="invalid-feedback">
-                            Chưa nhập tên <i class="fa fa-smile-o"></i>
-                        </div>
                     </div>
                 </div>
 
@@ -31,8 +28,6 @@ Quản lý chuyên mục
                     <label for="selectParentCategory" class="col-md-4 col-form-label">Chuyên mục cha</label>
                     <div class="col-md-8">
                         <select class="form-control" id="selectParentCategory" name="parentID">
-                            <%#TODO: Đổ dữ liệu vào theo định dạng này %>
-                            <%# <option value="id1">Tên chuyên mục cha 1</option> %>
                         </select>
                     </div>
                 </div>
@@ -134,3 +129,5 @@ Quản lý chuyên mục
     </div>
 </div>
 <script src="/javascripts/manage-category.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
