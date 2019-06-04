@@ -1,12 +1,12 @@
 <div class="<%= display %> d-none">
     <div class="h3 bg-primary text-white pl-1">TAGS CLOUD</div>
     <div class="bg-light px-1" style="font-size: 0.9rem;">
-        <% for (const tag in tags) { %>     
-            <a href="<%= concatToLink('tags', tag.name) %>" class="d-inline-block mr-1 text-dark">
+        <% tags.forEach(tag => { %>  
+            <a href="<%= concatToLink(['tags', tag.name]) %>" class="d-inline-block mr-1 text-dark">
                 <%= tag.name %>
             </a>
-        <% } %>
-
+        <% }); %>
+       
         <% if (tags.length === 0) { %>
             <% for (var i = 0; i < 10; i++) { %>
                 <a href="#" class="d-inline-block mr-1 text-dark">

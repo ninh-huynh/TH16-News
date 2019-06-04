@@ -18,7 +18,7 @@
                         <%= article.category %> </a>
                     <%= moment(article.publicationDate).format(publicDateFormat) %>
                 </h6>
-                <a href="<%= concatToLink(article.title) %>" class="text-dark article-title">
+                <a href="<%= concatToLink([article.title]) %>" class="text-dark article-title">
                     <h5 class="card-title"><%= article.title %></h5>
                 </a>
             </div>

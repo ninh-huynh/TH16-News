@@ -19,7 +19,7 @@
             <div class="">
 
                 <!-- Article title  -->
-                <a href="<%= concatToLink(article.title) %>" class="text-dark">
+                <a href="<%= concatToLink([article.title]) %>" class="text-dark">
                     <h5 class="card-title"><%= article.title %></h5>
                 </a>
 
@@ -28,7 +28,7 @@
 
                     <!-- Article category(only for tag page) -->
                     <% if (typeof tag !== "undefined") { %>
-                            <a href="<%= concatToLink('category', article.category) %>" class="article-category badge badge-primary mr-3">
+                            <a href="<%= concatToLink(['categories', article.category]) %>" class="article-category badge badge-primary mr-3">
                                 <%= article.category %>
                             </a>
                     <% }; %>
@@ -46,7 +46,7 @@
                     <h6 class="article-tags d-none d-sm-block">
                         <i class="fas fa-tags mr-2"></i>
                         <% article.tags.forEach((tag) => { %>
-                            <a href="<%= concateToLink('tags', tag.name) %>" class="badge badge-dark">
+                            <a href="<%= concatToLink(['tags', tag.name]) %>" class="badge badge-dark">
                                 <%= tag.name %>
                             </a>
                         <% }); %>

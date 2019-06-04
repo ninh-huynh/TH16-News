@@ -20,7 +20,7 @@
                                     <a href="<%= article.categoryPath %>" class="badge badge-primary mr-3"><%= article.category %></a>
                                     <%= moment(article.publicationDate).format(publicDateFormat) %>
                                 </h6>
-                                <a href="<%= concatToLink(article.title) %>" class="text-light article-title">
+                                <a href="<%= concatToLink([article.title]) %>" class="text-light article-title">
                                     <h3><%= article.title %></h3>
                                 </a>
                             </div>
@@ -60,7 +60,7 @@
                         <a href="<%= article.categoryPath %>" class="badge badge-info mr-3"><%= article.category %></a>
                         <%= moment(article.publicationDate).format(publicDateFormat) %>
                     </h6>
-                    <a href="<%= concatToLink(article.title) %>" class="text-light article-title">
+                    <a href="<%= concatToLink([article.title]) %>" class="text-light article-title">
                         <h5><%= article.title %></h5>
                     </a>
                 </div>

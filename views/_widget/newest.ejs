@@ -13,7 +13,7 @@
                 <img data-src="<%= article.coverImageURL %>" class="align-self-center mr-3 lazyload"
                     alt="...">
                 <div class="media-body align-self-center">
-                    <a href="<%= concatToLink(article.title) %>" class="text-dark article-title">
+                    <a href="<%= concatToLink([article.title]) %>" class="text-dark article-title">
                         <h6><%= article.title %></h6>
                     </a>
 
