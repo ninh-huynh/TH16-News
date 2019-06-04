@@ -24,7 +24,7 @@ route.get('/:name', (req, res, next) => {
     article.countTotalByCategory_public(categoryPath)
         .then(total => {
             totalArticle = total;
-            totalPage = totalArticle / articlePerPage;
+            totalPage = Math.floor(totalArticle / articlePerPage);
 
             if (totalArticle % articlePerPage != 0) { totalPage++; }
 
@@ -36,7 +36,7 @@ route.get('/:name', (req, res, next) => {
             };
 
             if (current === 1) { page.prev = 0; }
-            else if (current === totalPage) { page.next = 0; }
+            if (current === totalPage) { page.next = 0; }
 
             Promise.all([categories.loadByLink(categoryPath),
                 article.loadByCategoryLink(categoryPath, articlePerPage, (current - 1) * articlePerPage)])
