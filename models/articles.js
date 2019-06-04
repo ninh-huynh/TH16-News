@@ -91,8 +91,8 @@ module.exports = {
     // Each article have default property as database column
     // and relation property like:
     // .category    : The category name of this article
-    loadByTagLink: (link, totalRow, rowBegin) => {
-        return tag.loadByLink(link)
+    loadByTagName: (name, totalRow, rowBegin) => {
+        return tag.loadByName(name)
             .then(tagEntity => {
                 // get all article id with this tagID from tagEntity
 
@@ -257,8 +257,8 @@ module.exports = {
             });
     },
 
-    countTotalByTag_public: (tagLink) => {
-        return tag.loadByLink(tagLink)
+    countTotalByTag_public: (tagName) => {
+        return tag.loadByName(tagName)
             .then(tagEntity => {
                 // get all article id with this tagID from tagEntity
 
@@ -274,7 +274,10 @@ module.exports = {
 
                 return knex.queryBuilder()
                     .select(knex.raw('COUNT(*) AS total')).from(subQuery2)
-                    .whereIn(ARTICLE.statusID, queryGetPublicId);
+                    .whereIn(ARTICLE.statusID, queryGetPublicId)
+                    .then(rows => {
+                        return rows[0].total;
+                    });
             });
     },
 

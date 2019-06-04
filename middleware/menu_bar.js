@@ -9,7 +9,7 @@ router.use((req, res, next) => {
             //truy xuất trực tiếp được từ view bất kỳ
             res.locals.categories = rows;
             res.locals.isHome = false;
-            res.locals.category = null;
+            res.locals.category = undefined;
             next();     // Chuyển tiếp đến router thật sự (nếu có) hoặc chuyển đến router xử lý lỗi
         })
         .catch(err => {

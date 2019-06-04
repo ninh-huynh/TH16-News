@@ -21,7 +21,7 @@
                 <% }; %>
                 <% var currentCategory = category; %>
                 <% categories.forEach(category => { %>
-                    <% if ((currentCategory !== null) && (currentCategory.id === category.id || currentCategory.parentID === category.id)) { %>
+                    <% if ((currentCategory !== undefined) && (currentCategory.id === category.id || currentCategory.parentID === category.id)) { %>
                     <li class="nav-item dropdown active" id="<%= category.id %>">
                         <a class="nav-link dropdown-toggle" href="<%= category.path %>" id="dropdownId"><%= category.name %></a>
                         <div class="dropdown-menu">

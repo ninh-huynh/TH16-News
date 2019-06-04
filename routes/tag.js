@@ -9,8 +9,8 @@ var totalPage;                  // calculate later
 
 route.get('/:name', (req, res, next) => {
     var tagName = req.params.name;
-    var tagPath = '/tags/' + tagName;
-
+    tagName = tagName.replace(/-/g, ' ');
+        
     var current;
     if (req.query.page === undefined) {
         current = 1;            // default page is page number 1
@@ -21,7 +21,7 @@ route.get('/:name', (req, res, next) => {
             next(new Error('404 not found'));
     }
 
-    article.countTotalByTag_public(tagPath)
+    article.countTotalByTag_public(tagName)
         .then(total => {
             totalArticle = total;
             totalPage = totalArticle / articlePerPage;
@@ -38,8 +38,8 @@ route.get('/:name', (req, res, next) => {
             if (current === 1) { page.prev = 0; }
             else if (current === totalPage) { page.next = 0; }
 
-            Promise.all([tagModel.loadByLink(tagPath),
-                article.loadByTagLink(tagPath, articlePerPage, (current - 1) * articlePerPage)])
+            Promise.all([tagModel.loadByName(tagName),
+                article.loadByTagName(tagName, articlePerPage, (current - 1) * articlePerPage)])
                 .then(([tagEntity, articles]) => {
                     var obj = {
                         articles: articles,

@@ -10,16 +10,14 @@ var ARTICLE_TAG = th16_news.ARTICLE_TAG;
 module.exports = {
     //TODO: add pagination
     load: () => {
-        return db.load(`
-        SELECT t.*
-        FROM ${TAG._} AS t`);
+        return knex.queryBuilder().select().from('TAG');
     },
 
-    loadByLink: (link) => {
-        return knex.queryBuilder().select().from('TAG').where('path', link)
+    loadByName: (name) => {
+        return knex.queryBuilder().select().from('TAG').where('name', name)
             .then(rows => {
                 if (rows.length === 0)
-                    throw new Error(`${link} not found!`);
+                    throw new Error(`Tag ${name} not found!`);
                 return rows[0];
             });
     },
