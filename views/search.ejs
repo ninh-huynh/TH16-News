@@ -54,9 +54,9 @@
                <%# Thay site.articles bằng biến chứa dữ liệu thật khi có csdl %>
                <% articles.forEach((article) => { %>
                     <li class="my-3 overflow-auto">
-                        <img src="<%- article.head_img %>" class="mr-2 float-left" alt="...">
+                        <img src="<%- article.coverImageURL %>" class="mr-2 float-left" alt="...">
                         <p class="mb-0 article-title">
-                            <a href="<%- url_for(article.path) %>" class="font-weight-bold">
+                            <a href="<%- concatToLink([article.title]) %>" class="font-weight-bold">
                                 <%- article.title %>
                             </a>
                         </p>
@@ -68,22 +68,5 @@
 
        </div>
    </div>
-   <nav aria-label="...">
-       <ul class="pagination justify-content-center">
-           <li class="page-item disabled">
-               <span class="page-link">Previous</span>
-           </li>
-           <li class="page-item active">
-               <span class="page-link">
-                   1
-               </span>
-           </li>
-           <li class="page-item"><a href="#" class="page-link">2</a>
-
-           </li>
-           <li class="page-item"><a class="page-link" href="#">3</a></li>
-           <li class="page-item">
-               <a class="page-link" href="#">Next</a>
-           </li>
-       </ul>
-   </nav>
+   <%- include('_partial/paginator') %>
+   <script src="/javascripts/tu-khoa-tim-kiem.js"></script>

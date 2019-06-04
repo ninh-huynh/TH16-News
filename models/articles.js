@@ -288,4 +288,23 @@ module.exports = {
             });
     },
 
+    searchByTitle: (title, totalRow, rowBegin) => {
+        return knex.queryBuilder()
+            .select()
+            .from('ARTICLE')
+            .whereIn(ARTICLE.statusID, queryGetPublicId)
+            .andWhereRaw(`match(title) against('${title}')`)
+            .limit(totalRow).offset(rowBegin);  
+    },
+
+    countTotalByTitle: (title) => {
+        return knex.queryBuilder()
+            .select(knex.raw('COUNT(*) AS total'))
+            .from('ARTICLE')
+            .whereIn(ARTICLE.statusID, queryGetPublicId)
+            .andWhereRaw(`match(title) against('${title}')`)
+            .then(rows => {
+                return rows[0].total;
+            });
+    }
 };
