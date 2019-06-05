@@ -2,10 +2,9 @@ var express = require('express');
 var route = express.Router();
 var article = require('../models/articles');
 var tagModel = require('../models/tags');
+var paginator = require('../utils/paginator');
 
 const articlePerPage = 5;       // define favorite number here.
-var totalArticle;               // get from database
-var totalPage;                  // calculate later
 
 route.get('/:name', (req, res, next) => {
     var tagName = req.params.name;
@@ -21,34 +20,21 @@ route.get('/:name', (req, res, next) => {
             next(new Error('404 not found'));
     }
 
+    var page;
     article.countTotalByTag_public(tagName)
-        .then(total => {
-            totalArticle = total;
-            totalPage = Math.floor(totalArticle / articlePerPage);
+        .then(totalArticle => {
+            page = paginator.get(current, totalArticle, articlePerPage);
 
-            if (totalArticle % articlePerPage != 0) { totalPage++; }
-
-            var page = {
-                current: current,
-                total: totalPage,
-                next: current + 1,
-                prev: current - 1
+            return Promise.all([tagModel.loadByName(tagName),
+                article.loadByTagName(tagName, articlePerPage, (current - 1) * articlePerPage)]);
+        })
+        .then(([tagEntity, articles]) => {
+            var obj = {
+                articles: articles,
+                tag: tagEntity,
+                page: page
             };
-
-            if (current === 1) { page.prev = 0; }
-            if (current === totalPage) { page.next = 0; }
-
-            Promise.all([tagModel.loadByName(tagName),
-                article.loadByTagName(tagName, articlePerPage, (current - 1) * articlePerPage)])
-                .then(([tagEntity, articles]) => {
-                    var obj = {
-                        articles: articles,
-                        tag: tagEntity,
-                        page: page
-                    };
-                    res.render('tag', obj);
-                })
-                .catch(next);
+            res.render('tag', obj);
         })
         .catch(next);
 });
