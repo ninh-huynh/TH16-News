@@ -8,11 +8,8 @@ var article = require('./articles');
 module.exports = {
     //TODO: add pagination
     loadByArticle: (id) => {
-        return db.load(`
-            SELECT c.*
-            FROM ${COMMENT._} AS c
-            WHERE c.articleID = ${id}
-        `);
+        return knex.queryBuilder().select().from('COMMENT').where('articleID', id);
+        
     },
 
     loadByArticleLink: (link) => {

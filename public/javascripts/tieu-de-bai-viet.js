@@ -28,7 +28,7 @@ function addComment() {
         .addClass('font-weight-bold');
     var div_opinion = $('<div></div>').text(txtComment);
 
-    var div_time = $('<div></div>').text(currentDate.toLocaleString())
+    var div_time = $('<div></div>').text(moment(currentDate).format('HH:mm DD-MM-YYYY'))
         .addClass('float-right text-muted');
 
     var list_group_item = $('<li></li>').append(div_name, div_opinion, div_time)

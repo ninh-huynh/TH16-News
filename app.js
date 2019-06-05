@@ -10,6 +10,7 @@ var adminRouter = require('./routes/admin');
 var categoryRouter = require('./routes/category');
 var tagRouter = require('./routes/tag');
 var searchRouter = require('./routes/search');
+var articleRouter = require('./routes/article');
 var menu_bar = require('./middleware/menu_bar');
 var form_validate = require('./middleware/form-validate');
 var linkHelper = require('./utils/linkHelper');
@@ -41,6 +42,7 @@ app.use('/categories', categoryRouter);
 app.use('/tags', tagRouter);
 app.use('/admin', adminRouter);
 app.use('/search', searchRouter);
+app.use(articleRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

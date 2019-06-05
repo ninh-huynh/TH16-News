@@ -96,5 +96,25 @@ module.exports = {
             .then(rows => {
                 return rows.length === 1;
             });
-    }
+    },
+
+    loadByIdIncludeParent: (id) => {
+        var categoryEntity;
+        return knex.queryBuilder()
+            .select()
+            .from('CATEGORY')
+            .where('id', id)
+            .then(rows => {
+                if (rows.length === 0)
+                    throw new Error(`The category with id ${id} not found!`);
+                categoryEntity = rows[0];
+                return knex.queryBuilder().select().from('CATEGORY').where('id', categoryEntity.parentID);
+            })
+            .then(rows => {
+                if (rows.length === 0)
+                    return undefined;
+                categoryEntity.parent = rows[0];
+                return categoryEntity;
+            });
+    },
 };

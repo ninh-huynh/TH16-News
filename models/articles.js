@@ -40,43 +40,6 @@ module.exports = {
             WHERE art.categoryID = ${id} AND art.statusID = 4`);
     },
 
-    // Return article array (only public artcile, for guest, subscriber viewers)
-    // Each article have default property as database column
-    // and relation property like:
-    // .tags    : The tags array
-    loadByCategoryLink: (link, totalRow, rowBegin) => {
-        return categories.loadByLink(link)
-            .then(categoryEntity => {
-                return knex.queryBuilder()
-                    .select()
-                    .from(ARTICLE._)
-                    .where((builder) => {
-                        builder.whereIn('statusID', queryGetPublicId);
-                    })
-                    .andWhere({ categoryID: categoryEntity.id })
-                    .limit(totalRow).offset(rowBegin)
-                    .then(rows => {
-                        // these article rows didn't include tags property
-                        // Below code will add the tags property to each row
-
-                        var promises = [];
-                        rows.forEach((row, index) => {
-                            promises[index] = tag.loadByArticle(row.id);
-                        });
-
-                        return Promise.all(promises)
-                            .then((tagRowsArr) => {
-                                rows.forEach((row, index) => {
-                                    row.tags = tagRowsArr[index];     // add tags property
-                                });
-
-                                // Final result: all article with the tags property included
-                                return rows;
-                            });
-                    });
-            });
-    },
-
     //TODO: add pagination
     loadByTag: (id) => {
         return db.load(`
@@ -173,7 +136,8 @@ module.exports = {
             .select(['art.*', 'cat.name as category', 'cat.path as categoryPath'])
             .from(queryMostView)
             .join(`${ARTICLE._} as art`, 'most_view.articleId', 'art.id')
-            .join(`${CATEGORY._} as cat`, 'art.categoryID', 'cat.id');
+            .join(`${CATEGORY._} as cat`, 'art.categoryID', 'cat.id')
+            .whereIn(ARTICLE.statusID, queryGetPublicId);
     },
 
 
@@ -181,6 +145,7 @@ module.exports = {
         var queryTopCatID = knex.queryBuilder()
             .select(knex.raw('MAX(publicationDate) as date'))
             .from(ARTICLE._)
+            .whereIn(ARTICLE.statusID, queryGetPublicId)
             .groupBy('categoryID');
 
         var queryTopCat = knex.queryBuilder()
@@ -217,7 +182,7 @@ module.exports = {
             .whereIn('id', queryMostViewArticleID)
             .andWhereBetween('publicationDate', [begin.format(sqlDateFormat), end.format(sqlDateFormat)])
             .as('art');
-        
+
         return knex.queryBuilder()
             .select('art.*', 'cat.name as category', 'cat.path as categoryPath')
             .from(queryWeekly)
@@ -239,22 +204,6 @@ module.exports = {
 
     addTag: (tagID, articleID) => {
         return db.add({ tagID, articleID }, 'article_tag');
-    },
-
-    countTotalByCategory_public: (categoryLink) => {
-        return categories.loadByLink(categoryLink)
-            .then(categoryEntity => {
-                return knex.queryBuilder()
-                    .select(knex.raw('COUNT(*) AS total'))
-                    .from(ARTICLE._)
-                    .where((builder) => {
-                        builder.whereIn('statusID', queryGetPublicId);
-                    })
-                    .andWhere({ categoryID: categoryEntity.id })
-                    .then(rows => {
-                        return rows[0].total;
-                    });
-            });
     },
 
     countTotalByTag_public: (tagName) => {
@@ -288,13 +237,13 @@ module.exports = {
             });
     },
 
-    searchByTitle: (title, totalRow, rowBegin) => {
+    searchByKeyword: (keyword, totalRow, rowBegin) => {
         return knex.queryBuilder()
             .select()
             .from('ARTICLE')
             .whereIn(ARTICLE.statusID, queryGetPublicId)
-            .andWhereRaw(`match(title) against('${title}')`)
-            .limit(totalRow).offset(rowBegin);  
+            .andWhereRaw(`match(title) against('${keyword}')`)
+            .limit(totalRow).offset(rowBegin);
     },
 
     countTotalByTitle: (title) => {
@@ -306,5 +255,95 @@ module.exports = {
             .then(rows => {
                 return rows[0].total;
             });
-    }
+    },
+
+    searchByTitle: (title) => {
+        var articleEntity;
+        return knex.queryBuilder()
+            .select('a.*', 'u.nickName as writer')
+            .from('ARTICLE as a')
+            .whereIn(ARTICLE.statusID, queryGetPublicId).andWhere('title', title)
+            .join('USER as u', 'a.writerID', 'u.id')
+            .then(rows => {
+                if (rows.length === 0)
+                    throw new Error(`${title} is not found`);
+                articleEntity = rows[0];
+
+                var pLoadCategory = categories.loadByIdIncludeParent(articleEntity.categoryID);
+                var pLoadTags = tag.loadByArticle(articleEntity.id);
+                var pLoadComments = comment.loadByArticle(articleEntity.id);
+                return Promise.all([pLoadCategory, pLoadTags, pLoadComments]);
+            })
+            .then(([category, tags, comments]) => {
+                articleEntity.category = category;
+                articleEntity.tags = tags;
+                articleEntity.comments = comments;
+                return articleEntity;
+            });
+    },
+
+    loadBySameCategory: (articleEntity) => {
+        var categoryID = articleEntity.categoryID;
+        return knex.queryBuilder()
+            .select()
+            .from('ARTICLE')
+            .whereIn(ARTICLE.statusID, queryGetPublicId)
+            .andWhere('categoryID', categoryID)
+            .andWhereNot('id', articleEntity.id);
+    },
+
+    countTotalByCategory: (entity) => {
+        return knex.queryBuilder()
+            .select(knex.raw('COUNT(*) AS total'))
+            .from(ARTICLE._)
+            .whereIn('statusID', queryGetPublicId)
+            .andWhere(function () {
+                var categoryIDs = [];
+                categoryIDs.push(entity.id);
+                entity.child.forEach(category => {
+                    categoryIDs.push(category.id);
+                });
+
+                this.whereIn('categoryID', categoryIDs);
+            })
+            .then(rows => {
+                return rows[0].total;
+            });
+    },
+
+    loadByCategoryEntity: (entity, totalRow, rowBegin) => {
+        var articles;
+        return knex.queryBuilder()
+            .select()
+            .from(ARTICLE._)
+            .whereIn('statusID', queryGetPublicId)
+            .andWhere(function () {
+                var categoryIDs = [];
+                categoryIDs.push(entity.id);
+                entity.child.forEach(category => {
+                    categoryIDs.push(category.id);
+                });
+
+                this.whereIn('categoryID', categoryIDs);
+            })
+            .limit(totalRow).offset(rowBegin)
+            .then(rows => {
+                articles = rows;
+
+                var promises = [];
+                rows.forEach((row, index) => {
+                    promises[index] = tag.loadByArticle(row.id);
+                });
+
+                return Promise.all(promises);
+            })
+            .then((tagRowsArr) => {
+                articles.forEach((row, index) => {
+                    row.tags = tagRowsArr[index];     // add tags property
+                });
+
+                // Final result: all article with the tags property included
+                return articles;
+            });
+    },
 };

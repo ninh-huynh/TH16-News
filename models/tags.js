@@ -23,12 +23,15 @@ module.exports = {
     },
 
     loadByArticle: (id) => {
-        return db.load(`
-        SELECT  t.*
-        FROM (article_tag AS at
-        JOIN ${TAG._} AS t ON at.tagID = t.id) 
-        WHERE articleID = ${id}
-        `);
+        var subQuery1 = knex.queryBuilder()
+            .select('tagID')
+            .from('ARTICLE_TAG')
+            .where('articleID', id);
+       
+        return knex.queryBuilder()
+            .select()
+            .from('tag')
+            .whereIn('id', subQuery1);
     },
 
     loadByArticleLink: (link) => {
