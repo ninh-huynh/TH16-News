@@ -24,14 +24,40 @@ function addComment() {
         return;
     }
 
-    var div_name = $('<div></div>').text(txtName)
-        .addClass('font-weight-bold');
-    var div_opinion = $('<div></div>').text(txtComment);
+    var postURL = window.location.pathname.concat('/comment');
+    var comment = {
+        readerName: txtName,
+        content: txtComment,
+        date: moment(currentDate).format('YYYY-MM-DD HH:mm:ss'),
+        articleTitle: window.location.pathname.substr(1)
+    };
 
-    var div_time = $('<div></div>').text(moment(currentDate).format('HH:mm DD-MM-YYYY'))
-        .addClass('float-right text-muted');
+    new Promise((resolve, reject) => {
+        $.post(postURL, comment,
+            function (data, textStatus, jqXHR) {
+                if (textStatus === 'success')
+                    resolve(textStatus);
+                else
+                    reject(data);
+            }
+        );
+    })
+        .then(result => {
+            var div_name = $('<div></div>').text(txtName)
+                .addClass('font-weight-bold');
+            var div_opinion = $('<div></div>').text(txtComment);
 
-    var list_group_item = $('<li></li>').append(div_name, div_opinion, div_time)
-        .addClass('list-group-item');
-    $('#comment-ul').prepend(list_group_item);
+            var div_time = $('<div></div>').text(moment(currentDate).format('HH:mm DD-MM-YYYY'))
+                .addClass('float-right text-muted');
+
+            var list_group_item = $('<li></li>').append(div_name, div_opinion, div_time)
+                .addClass('list-group-item');
+            $('#comment-ul').prepend(list_group_item);
+        })
+        .catch(err => {
+            // err: MySQL error
+            
+            $('#my-alert').removeClass('d-none');
+            $('#alert-message').text(err.code);
+        });
 }
