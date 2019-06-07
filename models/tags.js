@@ -30,7 +30,7 @@ module.exports = {
        
         return knex.queryBuilder()
             .select()
-            .from('tag')
+            .from('TAG')
             .whereIn('id', subQuery1);
     },
 
@@ -51,18 +51,18 @@ module.exports = {
     },
 
     loadById: (id) => {
-        return knex(TAG).where('id', id).select();
+        return knex('TAG').where('id', id).select();
     },
 
     add: (newTag) => {
-        return db.add(newTag, TAG);
+        return db.add(newTag, 'TAG');
     },
 
     update: (tag) => {
-        return db.update(tag, TAG);
+        return db.update(tag, 'TAG');
     },
 
     remove: (tag) => {
-        return db.remove(tag, TAG);
+        return db.remove(tag, 'TAG');
     },
 };
