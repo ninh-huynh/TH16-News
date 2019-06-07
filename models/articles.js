@@ -237,21 +237,22 @@ module.exports = {
             });
     },
 
-    searchByKeyword: (keyword, totalRow, rowBegin) => {
+    searchByKeyword: (columnName, keyword, totalRow, rowBegin, sortOrder) => {
         return knex.queryBuilder()
             .select()
             .from('ARTICLE')
             .whereIn(ARTICLE.statusID, queryGetPublicId)
-            .andWhereRaw(`match(title) against('${keyword}')`)
+            .andWhereRaw(`match(${columnName}) against('${keyword}')`)
+            .orderBy('publicationDate', sortOrder)
             .limit(totalRow).offset(rowBegin);
     },
 
-    countTotalByTitle: (title) => {
+    countTotalByTitle: (columnName, title) => {
         return knex.queryBuilder()
             .select(knex.raw('COUNT(*) AS total'))
             .from('ARTICLE')
             .whereIn(ARTICLE.statusID, queryGetPublicId)
-            .andWhereRaw(`match(title) against('${title}')`)
+            .andWhereRaw(`match(${columnName}) against('${title}')`)
             .then(rows => {
                 return rows[0].total;
             });

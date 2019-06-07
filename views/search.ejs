@@ -10,20 +10,19 @@
                <div class="font-weight-light">
                    <div class="text-uppercase font-weight-bold">Chế độ tìm kiếm</div>
                    <div class="form-check">
-                       <input class="form-check-input" type="radio" id="exactly" name="search-mode" value="chính xác"
-                           checked>
+                       <input class="form-check-input" type="radio" id="exactly" name="search-mode" value="summary"<%= type==='summary'?' checked':''%>>
                        <label class="form-check-label" for="exactly">
                            Tìm chính xác
                        </label>
                    </div>
                    <div class="form-check">
-                       <input class="form-check-input" type="radio" id="expand" name="search-mode" value="mở rộng">
+                       <input class="form-check-input" type="radio" id="expand" name="search-mode" value="content"<%= type==='content'?' checked':''%>>
                        <label class="form-check-label" for="expand">
                            Tìm mở rộng
                        </label>
                    </div>
                    <div class="form-check">
-                       <input class="form-check-input" type="radio" id="title" name="search-mode" value="tiêu đề">
+                       <input class="form-check-input" type="radio" id="title" name="search-mode" value="title"<%= type==='title'?' checked':''%>>
                        <label class="form-check-label" for="title">
                            Tiêu đề
                        </label>
@@ -31,21 +30,21 @@
                </div>
            </div>
        </div>
-
+       <% var n = articles.length; %>
        <div class="col-md-8 mt-3">
            <h2 id="key-word"><%= keyword %></h2>
-           <h5 class="text-muted" id="total-result">n kết quả phù hợp</h5>
+           <h5 class="text-muted" id="total-result"><%= n %> kết quả phù hợp</h5>
 
            <div class="d-flex justify-content-between mt-5">
-               <select class="custom-select">
-                   <option value="mới nhất">Mới nhất</option>
-                   <option value="cũ nhất">Cũ nhất</option>
+               <select class="custom-select" id="sort">
+                   <option value=""<%= sortOrder === 'DESC'?' selected' : ''%>>Mới nhất</option>
+                   <option value="ASC"<%= sortOrder === 'ASC' ? 'selected' : ''%>>Cũ nhất</option>
                </select>
                 <% var parentCategories = categories; %>
-               <select class="custom-select">
+               <select class="custom-select" id="category">
                    <option value="tất cả">Tất cả chuyên mục</option>
                    <% parentCategories.forEach(category => { %>
-                      <option value="<%= category.ID %>"><%= category.name %></option> 
+                      <option value="<%= category.name %>"><%= category.name %></option> 
                    <% }); %>
                </select>
            </div>
@@ -56,7 +55,7 @@
                     <li class="my-3 overflow-auto">
                         <img src="<%- article.coverImageURL %>" class="mr-2 float-left" alt="...">
                         <p class="mb-0 article-title">
-                            <a href="<%- concatToLink([article.title]) %>" class="font-weight-bold">
+                            <a href="<%- concatToLink([article.title]) %>" class="font-weight-bold article-title">
                                 <%- article.title %>
                             </a>
                         </p>
