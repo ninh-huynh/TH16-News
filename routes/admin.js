@@ -3,18 +3,20 @@ var router = express.Router();
 var category = require('../models/categories');           // import category model
 var userModel = require('../models/users');
 var linkHelper = require('../utils/linkHelper');
+var moment = require('moment');
+var userRoleModel = require('../models/user_role');
 
 // handle read category
 router.get('/categories', function (req, res, next) {
     // render file path auto prefix with /views/
     // override default 'main' layout, use 'manage' layout
-    res.render('admin/categories', { layout: 'layouts/manage' }); 
+    res.render('admin/categories', { layout: 'layouts/manage' });
 });
 
 router.get('/categories/load', (req, res, next) => {
     let promise;
 
-    switch(req.query.load) {
+    switch (req.query.load) {
     case 'all':
         promise = category.load();
         break;
@@ -31,7 +33,7 @@ router.get('/categories/load', (req, res, next) => {
 
     promise
         .then(rows => {
-            res.send(rows); 
+            res.send(rows);
         })
         .catch(err => {
             console.log(err);
@@ -68,7 +70,7 @@ router.post('/categories', function (req, res, next) {
         // parentID: parseInt(req.body.parentID) //TODO: set the <option value="id">  this id is the category id.
         path: linkHelper.concatToLink(['categories', req.body.name])
     };
-    
+
     var promise = category.add(newCategory);
 
     promise
@@ -110,13 +112,52 @@ router.put('/categories/update', (req, res, next) => {
 // get('/posts')
 // get('/users') may be later, didn't have User table yet.
 router.get('/users', (req, res, next) => {
-    res.render('admin/users', { layout: 'layouts/manage' }); 
+    res.render('admin/users', { layout: 'layouts/manage' });
 });
 
 router.get('/users/load', (req, res, next) => {
-    userModel.load()
-        .then(rows => {
-            res.send(rows);
+    var offset = parseInt(req.query.offset);
+    var limit = parseInt(req.query.limit);
+
+    var filter = req.query.filter;
+    var role;
+    if (filter !== undefined) { role = filter.role; }
+    var search = req.query.search;
+    var order = req.query.order;
+    var sort = req.query.sort;
+
+    Promise.all([userModel.countTotal(), userModel.load(limit, offset)])
+        .then(([total, rows]) => {
+            var obj = {
+                total,
+                rows,
+            };
+            res.send(obj);
+        })
+        .catch((err1, err2) => {
+            console.log(err1);
+            console.log(err2);
+        });
+});
+
+router.post('/users/add', (req, res, next) => {
+    var newUser = req.body;
+    
+    var dob = moment(newUser.dayOfBirth, 'DD/MM/YYYY');
+    newUser.dayOfBirth = dob.format('YYYY-MM-DD');
+    var defaultPassword = dob.format('DDMMYYYY');
+
+    userModel.add(newUser)
+        .then(affectedRows => {
+            return userRoleModel.getName(newUser.roleID);
+        }).catch(err => {
+            res.send({err});
+        })
+        .then(roleName => {
+            newUser.role = roleName;
+            newUser.password = defaultPassword;
+            
+            res.send({newUser});
         });
 });
 

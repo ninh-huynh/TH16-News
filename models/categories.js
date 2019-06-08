@@ -21,7 +21,7 @@ function loadChild(parentId) {
 }
 
 module.exports = {
-    load: () => knex.select().from(tableName).groupBy('name', 'parentID'),
+    load: () => knex.select().from(tableName),
 
     loadChild: (parentID) => loadChild(parentID),
 
