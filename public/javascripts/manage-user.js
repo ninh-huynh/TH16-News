@@ -166,11 +166,13 @@ $('#table').on('contextmenu', 'tr',  function(e) {
 
     // item click handler
     // remove event handler
-    $('#removeItem').click( function(e) {
-        $table.bootstrapTable('remove', {
-            field: 'id',
-            values: ids
-        });
+    $('#removeItem').click(function (e) {
+        console.log('remove clicked');
+        
+        // $table.bootstrapTable('remove', {
+        //     field: 'id',
+        //     values: ids
+        // });
     });
 });
 
