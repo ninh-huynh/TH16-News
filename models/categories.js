@@ -21,7 +21,6 @@ function loadChild(parentId) {
 }
 
 module.exports = {
-<<<<<<< HEAD
     load: (limit, offset) => {
         let t2 = knex(tableName)
             .select('*')
@@ -58,9 +57,6 @@ module.exports = {
                 .offset(offset),
         ]);
     },
-=======
-    load: () => knex.select().from(tableName),
->>>>>>> cf5b75f15e0a314daab5cf1542bfbdbb071c7f4d
 
     loadChild: (parentID) => loadChild(parentID),
 
