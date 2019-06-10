@@ -1,7 +1,68 @@
 <link rel="stylesheet" href="/stylesheets/manage-user.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css">
+
 <%- contentFor('title') %>
 Quản lý người dùng
 <%- contentFor('body') %>
+
+<!--Alert notify -->
+
+<div id="alert-container" class="mt-3">
+    <!-- Error -->
+    
+    <!-- Added successfull -->
+
+    <!-- Delete successfull -->
+   
+    <!-- Update successfull -->
+</div>
+
+<!-- Modal -->
+
+    <!-- Add user modal-->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="addUserForm">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thông tin nhân viên mới</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                    <div class="form-group">
+                        <label for="role">Loại nhân viên</label>
+                        <select class="custom-select" name="roleID" id="role">
+                            <option value="2" selected>Phóng viên</option>
+                            <option value="3">Biên tập viên</option>
+                            <option value="4">Quản trị viên</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" class="form-control" name="email" id="email">
+                    </div>
+                    <div class="form-group">
+                      <label for="name">Họ và tên</label>
+                      <input type="text" class="form-control" name="name" id="name">
+                    </div>
+                    <div class="form-group">
+                      <label for="dayOfBirth">Ngày sinh</label>
+                      <input type="text" class="form-control" name="dayOfBirth" id="dayOfBirth" placeholder="dd/mm/yyyy">
+                    </div>
+              </div>
+              <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Cấp tài khoản</button>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+
+    <!--Update user info modal -->
+
+
 <div class="row justify-content-around">
     <div class="col-lg-1 p-0">
         <div id="mySidenav" class="sticky-top">
@@ -70,13 +131,6 @@ Quản lý người dùng
                             </div> 
                         </div>
                         
-                        <!-- context menu -->
-                        <div class="dropdown-menu dropdown-menu-sm " id="context-menu" style="z-index: 1051;">
-                            <a class="dropdown-item" id="editItem">Chỉnh Sửa</a>
-                            <a class="dropdown-item" id="removeItem">Xóa</a>
-                            <a class="dropdown-item" id="assign">Phân công</a>
-                            <a class="dropdown-item" id="renew">Gia hạn</a>
-                        </div>
                     </table>
                 </div>
             </div>
@@ -86,4 +140,13 @@ Quản lý người dùng
 
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
+
+<!-- Context menu -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.ui.position.min.js"></script>
+
+
 <script src="/javascripts/manage-user.js"></script>

@@ -1,64 +1,117 @@
 var $table = $('#table');
-var tableData = [{ 'id': 1, 'name': 'Người dùng 1', 'date': '1-1-2019', 'role': 'đọc giả', },
-    { 'id': 2, 'name': 'Người dùng 2', 'date': '1-1-2019', 'role': 'phóng viên', },
-    { 'id': 3, 'name': 'Người dùng 3', 'date': '18-4-2019', 'role': 'đọc giả', },
-    { 'id': 4, 'name': 'Người dùng 4',  'date': '13-7-2019', 'role': 'đọc giả', },
-    { 'id': 5, 'name': 'Người dùng 5',  'date': '18-9-2018', 'role': 'biên tập viên', 'category': 'Công nghệ'},
-    { 'id': 6, 'name': 'Người dùng 6',  'date': '15-2-2019', 'role': 'đọc giả', },
-    { 'id': 7, 'name': 'Người dùng 7',  'date': '5-1-2019', 'role': 'đọc giả', },
-    { 'id': 8, 'name': 'Người dùng 8',  'date': '1-2-2018', 'role': 'đọc giả', },
-    { 'id': 9, 'name': 'Người dùng 9',  'date': '4-5-2019', 'role': 'biên tập viên', 'category': 'Thế giới'},
-    { 'id': 10, 'name': 'Người dùng 10',  'date': '2-8-2019', 'role': 'đọc giả', },
-    { 'id': 11, 'name': 'Người dùng 11',  'date': '1-1-2019', 'role': 'đọc giả', },
-    { 'id': 12, 'name': 'Người dùng 12',  'date': '15-1-2018', 'role': 'phóng viên', },
-    { 'id': 13, 'name': 'Người dùng 13',  'date': '1-52-2019', 'role': 'đọc giả', },
-    { 'id': 14, 'name': 'Người dùng 14',  'date': '11-10-2019', 'role': 'phóng viên', },
-    { 'id': 15, 'name': 'Người dùng 15',  'date': '25-1-2018', 'role': 'biên tập viên', 'category': 'Sức khỏe'},
-    { 'id': 16, 'name': 'Người dùng 16',  'date': '7-3-2019', 'role': 'đọc giả', },
-    { 'id': 17, 'name': 'Người dùng 17',  'date': '17-8-2019', 'role': 'đọc giả', },
-    { 'id': 18, 'name': 'Người dùng 18',  'date': '2-5-2019', 'role': 'biên tập viên', 'category': 'Giáo dục'},
-    { 'id': 19, 'name': 'Người dùng 19',  'date': '12-1-2019', 'role': 'đọc giả', },
-    { 'id': 20, 'name': 'Nguyễn Văn A',  'date': '6-6-2019', 'role': 'đọc giả', },
-    { 'id': 21, 'name': 'Người dùng 21',  'date': '11-12-2018', 'role': 'đọc giả', }];
-const categories = ['thời sự', 'Thế giới', 'Kinh doanh', 'Công nghệ', 'Thể thao', 'Giải trí', 'Sức khỏe', 'Giáo dục'];
+var categories;
+var validator;
+const formValidateOption = {
+    rules: {
+        roleID: 'required',
+        name: 'required',
+        email: {
+            required: true,
+            email: true,
+            remote: {
+                url: '/check-email-available',
+                type: 'post',
+                data: {
+                    email: function () {
+                        return $('#email').val();
+                    }
+                }
+            }
+        },
+        dayOfBirth: {
+            required: true
+        }
+    },
+    messages: {
+        roleID: 'Chưa chọn chức vụ',
+        name: 'Hãy nhập đầy đủ họ và tên',
+        email: {
+            required: 'Hãy nhập địa chỉ email',
+            email: 'Email không hợp lệ',
+            remote: 'Email đã được sử dụng'
+        },
+        dayOfBirth: {
+            required: 'Hãy nhập ngày sinh'
+        }
+    },
+    errorElement: 'em',
 
+    errorPlacement: function (error, element) {
+        // Add the `invalid-feedback` class to the error element
+        error.addClass('invalid-feedback');
+        if (element.prop('type') === 'checkbox') {
+            error.insertAfter(element.next('label'));
+        } else {
+            error.insertAfter(element);
+        }
+    },
+    highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-valid').removeClass('is-invalid');
+    },
+
+    submitHandler: (form) => {
+        addUserFormHandler(form);
+    },
+};
+
+const datePickerOption = {
+    todayBtn: 'linked',
+    clearBtn: true,
+    language: 'vi',
+    autoclose: true,
+    orientation: 'bottom auto',
+    todayHighlight: true
+};
 
 $(function () {
-    // context menu
-    $('#context-menu').hide();
 
     // side bar
     $('.sidenav-badge').hide();
 
-    // table
-    mounted();
+    // ajax load category, then call initTable() when done
+    loadAllCategory();
+
+    // datepicker
+    $('#dayOfBirth').datepicker(datePickerOption);
+
+    // form validate
+    validator = $('#addUserForm').validate(formValidateOption);
+
 });
 
 function getIdSelections() {
     return $.map($table.bootstrapTable('getSelections'), function (row) {
         return row.id;
     });
-} 
+}
 
 function categoryFormatter(value, row, index, field) {
     if (row.role.toUpperCase() === 'biên tập viên'.toUpperCase()) {
         var html = [`
             <select class='form-control category-dropdown-menu' style='text-align: center; text-align-last: center;' >
         `];
-
+        var isCategoryHasAssigned = false;
         for (var i = 0; i < categories.length; i++) {
-            html += '<option class="text-capitalize" value=' + categories[i];
-            if (value.toUpperCase() === categories[i].toUpperCase()) {
-                html += ' selected="selected"';
+
+            if (value !== null && value.toUpperCase() === categories[i].name.toUpperCase()) {
+                html += `<option class="text-capitalize" value="${categories[i].id}" selected>${categories[i].name}</option>`;
+                isCategoryHasAssigned = true;
+            } else {
+                html += `<option class="text-capitalize" value="${categories[i].id}">${categories[i].name}</option>`;
             }
-            html += '>' + categories[i] + '</option>';
+        }
+        if (!isCategoryHasAssigned) {
+            html += '<option selected>N/A</option>';
         }
         html += '</select>';
         return html;
     }
 }
 
-$('.category-dropdown-menu').on('click', function() {
+$('.category-dropdown-menu').on('click', function () {
     console.log('test');
 });
 
@@ -76,7 +129,7 @@ function initTable() {
         showFullscreen: true,
         smartDisplay: true,
         clickToSelect: true,
-        undefinedText: ' ',
+        undefinedText: 'N/A',
         // extension
         stickyHeader: true,
         stickyHeaderOffsetY: 56,
@@ -86,84 +139,76 @@ function initTable() {
         filterControl: true,
         filterShowClear: true,
 
-        columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
-            { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
-            {  field: 'name', title: 'Tên', align: 'center',  valign: 'middle', sortable: true, width: '40%', }, 
-            { field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true, width: '20%', }, 
-            { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', sortable: true, width: '15%', filterControl: 'select'},
-            { field: 'category', title: 'Chuyên mục', align: 'center', valign: 'center', filterControl: 'select', width: '15%', formatter: categoryFormatter}],
+        columns: [{ field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', },
+        { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true, width: '5%' },
+        { field: 'name', title: 'Tên', align: 'center', valign: 'middle', sortable: true, width: '40%', },
+        //{ field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true, width: '20%', }, 
+        { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', sortable: true, width: '15%', filterControl: 'select' },
+        { field: 'categoryManaged', title: 'Chuyên mục', align: 'center', valign: 'center', width: '15%', formatter: categoryFormatter }],
         //data: tableData,
-        url: 'load',
-        responseHandler: (rows) => {
-            rows.forEach(row => {
-                row.date = '18-09-2018';
-                row.role = 'biên tập viên';
-                row.category = 'Công nghệ';
-            });
-
-            return rows;
-        }
+        pageSize: 5,
+        sidePagination: 'server',
+        url: '/admin/users/load',
     });
 }
 
 $table.on('check.bs.table uncheck.bs.table ' +
     'check-all.bs.table uncheck-all.bs.table',
-function () {
-    $('#remove').prop('disabled', !$table.bootstrapTable('getSelections').length);
-    $('#edit').prop('disabled', $table.bootstrapTable('getSelections').length > 1);
+    function () {
+        $('#remove').prop('disabled', !$table.bootstrapTable('getSelections').length);
+        $('#edit').prop('disabled', $table.bootstrapTable('getSelections').length > 1);
 
-    // save your data, here just save the current page
-    var selections = getIdSelections();
-    // push or splice the selections if you want to save all data selections
-});
+        // save your data, here just save the current page
+        var selections = getIdSelections();
+        // push or splice the selections if you want to save all data selections
+    });
 
 $table.on('all.bs.table', function (e, name, args) {
 });
 
 $('#remove').click(function () {
     var ids = getIdSelections();
-    $table.bootstrapTable('remove', {
-        field: 'id',
-        values: ids
-    });
-    $('#remove').prop('disabled', true);
+    ajaxDeleteUser(ids);
 });
 
-$('#add').click(function() {
+$('#add').click(function () {
+    //get the form html DOM element, then clear entry form content
+    $('#addUserForm')[0].reset();
+
+    // remove green high light and red high light
+    $('input').removeClass('is-valid').removeClass('is-invalid');
+
+    // reset form validator
+    validator.resetForm();
+
+    $('#addUserModal').modal('show');
 });
-          
+
 function mounted() {
     initTable();
 }
 
-// context-menu event (row clicking)
-$('#table').on('contextmenu', 'tr',  function(e) {
-    let dataIndex = parseInt($(this).attr('data-index'), 10);
-    let row = $table.bootstrapTable('getData', true)[dataIndex];
-    let ids;
+$('#table').on('post-body.bs.table', function (e, data) {
+    // init context menu when the table body is rendered
+    initContextMenu();
+});
 
-    ids = getIdSelections();
-    if (ids.length === 0) {
-        ids = [row.id, ];
-    }
+function initContextMenu() {
+    $('tbody').addClass('context-menu-one');
 
-    $('#assign').hide();
-    $('#renew').hide();
-    switch(row.role.toUpperCase()) {
-    case 'BIÊN TẬP VIÊN':
-        $('#assign').show();
-        break;
+    $('.context-menu-one').contextMenu({
+        selector: 'tr',
+        callback: function (key, options) {
+            let dataIndex = parseInt($(this).attr('data-index'), 10);
+            let row = $table.bootstrapTable('getData', true)[dataIndex];
+            let ids;
 
-    case 'ĐỌC GIẢ':
-        $('#renew').show();
-        break;
-    default:
-    }
+            ids = getIdSelections();
+            if (ids.length === 0) {
+                ids = [row.id,];
+            }
 
-    $('#context-menu').show();
-    $('#context-menu').offset({left:e.pageX, top:e.pageY});
-    e.preventDefault();
-
+<<<<<<< HEAD
     // item click handler
     // remove event handler
     $('#removeItem').click(function (e) {
@@ -173,24 +218,109 @@ $('#table').on('contextmenu', 'tr',  function(e) {
         //     field: 'id',
         //     values: ids
         // });
-    });
-});
+=======
+            switch (key) {
+                case 'edit':
+                    break;
 
-$(document).click( function() {
+                case 'delete':
+                    ajaxDeleteUser(ids);
+                    break;
+
+                case 'assign':
+                    break;
+
+                case 'renew':
+                    break;
+
+                default:
+                    break;
+            }
+        },
+        items: {
+            'edit': { name: 'Chỉnh sửa', icon: 'edit' },
+            'delete': { name: 'Xóa', icon: 'delete' },
+            'assign': {
+                name: 'Phân công',
+                icon: 'fas fa-marker',
+                disabled: function (key, opt) {
+                    let dataIndex = parseInt(opt.$trigger.attr('data-index'), 10);
+                    let row = $table.bootstrapTable('getData', true)[dataIndex];
+                    return row.role.toUpperCase() !== 'BIÊN TẬP VIÊN';
+                },
+            },
+            'renew': {
+                name: 'Gia hạn',
+                icon: 'fas fa-hourglass-start',
+                disabled: function (key, opt) {
+                    let dataIndex = parseInt(opt.$trigger.attr('data-index'), 10);
+                    let row = $table.bootstrapTable('getData', true)[dataIndex];
+                    return row.role.toUpperCase() !== 'ĐỘC GIẢ';
+                },
+            }
+        }
+>>>>>>> cf5b75f15e0a314daab5cf1542bfbdbb071c7f4d
+    });
+}
+
+$(document).click(function () {
     $('#context-menu').hide();
 });
 
-$('#context-menu').click( function() {
+$('#context-menu').click(function () {
     $('#context-menu').hide();
 });
 
 /* Sidebar */
-$('#mySidenav a').mouseenter(function() {
+$('#mySidenav a').mouseenter(function () {
     $(this).find('.sidenav-after-icon').hide();
     $(this).find('.sidenav-badge').show();
 });
 
-$('#mySidenav a').mouseleave(function() {
+$('#mySidenav a').mouseleave(function () {
     $(this).find('.sidenav-after-icon').show();
     $(this).find('.sidenav-badge').hide();
 });
+
+function addUserFormHandler(form) {
+
+    $('#addUserModal').modal('hide');
+    //get the action-url of the form
+    var actionURL = '/admin/users/add';
+
+    //do your own request an handle the results
+    $.ajax({
+        url: actionURL,
+        type: 'post',
+        data: $(form).serialize(),
+    })
+        .done(htmlString => {
+            $('#alert-container').append(htmlString);
+
+            // refresh table
+            $table.bootstrapTable('refresh');
+        });
+}
+
+function loadAllCategory() {
+    $.ajax({
+        type: 'get',
+        url: '/admin/categories/load?load=parent',
+    })
+        .done(data => {
+            categories = data;
+            initTable();
+        });
+}
+
+function ajaxDeleteUser(ids) {
+    $.ajax({
+        type: 'delete',
+        url: '/admin/users/delete',
+        data: { ids: JSON.stringify(ids) },
+    }).done(htmlString => {
+        $('#alert-container').append(htmlString);
+        $('#remove').prop('disabled', true);
+        $table.bootstrapTable('refresh');
+    });
+}
