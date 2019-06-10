@@ -53,5 +53,9 @@ module.exports = {
         return knex(table).where('id', id).del();
     },
 
+    removeAll: (ids, table) => {
+        return knex(table).whereIn('id', ids).del();
+    },
+
     queryBuilder: knex
 };

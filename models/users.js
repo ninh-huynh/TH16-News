@@ -35,6 +35,10 @@ module.exports = {
         return db.remove(user, tableName);
     },
 
+    removeAll: (userIDs) => {
+        return db.removeAll(userIDs, tableName);
+    },
+
     checkEmailExists: (email) => {
         return knex.queryBuilder().select().from(tableName).where('email', email)
             .then(rows => {

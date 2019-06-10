@@ -17,18 +17,18 @@ router.get('/categories/load', (req, res, next) => {
     let promise;
 
     switch (req.query.load) {
-    case 'all':
-        promise = category.load();
-        break;
+        case 'all':
+            promise = category.load();
+            break;
 
-    case 'parent':
-        promise = category.loadParent();
-        break;
+        case 'parent':
+            promise = category.loadParent();
+            break;
 
-    case 'child':
-        promise = category.loadChild(req.query.parentId);
-        break;
-    default:
+        case 'child':
+            promise = category.loadChild(req.query.parentId);
+            break;
+        default:
     }
 
     promise
@@ -142,22 +142,32 @@ router.get('/users/load', (req, res, next) => {
 
 router.post('/users/add', (req, res, next) => {
     var newUser = req.body;
-    
+
     var dob = moment(newUser.dayOfBirth, 'DD/MM/YYYY');
     newUser.dayOfBirth = dob.format('YYYY-MM-DD');
     var defaultPassword = dob.format('DDMMYYYY');
 
     userModel.add(newUser)
         .then(affectedRows => {
-            return userRoleModel.getName(newUser.roleID);
+
+            res.render('_widget/add-success-alert', { layout: 'layouts/alert-empty', });
         }).catch(err => {
-            res.send({err});
-        })
-        .then(roleName => {
-            newUser.role = roleName;
-            newUser.password = defaultPassword;
             
-            res.send({newUser});
+            res.render('_widget/error-alert', { layout: 'layouts/alert-empty',  err });
+        });
+});
+
+router.delete('/users/delete', (req, res, next) => {
+    var userIDs = JSON.parse(req.body.ids);
+
+    userModel.removeAll(userIDs)
+        .then(affectedRows => {
+
+            res.render('_widget/delete-success-alert', {layout: 'layouts/alert-empty', totalRow: affectedRows });
+        })
+        .catch(err => {
+            
+            res.render('_widget/error-alert', { layout: 'layouts/alert-empty',  err });
         });
 });
 

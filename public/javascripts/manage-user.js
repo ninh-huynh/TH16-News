@@ -1,5 +1,6 @@
 var $table = $('#table');
 var categories;
+var validator;
 const formValidateOption = {
     rules: {
         roleID: 'required',
@@ -49,7 +50,11 @@ const formValidateOption = {
     },
     unhighlight: function (element, errorClass, validClass) {
         $(element).addClass('is-valid').removeClass('is-invalid');
-    }
+    },
+
+    submitHandler: (form) => {
+        addUserFormHandler(form);
+    },
 };
 
 const datePickerOption = {
@@ -62,8 +67,6 @@ const datePickerOption = {
 };
 
 $(function () {
-    // context menu
-    $('#context-menu').hide();
 
     // side bar
     $('.sidenav-badge').hide();
@@ -75,9 +78,7 @@ $(function () {
     $('#dayOfBirth').datepicker(datePickerOption);
 
     // form validate
-    $('#addUserForm').validate(formValidateOption);
-
-    addUserFormHandler();
+    validator = $('#addUserForm').validate(formValidateOption);
 
 });
 
@@ -139,11 +140,11 @@ function initTable() {
         filterShowClear: true,
 
         columns: [{ field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', },
-            { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true, width: '5%' },
-            { field: 'name', title: 'Tên', align: 'center', valign: 'middle', sortable: true, width: '40%', },
-            //{ field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true, width: '20%', }, 
-            { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', sortable: true, width: '15%', filterControl: 'select' },
-            { field: 'categoryManaged', title: 'Chuyên mục', align: 'center', valign: 'center', width: '15%', formatter: categoryFormatter }],
+        { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true, width: '5%' },
+        { field: 'name', title: 'Tên', align: 'center', valign: 'middle', sortable: true, width: '40%', },
+        //{ field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true, width: '20%', }, 
+        { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', sortable: true, width: '15%', filterControl: 'select' },
+        { field: 'categoryManaged', title: 'Chuyên mục', align: 'center', valign: 'center', width: '15%', formatter: categoryFormatter }],
         //data: tableData,
         pageSize: 5,
         sidePagination: 'server',
@@ -153,72 +154,102 @@ function initTable() {
 
 $table.on('check.bs.table uncheck.bs.table ' +
     'check-all.bs.table uncheck-all.bs.table',
-function () {
-    $('#remove').prop('disabled', !$table.bootstrapTable('getSelections').length);
-    $('#edit').prop('disabled', $table.bootstrapTable('getSelections').length > 1);
+    function () {
+        $('#remove').prop('disabled', !$table.bootstrapTable('getSelections').length);
+        $('#edit').prop('disabled', $table.bootstrapTable('getSelections').length > 1);
 
-    // save your data, here just save the current page
-    var selections = getIdSelections();
-    // push or splice the selections if you want to save all data selections
-});
+        // save your data, here just save the current page
+        var selections = getIdSelections();
+        // push or splice the selections if you want to save all data selections
+    });
 
 $table.on('all.bs.table', function (e, name, args) {
 });
 
 $('#remove').click(function () {
     var ids = getIdSelections();
-    $table.bootstrapTable('remove', {
-        field: 'id',
-        values: ids
-    });
-    $('#remove').prop('disabled', true);
+    ajaxDeleteUser(ids);
 });
 
 $('#add').click(function () {
+    //get the form html DOM element, then clear entry form content
+    $('#addUserForm')[0].reset();
 
+    // remove green high light and red high light
+    $('input').removeClass('is-valid').removeClass('is-invalid');
+
+    // reset form validator
+    validator.resetForm();
+
+    $('#addUserModal').modal('show');
 });
 
 function mounted() {
     initTable();
 }
 
-// context-menu event (row clicking)
-$('#table').on('contextmenu', 'tr', function (e) {
-    let dataIndex = parseInt($(this).attr('data-index'), 10);
-    let row = $table.bootstrapTable('getData', true)[dataIndex];
-    let ids;
-
-    ids = getIdSelections();
-    if (ids.length === 0) {
-        ids = [row.id,];
-    }
-
-    $('#assign').hide();
-    $('#renew').hide();
-    switch (row.role.toUpperCase()) {
-    case 'BIÊN TẬP VIÊN':
-        $('#assign').show();
-        break;
-
-    case 'ĐỌC GIẢ':
-        $('#renew').show();
-        break;
-    default:
-    }
-
-    $('#context-menu').show();
-    $('#context-menu').offset({ left: e.pageX, top: e.pageY });
-    e.preventDefault();
-
-    // item click handler
-    // remove event handler
-    $('#removeItem').click(function (e) {
-        $table.bootstrapTable('remove', {
-            field: 'id',
-            values: ids
-        });
-    });
+$('#table').on('post-body.bs.table', function (e, data) {
+    // init context menu when the table body is rendered
+    initContextMenu();
 });
+
+function initContextMenu() {
+    $('tbody').addClass('context-menu-one');
+
+    $('.context-menu-one').contextMenu({
+        selector: 'tr',
+        callback: function (key, options) {
+            let dataIndex = parseInt($(this).attr('data-index'), 10);
+            let row = $table.bootstrapTable('getData', true)[dataIndex];
+            let ids;
+
+            ids = getIdSelections();
+            if (ids.length === 0) {
+                ids = [row.id,];
+            }
+
+            switch (key) {
+                case 'edit':
+                    break;
+
+                case 'delete':
+                    ajaxDeleteUser(ids);
+                    break;
+
+                case 'assign':
+                    break;
+
+                case 'renew':
+                    break;
+
+                default:
+                    break;
+            }
+        },
+        items: {
+            'edit': { name: 'Chỉnh sửa', icon: 'edit' },
+            'delete': { name: 'Xóa', icon: 'delete' },
+            'assign': {
+                name: 'Phân công',
+                icon: 'fas fa-marker',
+                disabled: function (key, opt) {
+                    let dataIndex = parseInt(opt.$trigger.attr('data-index'), 10);
+                    let row = $table.bootstrapTable('getData', true)[dataIndex];
+                    return row.role.toUpperCase() !== 'BIÊN TẬP VIÊN';
+                },
+            },
+            'renew': {
+                name: 'Gia hạn',
+                icon: 'fas fa-hourglass-start',
+                disabled: function (key, opt) {
+                    let dataIndex = parseInt(opt.$trigger.attr('data-index'), 10);
+                    let row = $table.bootstrapTable('getData', true)[dataIndex];
+                    return row.role.toUpperCase() !== 'ĐỘC GIẢ';
+                },
+            }
+        }
+    });
+}
 
 $(document).click(function () {
     $('#context-menu').hide();
@@ -239,45 +270,24 @@ $('#mySidenav a').mouseleave(function () {
     $(this).find('.sidenav-badge').hide();
 });
 
-function addUserFormHandler() {
-    $('#addUserForm').submit(function (e) {
+function addUserFormHandler(form) {
 
-        $('#addUserModal').modal('hide');
+    $('#addUserModal').modal('hide');
+    //get the action-url of the form
+    var actionURL = '/admin/users/add';
 
-        //prevent Default functionality
-        e.preventDefault();
+    //do your own request an handle the results
+    $.ajax({
+        url: actionURL,
+        type: 'post',
+        data: $(form).serialize(),
+    })
+        .done(htmlString => {
+            $('#alert-container').append(htmlString);
 
-        //get the action-url of the form
-        var actionurl = e.currentTarget.action;
-
-        //do your own request an handle the results
-        $.ajax({
-            url: actionurl,
-            type: 'post',
-            data: $('#addUserForm').serialize(),
-        })
-            .done(obj => {
-                
-                if (obj.err != undefined) {
-                    var err = obj.err;
-                    $('#alert-message').text(err.sqlMessage);
-                    $('#error-alert').removeClass('d-none');
-                    return;
-                }
-
-                var newUser = obj.newUser;
-                // maping data to html
-                $('#newUser').children('.role').text(newUser.role);
-                $('#newUser').children('.name').text(newUser.name);
-                $('#newUser').children('.email').text(newUser.email);
-                $('#newUser').children('.dayOfBirth').text(newUser.dayOfBirth);
-                $('#newUser').children('.password').text(newUser.password);
-                // show up alert
-                $('#success-alert').removeClass('d-none');
-                // refresh table
-                $table.bootstrapTable('refresh');
-            });
-    });
+            // refresh table
+            $table.bootstrapTable('refresh');
+        });
 }
 
 function loadAllCategory() {
@@ -289,4 +299,16 @@ function loadAllCategory() {
             categories = data;
             initTable();
         });
+}
+
+function ajaxDeleteUser(ids) {
+    $.ajax({
+        type: 'delete',
+        url: '/admin/users/delete',
+        data: { ids: JSON.stringify(ids) },
+    }).done(htmlString => {
+        $('#alert-container').append(htmlString);
+        $('#remove').prop('disabled', true);
+        $table.bootstrapTable('refresh');
+    });
 }
