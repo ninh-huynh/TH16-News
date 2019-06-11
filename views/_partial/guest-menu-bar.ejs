@@ -1,16 +1,58 @@
 <!-- Nội dung của phần thanh menu, tách ra file riêng để tái sử dụng ở nhiều file html-->
 <!-- TODO: https://medium.com/@AmyScript/how-to-reduce-reuse-and-recycle-your-code-389e6742e4ac -->
 
-<nav class="navbar navbar-expand-xl navbar-dark bg-primary rounded">
+<nav class="navbar navbar-expand-xl navbar-dark bg-primary px-1">
+    <div class="container">
         <button class="navbar-toggler d-xl-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
             aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <a class="navbar-brand" href="/">
-            <%-defineContent('title')%>
-        </a>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav">
+                <% if (isHome === true) { %>
+                    <li class="nav-item active" id="home">
+                        <a href="/" class="nav-link">Home</a>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item" id="home">
+                        <a href="/" class="nav-link">Home</a>
+                    </li>
+                <% }; %>
+                <% var currentCategory = category; %>
+                <% categories.forEach(category => { %>
+                    <% if ((currentCategory !== undefined) && (currentCategory.id === category.id || currentCategory.parentID === category.id)) { %>
+                    <li class="nav-item dropdown active" id="<%= category.id %>">
+                        <a class="nav-link dropdown-toggle" href="<%= category.path %>" id="dropdownId"><%= category.name %></a>
+                        <div class="dropdown-menu">
+                            <% if (category.child.length === 0) { %>
+                                <span class="dropdown-item-text">Trống</span>
+                            <% } else { %>
+                                <% category.child.forEach(subCategory => { %>
+                                    <a class="dropdown-item" href="<%= subCategory.path %>"><%= subCategory.name %></a>
+                                <% }); %>
+                            <% } %>
+                        </div>
+                    </li>
+                    <% } else { %>
+                    <li class="nav-item dropdown" id="<%= category.id %>">
+                        <a class="nav-link dropdown-toggle" href="<%= category.path %>" id="dropdownId"><%= category.name %></a>
+                        <div class="dropdown-menu">
+                            <% if (category.child.length === 0) { %>
+                                <span class="dropdown-item-text">Trống</span>
+                            <% } else { %>
+                                <% category.child.forEach(subCategory => { %>
+                                    <a class="dropdown-item" href="<%= subCategory.path %>"><%= subCategory.name %></a>
+                                <% }); %>
+                            <% } %>
+                        </div>
+                    </li>                    
+                    <% }; %>
+                <% }); %>
 
+            </ul>
+        </div>
+        
         <!-- Ô tìm kiếm, thay đổi màu sắc ở thẻ button (nếu cần thiết) -->
         <form class="form-inline search-form ml-auto mr-1" id="search-form" action="/search">
             <div class="form-group">
@@ -22,7 +64,7 @@
             </div>
         </form>
 
-
+        
 
         <!-- Các menu chức năng của từng loại user -->
         <!-- Cần thay thế lớp d-none/d-block của từng loại user khi đăng nhập vào -->

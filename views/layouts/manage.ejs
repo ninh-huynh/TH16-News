@@ -34,8 +34,14 @@
 <body>
     <%- include('../_partial/header') %>
     <!-- Tái sử dụng menu bar -->
-    <div id="category-menu" class="sticky-top">
-        <%- include('../_partial/menu-bar') %>
+    <div id="category-menu" class="sticky-top container-fluid">
+        <div class="row justify-content-around">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <%- include('../_partial/menu-bar') %>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
     </div>
 
     <div id="wrap">
