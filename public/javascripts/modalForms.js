@@ -15,3 +15,17 @@ $('#forgot-pass').click(function (e) {
     $('#loginModal').modal('toggle');
     $('#forgotpassModal').modal('toggle');
 });
+
+const datePickerOption = {
+    todayBtn: 'linked',
+    clearBtn: true,
+    language: 'vi',
+    autoclose: true,
+    orientation: 'bottom auto',
+    todayHighlight: true
+};
+
+$(function () {
+    $('#txtBirthday').datepicker(datePickerOption);
+
+});
