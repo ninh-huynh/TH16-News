@@ -1,7 +1,6 @@
 var $table = $('#table');
-var parentCategories;
 var validator;
-const validateOption = {
+const fInsertValidateOption = {
     rules: {
         name: {
             required: true,
@@ -49,6 +48,38 @@ const validateOption = {
     },
 };
 
+const fUpdateValidateOption = {
+    rules: {
+        name: {
+            required: true,
+        },
+    },
+
+    messages: {
+        name: {
+            required: 'Tên không được bỏ trống',
+        }
+    },
+    errorElement: 'em',
+    errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        if (element.prop('type') === 'checkbox') {
+            error.insertAfter(element.next('label'));
+        } else {
+            error.insertAfter(element);
+        }
+    },
+    highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-valid').removeClass('is-invalid');
+    },
+    submitHandler: (form) => {
+        ajaxSubmit(form);
+    },
+};
+
 $(function () {
     // context menu
     $('#context-menu').hide();
@@ -59,20 +90,6 @@ $(function () {
     // init table
     mounted();  
     $('#edit').prop('disabled', true);
-
-    // get parent categories
-    $.ajax({
-        url: '/admin/categories/load',
-        method: 'get',
-        data: {
-            load: 'parent'
-        },
-        error: err => console.log(err),
-        success: res => parentCategories = res
-    });
-
-    /* form validation */
-    validator = $('#addOrEditCategoryForm').validate(validateOption);
 });
 
 function getIdSelections() {
@@ -84,6 +101,13 @@ function getIdSelections() {
 function nameFormatter(value, row) {
     value = value.substr(0,1).toUpperCase() + value.substr(1);
     return value;
+}
+
+function parentNameFormatter(value, row) {
+    if (value == null)
+        return '';
+    
+    return value.substr(0, 1).toUpperCase() + value.substr(1);
 }
 
 function initTable() {
@@ -111,7 +135,7 @@ function initTable() {
         filterControl: true,
         filterShowClear: true,
         // editable
-        editable: true,
+        sidePagination: 'server',
         url: 'load',
         queryParams: (params) => {
             params.load = 'all';
@@ -119,31 +143,21 @@ function initTable() {
             return params;
         },
         responseHandler: res => {
-            const parentCategories = res
-                .filter(category => category.parentID === null)
-                .reduce((o, category) => Object.assign(o, {[category.id]: category}), {});
-            
-            //group rows
-            let categories = res.filter(category => category.parentID === null)
-                .reduce((arr, parentCategory) => {
-                    return arr.concat(res.filter(category => category.id === parentCategory.id || category.parentID === parentCategory.id));
-                }, []);
+            let total = res.total;
+            let rows = res.rows;
 
-            categories =  categories.map(category => {
-                let parentCategory = category.parentID === null ? { id: null, name: '' } : { id: category.parentID, name: parentCategories[category.parentID].name };
-                return Object.assign({ id: category.id, name: category.name, state: false, parentCategoryId: parentCategory.id, parentCategory: parentCategory.name });
+            let categories = rows.map((value, index, arr) => {
+                return Object.assign(arr[index], { state: false });
             });
-
-            return categories;
+            return { total: total, rows: categories };
         },
 
         columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
-            { field: 'parentCategoryId', visible: false }, 
-            {  field: 'parentCategory', title: 'Chuyên mục lớn', align: 'center',  valign: 'middle', 
-                formatter: nameFormatter, sortable: true, width: '20%', filterControl: 'select', },
+            { field: 'parentID', visible: false }, 
+            {  field: 'parentName', title: 'Chuyên mục lớn', align: 'center',  valign: 'middle', 
+                formatter: parentNameFormatter, sortable: true, width: '20%', filterControl: 'select', filterData: 'url:/admin/categories/load?load=parent-name' },
             {  field: 'name', title: 'Tên', align: 'center',  valign: 'middle', formatter: nameFormatter, sortable: true, }],
-        //data: $table.bootstrapTable('getData'),
     });
 }
 
@@ -224,16 +238,17 @@ $('#mySidenav a').mouseleave(function() {
 
 // add category
 $('#add').on('click',function() {
-    updateModalForm();
+    initModalForm();
+
     $('#addOrEditCategoryForm').find('button').text('Thêm');
 
     $('#inputCategoryName').val('');
     $('#selectParentCategory option .selected').attr('selected', '');
     $('#selectParentCategory option:contains(""):first').attr('selected', 'selected');
 
-    //$('#addOrEditCategoryForm').removeClass('was-validated').attr('novalidate', '');
-    validator.resetForm();
-    $('#addOrEditCategoryModal').modal('show');
+    if (validator !== undefined)
+        validator.destroy();
+    validator = $('#addOrEditCategoryForm').validate(fInsertValidateOption);
 });
 
 // edit category
@@ -244,24 +259,30 @@ $('#edit').on('click', function() {
 });
 
 function editCategory(id) {
-    updateModalForm();
-    let row = $table.bootstrapTable('getRowByUniqueId', id);
-    let options = $('#selectParentCategory option').toArray();
+    initModalForm()
+        .then(() => {
+            $('#addOrEditCategoryForm').find('button').text('OK');
 
-    $('#inputCategoryName').val(row.name);
-    options.forEach((option, index, arr) => {
-        if(option.selected === true) {
-            arr[index].selected = false;
-        }
+            let row = $table.bootstrapTable('getRowByUniqueId', id);
+            let options = $('#selectParentCategory option').toArray();
+        
+            $('#inputCategoryName').val(row.name);
+            options.forEach((option, index, arr) => {
+                if(option.selected === true) {
+                    arr[index].selected = false;
+                }
+        
+                if (parseInt(option.value) === row.parentID) {
+                    arr[index].selected = true;
+                }
+            });
 
-        if (parseInt(option.value) === row.parentCategoryId) {
-            arr[index].selected = true;
-        }
-    });
+            if (validator !== undefined)
+                validator.destroy();
+            validator = $('#addOrEditCategoryForm').validate(fUpdateValidateOption);
+        })
+        .catch(err => console.log(err));
 
-    // $(form).removeClass('was-validated').attr('novalidate', '');
-    validator.resetForm();
-    $('#addOrEditCategoryModal').modal('show');
 }
 
 function ajaxSubmit(form) {
@@ -271,36 +292,28 @@ function ajaxSubmit(form) {
         const URL = 'update';
 
         row.name = $('#inputCategoryName').val();
-        row.parentCategory = $('#selectParentCategory').find(':selected').text();
-        row.parentCategoryId = parseInt($('#selectParentCategory').find(':selected').attr('value'));
+        row.parentName = $('#selectParentCategory').find(':selected').text();
+        row.parentID = parseInt($('#selectParentCategory').find(':selected').attr('value'));
 
         $.ajax({
             url: URL,
             method: 'put',
-            data: { id: ids[0], name: row.name, parentID: row.parentCategoryId },
+            data: { id: ids[0], name: row.name, parentID: row.parentID },
             error: err => console.log(err),
             success: () => {
-                $table.bootstrapTable('updateByUniqueId', { id: row.id, row: row });
-
-                if (row.parentCategoryId === null && parentCategories.some(category => category.id === ids[0])) {
-                    parentCategories.filter(category => category.id === ids[0])[0] = { id: ids[0], name: row.name, parentID: null };
-                }
+                $table.bootstrapTable('refresh', { silent: true });
+                // uncheck all checked rows
+                $table.bootstrapTable('uncheckAll');
             }
         });
-
-        // uncheck all checked rows
-        for (var i = 0; i < ids.length; i++) {
-            $table.bootstrapTable('updateCellById', { id: ids[i], field: 'state', value: false });
-        }
-        $table.bootstrapTable('uncheckAll');
     }
     else {      // Thêm mới
         const URL = '/admin/categories';
         var parentCategoryOption = $('#selectParentCategory').find(':selected');
             
         var row = {
-            parentCategory: parentCategoryOption.text(),
-            parentCategoryId: parentCategoryOption.attr('value') === '' ? null : parseInt(parentCategoryOption.attr('value')),
+            parentName: parentCategoryOption.text(),
+            parentID: parentCategoryOption.attr('value') === '' ? null : parseInt(parentCategoryOption.attr('value')),
             name: $('#inputCategoryName').val()
         };
 
@@ -308,14 +321,10 @@ function ajaxSubmit(form) {
         $.ajax({
             url: URL,
             method: 'post',
-            data: { name: row.name, parentID: row.parentCategoryId },
+            data: { name: row.name, parentID: row.parentID },
             error: err => console.log(err),
             success: res => {
-                row.id = res.insertedID;
-                $table.bootstrapTable('append', [row]);
-                if (row.parentCategoryId === null) {
-                    parentCategories.push({ id: res.insertedID, name: row.name, parentID: row.parentCategoryId });
-                }
+                $table.bootstrapTable('refresh', { silent: true });
             }
         });
     }
@@ -324,70 +333,43 @@ function ajaxSubmit(form) {
 
 function removeCategories(ids) {
     const url = 'delete';
-    let data;
-    let subCategoryIds = [];
 
-    $.ajax({
-        url: '/admin/categories/load',
-        method: 'get',
-        async: false,
-        data: {
-            load: 'all'
-        },
-
-        error: err => console.log(err),
-        complete: res => data = res.responseJSON
-    });
-
-    let parentCategoryIds = ids
-        .filter(id => parentCategories.some(parentCategory => parentCategory.id === id));
-
-    // với mỗi chuyên mục chính, lấy danh sách các chuyên mục con
-    if (parentCategoryIds.length > 0) {
-        subCategoryIds = parentCategoryIds.reduce((arr, parentID) => {
-            return arr.concat(data.filter(category => category.parentID === parentID).map(category => category.id));
-        }, []);
-    }
-
-    subCategoryIds = subCategoryIds.concat(
-        ids.reduce((arr, id) => {
-            arr.concat(data.filter(category => category.id === id && category.parentID !== null && subCategoryIds.indexOf(id) < 0).map(category => category.id))
-
-            return arr;
-        }, [])
-    );
-    
     $.ajax({
         url: url,
         type: 'delete',
         data: { 
-            parentCategoryIds: JSON.stringify(parentCategoryIds),
-            subCategoryIds: JSON.stringify(subCategoryIds)
+            ids: JSON.stringify(ids)
         },
         cache: false,
         error: err => console.log(err),
         success: () => {
-            $table.bootstrapTable('remove', {
-                field: 'id',
-                values: parentCategoryIds.concat(subCategoryIds)
-            });
-            $('#remove').prop('disabled', true);
-            parentCategories = parentCategories.filter(category => parentCategoryIds.indexOf(category.id) < 0);
+            $table.bootstrapTable('refresh', { silent: true });
+            //$('#remove').prop('disabled', true);
+            $table.bootstrapTable('uncheckAll');
         }
     });
 }
 
-function updateModalForm() {
-    // init modal value
-    $('#selectParentCategory').empty();
-    $('#selectParentCategory').append($('<option>', {value: '', text: ''}));
-    $.each(parentCategories, function (i, category) {
-        category.name = category.name.substr(0,1).toUpperCase()+category.name.substr(1);
-        $('#selectParentCategory').append($('<option>', { 
-            value: category.id,
-            text : category.name,
-        }));
+function initModalForm() {
+    return $.ajax({
+        url: '/admin/categories/load',
+        method: 'get',
+        data: {
+            load: 'parent'
+        },
+        error: err => console.log(err),
+        success: res => {
+            let parentCategories = res;
+            $('#selectParentCategory').empty();
+            $('#selectParentCategory').append($('<option>', {value: '', text: ''}));
+            $.each(parentCategories, function (i, category) {
+                category.name = category.name.substr(0,1).toUpperCase()+category.name.substr(1);
+                $('#selectParentCategory').append($('<option>', { 
+                    value: category.id,
+                    text : category.name,
+                }));
+            });
+            $('#addOrEditCategoryModal').modal('show');
+        }
     });
-
-    return true;
 }

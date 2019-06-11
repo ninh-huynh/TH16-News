@@ -15,51 +15,78 @@ router.get('/categories', function (req, res, next) {
 
 router.get('/categories/load', (req, res, next) => {
     let promise;
+    let limit = parseInt(req.query.limit);
+    let offset = parseInt(req.query.offset);
+    console.log(req.query);
 
-    switch (req.query.load) {
+    switch(req.query.load) {
         case 'all':
-            promise = category.load();
-            break;
+            if ('filter' in req.query) {
+                promise = category.loadByParentID(parseInt(JSON.parse(req.query.filter).parentName), limit, offset);
+            } else {
+                promise = category.load(limit, offset);
+            }
 
-        case 'parent':
-            promise = category.loadParent();
-            break;
 
-        case 'child':
-            promise = category.loadChild(req.query.parentId);
-            break;
-        default:
-    }
-
-    promise
-        .then(rows => {
-            res.send(rows);
-        })
-        .catch(err => {
-            console.log(err);
-            res.end('');
-        });
-});
-
-router.delete('/categories/delete', (req, res, next) => {
-    let parentCategoryIds = JSON.parse(req.body.parentCategoryIds);
-    let subCategoryIds = JSON.parse(req.body.subCategoryIds);
-
-    category.remove(subCategoryIds)
-        .then(() => {
-            category.remove(parentCategoryIds)
-                .then(() => {
-                    res.status(200).send({ success: true });
+            promise
+                .then(([total, rows]) => {
+                    res.send({ total: total, rows: rows }); 
                 })
                 .catch(err => {
                     console.log(err);
-                    res.status(400).send({ error: err });
+                    res.end('');
                 });
+            break;
+
+        case 'parent':
+            promise = category.loadParent()
+                .then((rows) => {
+                    res.send(rows); 
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.end('');
+                });
+            break;
+
+        case 'parent-name':
+            promise = category.loadParent()
+                .then((rows) => {
+                    var names = rows.reduce((names, parent) => Object.assign(names, { [parent.id]: parent.name }) ,{});
+                    res.send(names); 
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.end('');
+                });
+            break;
+
+        case 'child':
+            promise = category.loadChild(req.query.parentId)
+                .then((rows) => {
+                    res.send(rows); 
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.end('');
+                });
+            break;
+        default:
+    }
+});
+
+router.delete('/categories/delete', (req, res, next) => {
+    let ids = JSON.parse(req.body.ids);
+
+    category.remove(ids)
+        .then(() => {
+            res.status(200).send({ success: true });
         })
         .catch(err => {
             console.log(err);
             res.status(400).send({ error: err });
         });
+
 });
 
 // handle add category

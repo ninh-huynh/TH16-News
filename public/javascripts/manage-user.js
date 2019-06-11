@@ -176,6 +176,17 @@ function initContextMenu() {
                 ids = [row.id,];
             }
 
+<<<<<<< HEAD
+    // item click handler
+    // remove event handler
+    $('#removeItem').click(function (e) {
+        console.log('remove clicked');
+        
+        // $table.bootstrapTable('remove', {
+        //     field: 'id',
+        //     values: ids
+        // });
+=======
             switch (key) {
                 case 'edit':
                     ajaxLoadEditUserForm(row);
@@ -217,6 +228,7 @@ function initContextMenu() {
                 },
             }
         }
+>>>>>>> cf5b75f15e0a314daab5cf1542bfbdbb071c7f4d
     });
 }
 

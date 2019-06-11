@@ -21,11 +21,51 @@ function loadChild(parentId) {
 }
 
 module.exports = {
-    load: () => knex.select().from(tableName),
+    load: (limit, offset) => {
+        let t2 = knex(tableName)
+            .select('*')
+            .as('t2');
+
+        return Promise.all([
+            knex(tableName)
+                .count('id as total')
+                .first()
+                .then(row => row.total),
+
+            knex.queryBuilder()
+                .from(`${ tableName } as t1`)
+                .select(['t1.id', 't1.name', 't1.parentID', 't2.name as parentName'])
+                .leftOuterJoin(t2, 't1.parentID', 't2.id')
+                .limit(limit)
+                .offset(offset)
+        ]);
+    },
+
+    loadByParentID: (parentID, limit, offset) => {
+        return Promise.all([
+            knex(tableName)
+                .count('id as total')
+                .where('parentID', parentID)
+                .first()
+                .then(row => row.total),
+
+            knex.queryBuilder()
+                .from(tableName)
+                .select('*')
+                .where('parentID', parentID)
+                .limit(limit)
+                .offset(offset),
+        ]);
+    },
 
     loadChild: (parentID) => loadChild(parentID),
 
-    loadParent: () => loadMain(),
+    loadParent: () => {
+        return knex.queryBuilder()
+            .select('*')
+            .from(tableName)
+            .whereNull('parentID')
+    },
 
     add: (newCategory) => {
         return db.add(newCategory, tableName);
@@ -42,6 +82,10 @@ module.exports = {
     remove: (ids) => {
         return knex(tableName).whereIn('id', ids).delete();
     },
+
+    // removeChildByParentIDs: (ids) => {
+    //     return knex();
+    // },
 
     // Get all root category, include these child
     loadMainIncludeChild: () => {
