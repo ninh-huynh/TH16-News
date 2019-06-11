@@ -150,10 +150,10 @@ router.post('/users/add', (req, res, next) => {
     userModel.add(newUser)
         .then(affectedRows => {
 
-            res.render('_widget/add-success-alert', { layout: 'layouts/alert-empty', });
+            res.render('_widget/add-success-alert', { layout: 'layouts/empty', });
         }).catch(err => {
-            
-            res.render('_widget/error-alert', { layout: 'layouts/alert-empty',  err });
+
+            res.render('_widget/error-alert', { layout: 'layouts/empty', err });
         });
 });
 
@@ -163,11 +163,50 @@ router.delete('/users/delete', (req, res, next) => {
     userModel.removeAll(userIDs)
         .then(affectedRows => {
 
-            res.render('_widget/delete-success-alert', {layout: 'layouts/alert-empty', totalRow: affectedRows });
+            res.render('_widget/delete-success-alert', { layout: 'layouts/empty', totalRow: affectedRows });
         })
         .catch(err => {
-            
-            res.render('_widget/error-alert', { layout: 'layouts/alert-empty',  err });
+
+            res.render('_widget/error-alert', { layout: 'layouts/empty', err });
+        });
+});
+
+router.post('/users/update', (req, res, next) => {
+    var newUser = req.body;
+    userModel.update(newUser)
+        .then(affectedRows => {
+
+            res.render('_widget/update-success-alert', { layout: 'layouts/empty', });
+        }).catch(err => {
+
+            res.render('_widget/error-alert', { layout: 'layouts/empty', err });
+        });
+});
+
+router.get('/users/update/:id', (req, res, next) => {
+    
+    var id = parseInt(req.params.id);
+    if (isNaN(id)) {
+        next();     // 404 not found
+        return;
+    }
+    
+    var pLoadUser = userModel.loadById(id);
+    var pLoadUserRoles = userRoleModel.load();
+    var pLoadCategories = category.load();
+
+    Promise.all([pLoadUser, pLoadUserRoles, pLoadCategories])
+        .then(([userEntity, userRoles, categories]) => {
+            var obj = {
+                layout: 'layouts/empty',
+                user: userEntity,
+                userRoles,
+                categories,
+            };
+            res.render('_widget/update-user-form', obj);
+        })
+        .catch(([err1, err2]) => {
+            res.render('_widget/error-alert', { layout: 'layouts/empty', err1 });
         });
 });
 

@@ -10,4 +10,10 @@ module.exports = {
                 return rows[0].name;
             });
     },
+
+    load: () => {
+        return knex.queryBuilder()
+            .select()
+            .from('USER_ROLE');  
+    },
 };

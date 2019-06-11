@@ -45,4 +45,17 @@ module.exports = {
                 return rows.length === 1;
             });
     },
+
+    loadById: (id) => {
+        return knex.queryBuilder()
+            .select('u.*', 'ur.name as role')
+            .from('USER as u')
+            .join('USER_ROLE as ur', 'u.roleId', '=', 'ur.id')
+            .where('u.id', '=', id)
+            .then(rows => {
+                if (rows.length === 0)
+                    throw Error(`User id ${id} not found`);
+                return rows[0];
+            });
+    },
 };

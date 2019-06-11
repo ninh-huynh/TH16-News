@@ -1,5 +1,4 @@
 var $table = $('#table');
-var categories;
 var validator;
 const formValidateOption = {
     rules: {
@@ -54,6 +53,7 @@ const formValidateOption = {
 
     submitHandler: (form) => {
         addUserFormHandler(form);
+        $('#addUserModal').modal('hide');
     },
 };
 
@@ -67,19 +67,12 @@ const datePickerOption = {
 };
 
 $(function () {
-
-    // side bar
     $('.sidenav-badge').hide();
 
-    // ajax load category, then call initTable() when done
-    loadAllCategory();
-
-    // datepicker
+    // init table, form validator, datepicker
+    initTable();
     $('#dayOfBirth').datepicker(datePickerOption);
-
-    // form validate
     validator = $('#addUserForm').validate(formValidateOption);
-
 });
 
 function getIdSelections() {
@@ -89,31 +82,10 @@ function getIdSelections() {
 }
 
 function categoryFormatter(value, row, index, field) {
-    if (row.role.toUpperCase() === 'biên tập viên'.toUpperCase()) {
-        var html = [`
-            <select class='form-control category-dropdown-menu' style='text-align: center; text-align-last: center;' >
-        `];
-        var isCategoryHasAssigned = false;
-        for (var i = 0; i < categories.length; i++) {
-
-            if (value !== null && value.toUpperCase() === categories[i].name.toUpperCase()) {
-                html += `<option class="text-capitalize" value="${categories[i].id}" selected>${categories[i].name}</option>`;
-                isCategoryHasAssigned = true;
-            } else {
-                html += `<option class="text-capitalize" value="${categories[i].id}">${categories[i].name}</option>`;
-            }
-        }
-        if (!isCategoryHasAssigned) {
-            html += '<option selected>N/A</option>';
-        }
-        html += '</select>';
-        return html;
-    }
+    if (value == null && row.role.toUpperCase() === 'Biên tập viên'.toUpperCase())
+        return 'Chưa được phân';
+    return value;
 }
-
-$('.category-dropdown-menu').on('click', function () {
-    console.log('test');
-});
 
 function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
@@ -144,7 +116,7 @@ function initTable() {
         { field: 'name', title: 'Tên', align: 'center', valign: 'middle', sortable: true, width: '40%', },
         //{ field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true, width: '20%', }, 
         { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', sortable: true, width: '15%', filterControl: 'select' },
-        { field: 'categoryManaged', title: 'Chuyên mục', align: 'center', valign: 'center', width: '15%', formatter: categoryFormatter }],
+        { field: 'categoryManaged', title: 'Chuyên mục quản lý', align: 'center', valign: 'center', width: '15%', formatter: categoryFormatter }],
         //data: tableData,
         pageSize: 5,
         sidePagination: 'server',
@@ -155,16 +127,10 @@ function initTable() {
 $table.on('check.bs.table uncheck.bs.table ' +
     'check-all.bs.table uncheck-all.bs.table',
     function () {
-        $('#remove').prop('disabled', !$table.bootstrapTable('getSelections').length);
-        $('#edit').prop('disabled', $table.bootstrapTable('getSelections').length > 1);
-
-        // save your data, here just save the current page
-        var selections = getIdSelections();
-        // push or splice the selections if you want to save all data selections
+        var totalSelected = $table.bootstrapTable('getSelections').length;
+        $('#remove').prop('disabled', !totalSelected);
+        $('#edit').prop('disabled', totalSelected != 1);
     });
-
-$table.on('all.bs.table', function (e, name, args) {
-});
 
 $('#remove').click(function () {
     var ids = getIdSelections();
@@ -184,15 +150,17 @@ $('#add').click(function () {
     $('#addUserModal').modal('show');
 });
 
-function mounted() {
-    initTable();
-}
+$('#edit').click(function (e) {
+    var id = getIdSelections()[0];
+    ajaxLoadEditUserForm({ id });
+});
 
 $('#table').on('post-body.bs.table', function (e, data) {
     // init context menu when the table body is rendered
     initContextMenu();
 });
 
+// Config context menu: icon, event click,...
 function initContextMenu() {
     $('tbody').addClass('context-menu-one');
 
@@ -210,6 +178,7 @@ function initContextMenu() {
 
             switch (key) {
                 case 'edit':
+                    ajaxLoadEditUserForm(row);
                     break;
 
                 case 'delete':
@@ -251,14 +220,6 @@ function initContextMenu() {
     });
 }
 
-$(document).click(function () {
-    $('#context-menu').hide();
-});
-
-$('#context-menu').click(function () {
-    $('#context-menu').hide();
-});
-
 /* Sidebar */
 $('#mySidenav a').mouseenter(function () {
     $(this).find('.sidenav-after-icon').hide();
@@ -271,12 +232,7 @@ $('#mySidenav a').mouseleave(function () {
 });
 
 function addUserFormHandler(form) {
-
-    $('#addUserModal').modal('hide');
-    //get the action-url of the form
-    var actionURL = '/admin/users/add';
-
-    //do your own request an handle the results
+    const actionURL = '/admin/users/add';
     $.ajax({
         url: actionURL,
         type: 'post',
@@ -284,31 +240,53 @@ function addUserFormHandler(form) {
     })
         .done(htmlString => {
             $('#alert-container').append(htmlString);
-
-            // refresh table
             $table.bootstrapTable('refresh');
         });
 }
 
-function loadAllCategory() {
+function ajaxDeleteUser(ids) {
+    const actionURL = '/admin/users/delete';
     $.ajax({
-        type: 'get',
-        url: '/admin/categories/load?load=parent',
+        type: 'delete',
+        url: actionURL,
+        data: { ids: JSON.stringify(ids) },
     })
-        .done(data => {
-            categories = data;
-            initTable();
+        .done(htmlString => {
+            $('#alert-container').append(htmlString);
+            $('#remove').prop('disabled', true);
+            $table.bootstrapTable('refresh');
         });
 }
 
-function ajaxDeleteUser(ids) {
+function ajaxUpdateUser(userJSON) {
+    const actionURL = '/admin/users/update';
     $.ajax({
-        type: 'delete',
-        url: '/admin/users/delete',
-        data: { ids: JSON.stringify(ids) },
-    }).done(htmlString => {
-        $('#alert-container').append(htmlString);
-        $('#remove').prop('disabled', true);
-        $table.bootstrapTable('refresh');
-    });
+        url: actionURL,
+        type: 'post',
+        data: userJSON,
+    })
+        .done(htmlString => {
+            $('#alert-container').append(htmlString);
+            $table.bootstrapTable('refresh');
+        });
+}
+
+function ajaxLoadEditUserForm(userEntity) {
+    var id = userEntity.id;
+    const actionURL = `/admin/users/update/${id}`;
+    $.ajax({
+        url: actionURL,
+        type: 'get',
+    })
+        .done(htmlString => {
+            $('#updateUserModal-content').html(htmlString);
+            $('#updateUserModal').modal('show');
+
+            $('#updateUserForm').submit(function (event) {
+                event.preventDefault();
+                var userJSON = $(this).serialize();
+                ajaxUpdateUser(userJSON);
+                $('#updateUserModal').modal('hide');
+            });
+        });
 }

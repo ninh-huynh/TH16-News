@@ -1,0 +1,81 @@
+<%# var userRoles, user, category%>
+<form id="updateUserForm">
+    <div class="modal-header">
+        <h5 class="modal-title" id="">Thay đổi thông tin nhân viên</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group row">
+            <label for="role" class="col-form-label col-sm-4">Loại nhân viên</label>
+            <div class="col-sm-8">
+                <select class="custom-select" name="roleID" id="role">
+                    <% userRoles.forEach(role => { %>
+                        <% if (role.id === user.roleID) { %>
+                            <option value="<%= role.id %>" selected><%= role.name %></option>
+                        <% } else { %>
+                            <option value="<%= role.id %>"><%= role.name %></option>
+                        <%} ; %>
+                    <% }); %>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="name" class="col-form-label col-sm-4">ID</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="id" id="id" value="<%= user.id %>" readonly>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-form-label col-sm-4">Email</label>
+            <div class="col-sm-8">
+                <input type="email" class="form-control" name="email" id="email" value="<%= user.email %>" disabled>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="name" class="col-form-label col-sm-4">Họ và tên</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="name" id="name" value="<%= user.name %>"disabled>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="dayOfBirth" class="col-form-label col-sm-4">Ngày sinh</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" name="dayOfBirth" id="dayOfBirth" value="<%= moment(user.dayOfBirth).format('DD/MM/YYYY') %>" disabled>
+            </div>
+        </div>
+        <% if (user.role.toUpperCase() === 'Biên tập viên'.toUpperCase()) { %>
+            <hr>
+            <div class="form-group">
+                <label for="categoryIdManaged" class="">Chuyên mục quản lý</label>
+                <select class="form-control" name="categoryIdManaged" id="categoryIdManaged">
+                <% categories.forEach(category => { %>
+                    <% if (category.id === user.categoryIdManaged) { %>
+                        <option value="<%= category.id %>" selected><%= category.name %></option>
+                    <% } else { %>
+                        <option value="<%= category.id %>"><%= category.name %></option>
+                    <% }; %>
+                <% }); %>
+                </select>
+            </div>
+        <% } else if (user.role.toUpperCase() === 'Phóng viên'.toUpperCase()) { %>
+            <div class="form-group row">
+              <label for="nickName" class="col-form-label col-sm-4">Bút danh</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" name="nickName" id="nickName" value="<%= user.nickName %>">
+              </div>
+            </div>
+        <% } else if (user.role.toUpperCase() === 'Độc giả'.toUpperCase()) { %>
+            <div class="form-group row">
+              <label for="expiryDate" class="col-form-label col-sm-4">Ngày hết hạn</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" name="expiryDate" id="expiryDate" value="<%= moment(user.expiryDate).format('DD/MM/YYYY') %>" disabled>
+              </div>
+            </div>
+        <% }; %>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </div>
+</form>

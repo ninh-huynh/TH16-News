@@ -61,7 +61,16 @@ Quản lý người dùng
     </div>
 
     <!--Update user info modal -->
+    <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" id="updateUserModal-content">
 
+            <%# spinner loading, automatic replaced when has received html form %>
+            <div class="spinner-border text-dark" role="status">
+            </div>
+        </div>
+      </div>
+    </div>    
 
 <div class="row justify-content-around">
     <div class="col-lg-1 p-0">
@@ -119,10 +128,10 @@ Quản lý người dùng
                     <table id="table" data-toolbar="#toolbar">
                         <div id="toolbar">
                             <div class="justify-content-between">
-                                <button id="remove" class="btn btn-danger" disabled="">
+                                <button id="remove" class="btn btn-danger" disabled>
                                     <i class="fa fa-trash"></i> Xóa
                                 </button>
-                                <button id="edit" class="btn btn-success">
+                                <button id="edit" class="btn btn-success" disabled>
                                     <i class="fas fa-user-edit"></i> Sửa
                                 </button>
                                 <button id="add" class="btn btn-success">
