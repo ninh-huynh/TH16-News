@@ -106,4 +106,21 @@ router.get('/update/:id', (req, res, next) => {
         });
 });
 
+router.post('/renew', (req, res, next) => {
+    var userEntity = req.body;
+
+    var newExpiryDate = moment(userEntity.expiryDate).add(7, 'days').format('YYYY-MM-DD');
+    userEntity.expiryDate = newExpiryDate;
+    
+    userModel.update(userEntity)
+        .then(affectedRows => {
+
+            res.render('_widget/update-success-alert', { layout: 'layouts/empty', });
+        }).catch(err => {
+            console.log(err);
+
+            res.render('_widget/error-alert', { layout: 'layouts/empty', err });
+        });
+});
+
 module.exports = router;

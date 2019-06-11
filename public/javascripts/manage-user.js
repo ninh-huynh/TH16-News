@@ -112,11 +112,11 @@ function initTable() {
         filterShowClear: true,
 
         columns: [{ field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', },
-        { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true, width: '5%' },
-        { field: 'name', title: 'Tên', align: 'center', valign: 'middle', sortable: true, width: '40%', },
-        //{ field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true, width: '20%', }, 
-        { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', sortable: true, width: '15%', filterControl: 'select' },
-        { field: 'categoryManaged', title: 'Chuyên mục quản lý', align: 'center', valign: 'center', width: '15%', formatter: categoryFormatter }],
+            { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true, width: '5%' },
+            { field: 'name', title: 'Tên', align: 'center', valign: 'middle', sortable: true, width: '40%', },
+            //{ field: 'date', title: 'Ngày tạo', align: 'center', valign: 'middle', sortable: true, width: '20%', }, 
+            { field: 'role', title: 'Vai trò', align: 'center', valign: 'center', sortable: true, width: '15%', filterControl: 'select' },
+            { field: 'categoryManaged', title: 'Chuyên mục quản lý', align: 'center', valign: 'center', width: '15%', formatter: categoryFormatter }],
         //data: tableData,
         pageSize: 5,
         sidePagination: 'server',
@@ -126,11 +126,11 @@ function initTable() {
 
 $table.on('check.bs.table uncheck.bs.table ' +
     'check-all.bs.table uncheck-all.bs.table',
-    function () {
-        var totalSelected = $table.bootstrapTable('getSelections').length;
-        $('#remove').prop('disabled', !totalSelected);
-        $('#edit').prop('disabled', totalSelected != 1);
-    });
+function () {
+    var totalSelected = $table.bootstrapTable('getSelections').length;
+    $('#remove').prop('disabled', !totalSelected);
+    $('#edit').prop('disabled', totalSelected != 1);
+});
 
 $('#remove').click(function () {
     var ids = getIdSelections();
@@ -186,9 +186,15 @@ function initContextMenu() {
                     break;
 
                 case 'assign':
+                    ajaxLoadEditUserForm({id: row.id});
                     break;
 
                 case 'renew':
+                    var userEntity = {
+                        id: row.id,
+                        expiryDate: row.expiryDate,
+                    };
+                    ajaxRenewSubcriber(userEntity);
                     break;
 
                 default:
@@ -258,12 +264,12 @@ function ajaxDeleteUser(ids) {
         });
 }
 
-function ajaxUpdateUser(userJSON) {
+function ajaxUpdateUser(userEntityOrFormEncoded) {
     const actionURL = '/admin/users/update';
     $.ajax({
         url: actionURL,
         type: 'post',
-        data: userJSON,
+        data: userEntityOrFormEncoded,
     })
         .done(htmlString => {
             $('#alert-container').append(htmlString);
@@ -284,9 +290,22 @@ function ajaxLoadEditUserForm(userEntity) {
 
             $('#updateUserForm').submit(function (event) {
                 event.preventDefault();
-                var userJSON = $(this).serialize();
-                ajaxUpdateUser(userJSON);
+                var formEncoded = $(this).serialize();
+                ajaxUpdateUser(formEncoded);
                 $('#updateUserModal').modal('hide');
             });
+        });
+}
+
+function ajaxRenewSubcriber(userEntity) {
+    const actionURL = '/admin/users/renew';
+    $.ajax({
+        url: actionURL,
+        type: 'post',
+        data: userEntity,
+    })
+        .done(htmlString => {
+            $('#alert-container').append(htmlString);
+            $table.bootstrapTable('refresh');
         });
 }
