@@ -21,6 +21,12 @@ function loadChild(parentId) {
 }
 
 module.exports = {
+    loadAll: () => {
+        return knex.queryBuilder()
+            .select('*')
+            .from('CATEGORY');  
+    },
+
     load: (limit, offset) => {
         let t2 = knex(tableName)
             .select('*')

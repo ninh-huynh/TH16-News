@@ -89,7 +89,7 @@ router.get('/update/:id', (req, res, next) => {
 
     var pLoadUser = userModel.loadById(id);
     var pLoadUserRoles = userRoleModel.load();
-    var pLoadCategories = category.load();
+    var pLoadCategories = category.loadAll();
 
     Promise.all([pLoadUser, pLoadUserRoles, pLoadCategories])
         .then(([userEntity, userRoles, categories]) => {
