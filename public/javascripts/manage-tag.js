@@ -1,5 +1,69 @@
 var $table = $('#table');
 var tableData = [];
+var fAddTagValidator;
+var fEditTagValidator;
+const commonValidateOption = {
+    errorElement: 'em',
+
+    errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        if (element.prop('type') === 'checkbox') {
+            error.insertAfter(element.next('label'));
+        } else {
+            error.insertAfter(element);
+        }
+    },
+    highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-valid').removeClass('is-invalid');
+    },
+};
+
+var fAddTagValidateOption = {
+    rules: {
+        name: {
+            required: true,
+            remote: {
+                url: '/check-tag-available',
+                type: 'post',
+                data: {
+                    name: function () {
+                        return $('#inputTagNameAdd').val();
+                    }
+                }
+            }
+        },
+    },
+    messages: {
+        name: {
+            required: 'Chưa nhập tên tag',
+            remote: 'Tag đã tồn tại. Hãy đặt tên khác'
+        },
+    },
+    submitHandler: (form) => {
+        ajaxAddTagSubmitHandler(form);
+        $('#addTagModal').modal('hide');
+    },
+};
+
+var fEditTagValidateOption = {
+    rules: {
+        name: {
+            required: true,
+        },
+    },
+    messages: {
+        name: {
+            required: 'Tên tag không được bỏ trống',
+        },
+    },
+    submitHandler: (form) => {
+        ajaxEditTagSubmitHandler(form);
+        $('#editTagModal').modal('hide');
+    },
+};
 
 $(function () {
     // context menu
@@ -12,21 +76,12 @@ $(function () {
     mounted();  
     $('#edit').prop('disabled', true);
 
-    /* form validation */
-    'use strict';
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function(form) {
-        console.log(form);
-        form.addEventListener('submit', function(event) {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
-    });
+
+    Object.assign(fAddTagValidateOption, commonValidateOption);
+    Object.assign(fEditTagValidateOption, commonValidateOption);
+
+    fAddTagValidator = $('#addTagForm').validate(fAddTagValidateOption);
+    fEditTagValidator = $('#editTagForm').validate(fEditTagValidateOption);
 });
 
 function getIdSelections() {
@@ -161,9 +216,10 @@ $('#mySidenav a').mouseleave(function() {
 });
 
 // add tag
-$('#add').on('click',function() {
+$('#add').on('click', function () {
+    fAddTagValidator.resetForm();
     $('#inputTagNameAdd').val('');
-    $('#addTagForm').removeClass('was-validated').attr('novalidate', '');
+    $('input').removeClass('is-valid').removeClass('is-invalid');
     $('#addTagModal').modal('show');
 });
 
@@ -176,62 +232,49 @@ $('#edit').on('click', function() {
     id = id[0];
     let row = $table.bootstrapTable('getRowByUniqueId', id);
 
+    fEditTagValidator.resetForm();
     $('#inputTagNameUpdate').val(row.name);
-    $('#editTagForm').removeClass('was-validated').attr('novalidate', '');
+    $('input').removeClass('is-valid').removeClass('is-invalid');
     $('#editTagModal').modal('show');
 });
 
-$('#addTagForm').submit( function(e) {
-    if (this.checkValidity()) {
-        e.preventDefault();
+function ajaxAddTagSubmitHandler(form) {
+    let name = $('#inputTagNameAdd').val();
+    $.ajax({
+        url: '/admin/tags',
+        method: 'post',
+        data: {
+            name: name
+        },
+        err: err => console.log(err),
+        success: res => {
+            console.log(res);
+            $table.bootstrapTable('refresh', { silent: true });
+        }
+    });
 
-        let name = $('#inputTagNameAdd').val();
-        $.ajax({
-            url: '/admin/tags',
-            method: 'post',
-            data: {
-                name: name
-            },
-            err: err => console.log(err),
-            success: res => {
-                console.log(res);
-                $table.bootstrapTable('refresh', { silent: true });
-            }
-        });
+    $('#addTagModal').modal('hide');
+}
 
-        $('#addTagModal').modal('hide');
-    } else {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-});
+function ajaxEditTagSubmitHandler(form) {
+    let data = {
+        id: getIdSelections()[0],
+        name: $('#inputTagNameUpdate').val()
+    };
 
-$('#editTagForm').submit(function(e) {
-    if (this.checkValidity()) {
-        e.preventDefault();
+    console.log(data);
 
-        let data = { 
-            id: getIdSelections()[0], 
-            name: $('#inputTagNameUpdate').val()
-        };
-
-        console.log(data);
-
-        $.ajax({
-            url: '/admin/tags',
-            method: 'put',
-            data: { data: JSON.stringify(data) },
-            error: err => console.log(err),
-            success: res => {
-                $table.bootstrapTable('refresh', { silent: true });
-            }
-        });
-        $('#editTagModal').modal('hide');
-    } else {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-});
+    $.ajax({
+        url: '/admin/tags',
+        method: 'put',
+        data: { data: JSON.stringify(data) },
+        error: err => console.log(err),
+        success: res => {
+            $table.bootstrapTable('refresh', { silent: true });
+        }
+    });
+    $('#editTagModal').modal('hide');
+}
 
 function removeTag(ids) {
     if (ids.length === 0)

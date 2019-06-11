@@ -65,4 +65,11 @@ module.exports = {
     remove: (tag) => {
         return db.remove(tag, 'TAG');
     },
+
+    checkTagExists: (name) => {
+        return knex.queryBuilder().select().from('TAG').where('name', name)
+            .then(rows => {
+                return rows.length === 1;
+            });
+    },
 };

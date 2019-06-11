@@ -3,7 +3,7 @@ var router = express.Router();
 var userModel = require('../models/users');
 var articleModel = require('../models/articles');
 var categoryModel = require('../models/categories');
-
+var tagModel = require('../models/tags');
 // check if the email exists or not
 router.post('/check-email-available', (req, res, next) => {
     var email = req.body.email;
@@ -40,6 +40,13 @@ router.post('/check-category-available', (req, res, next) => {
         .catch(next);
 });
 
-// TODO: check every thing else below: existing category, tags, ...
+router.post('/check-tag-available', (req, res, next) => {
+    var tag = req.body.name;
+    tagModel.checkTagExists(tag)
+        .then(isExist => {
+            res.send((!isExist).toString());
+        })
+        .catch(next);
+});
 
 module.exports = router;
