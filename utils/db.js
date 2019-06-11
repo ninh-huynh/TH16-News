@@ -8,7 +8,7 @@ var knex = require('knex')({
         database: process.env.DATABASE,
     },
     pool: { min: 0, max: 10 },
-    debug: true                 // set this value to true if you want to display all query
+    debug: false                 // set this value to true if you want to display all query
 });
 
 module.exports = {

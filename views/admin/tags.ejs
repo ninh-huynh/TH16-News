@@ -1,8 +1,86 @@
+<link rel="stylesheet" href="/stylesheets/manage-tag.css">
+
+<%- contentFor('title') %>
+Quản lý nhãn
+<%- contentFor('body') %>
+
+<div class="modal" id="addTagModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Thêm nhãn</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form role="form" id="addTagForm" 
+            name="tag"  novalidate>
+                <div class="form-group row required">
+                    <label for="inputTagName" class="col-md-4 col-form-label">Tên nhãn</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name="name" id="inputTagNameAdd" spellcheck="false" required>
+                    </div>
+                </div>
+
+                <div class="form float-right">
+                    <button type="submit" class="btn btn-primary btn-submit" >Thêm</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+
+        </div>
+        
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="editTagModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Thêm nhãn</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form role="form" id="editTagForm" 
+            name="tag"  novalidate>
+                <div class="form-group row required">
+                    <label for="inputTagName" class="col-md-4 col-form-label">Tên nhãn</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name="name" id="inputTagNameUpdate" spellcheck="false" required>
+                    </div>
+                </div>
+
+                <div class="form float-right">
+                    <button type="submit" class="btn btn-primary btn-submit" >OK</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+
+        </div>
+        
+        </div>
+    </div>
+</div>
+
 <div class="row justify-content-around">
     <div class="col-lg-1 p-0">
         <div id="mySidenav" class="sticky-top">
             <!-- category -->
-            <a href="#" id="category" class="list-group-item list-group-item-action 
+            <a href="/admin/categories/" id="category" class="list-group-item list-group-item-action 
                 d-flex justify-content-between align-items-center">
                 <div>
                     <i class="fas fa-list mr-2 sidenav-before-icon"></i>
@@ -12,7 +90,7 @@
                 <span  class="badge badge-light badge-pill float-right sidenav-badge">30</span>
             </a>
             <!-- tag -->
-            <a href="#" id="tag" class="list-group-item list-group-item-action 
+            <a href="/admin/tags/" id="tag" class="list-group-item list-group-item-action 
                 d-flex justify-content-between align-items-center">
                 <div>
                     <i class="fas fa-tags mr-2 sidenav-before-icon"></i>
@@ -22,7 +100,7 @@
                 <span class="badge badge-light badge-pill sidenav-badge float-right">50</span>
             </a>
             <!-- article -->
-            <a href="#" id="article" class="list-group-item list-group-item-action 
+            <a href="/admin/posts/" id="article" class="list-group-item list-group-item-action 
                 d-flex justify-content-between align-items-center">
                 <div>
                     <i class="far fa-newspaper mr-2 sidenav-before-icon"></i>
@@ -32,7 +110,7 @@
                 <span class="badge badge-light badge-pill sidenav-badge float-right">1245</span>
             </a>
             <!-- user-->
-            <a href="#" id="user" class="list-group-item list-group-item-action 
+            <a href="/admin/users/" id="user" class="list-group-item list-group-item-action 
                 d-flex justify-content-between align-items-center">
                 <div>
                     <i class="fas fa-users mr-2 sidenav-before-icon"></i>
@@ -80,3 +158,5 @@
 
     </div>
 </div>
+
+<script src="/javascripts/manage-tag.js"></script>

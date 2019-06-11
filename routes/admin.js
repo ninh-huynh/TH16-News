@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var category = require('../models/categories');           // import category model
+var tag = require('../models/tags');
 var linkHelper = require('../utils/linkHelper');
 
 var usersRouter = require('./admin/admin_users');
+var tagsRouter = require('./admin/admin_tags');
 
 
 // handle read category
@@ -17,7 +19,6 @@ router.get('/categories/load', (req, res, next) => {
     let promise;
     let limit = parseInt(req.query.limit);
     let offset = parseInt(req.query.offset);
-    console.log(req.query);
 
     switch(req.query.load) {
         case 'all':
@@ -130,7 +131,6 @@ router.put('/categories/update', (req, res, next) => {
         });
 });
 
-
 // TODO: implement the 'path' below so when the user access localhost:3000/admin/'path', 
 // the web server return the correct html
 // Feel free to modify the ejs file content, ejs file name (must inside the views)
@@ -138,5 +138,6 @@ router.put('/categories/update', (req, res, next) => {
 // get('/tags')
 // get('/posts')
 router.use('/users', usersRouter);
+router.use('/tags', tagsRouter);
 
 module.exports = router;
