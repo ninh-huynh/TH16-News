@@ -6,6 +6,7 @@ var linkHelper = require('../utils/linkHelper');
 
 var usersRouter = require('./admin/admin_users');
 var tagsRouter = require('./admin/admin_tags');
+var postsRouter = require('./admin/admin_posts');
 
 
 // handle read category
@@ -27,7 +28,6 @@ router.get('/categories/load', (req, res, next) => {
             } else {
                 promise = category.load(limit, offset);
             }
-
 
             promise
                 .then(([total, rows]) => {
@@ -139,5 +139,6 @@ router.put('/categories/update', (req, res, next) => {
 // get('/posts')
 router.use('/users', usersRouter);
 router.use('/tags', tagsRouter);
+router.use('/posts', postsRouter);
 
 module.exports = router;
