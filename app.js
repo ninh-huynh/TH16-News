@@ -7,6 +7,7 @@ var expressLayouts = require('express-ejs-layouts');
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
+var writerRouter = require('./routes/writer');
 var categoryRouter = require('./routes/category');
 var tagRouter = require('./routes/tag');
 var searchRouter = require('./routes/search');
@@ -41,6 +42,7 @@ app.use('/', indexRouter);
 app.use('/categories', categoryRouter);
 app.use('/tags', tagRouter);
 app.use('/admin', adminRouter);
+app.use('/writer', writerRouter);
 app.use('/search', searchRouter);
 app.use(articleRouter);
 

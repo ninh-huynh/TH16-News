@@ -70,7 +70,7 @@ module.exports = {
         return knex.queryBuilder()
             .select('*')
             .from(tableName)
-            .whereNull('parentID')
+            .whereNull('parentID');
     },
 
     add: (newCategory) => {

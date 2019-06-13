@@ -1,4 +1,11 @@
 <link rel="stylesheet" href="/stylesheets/new-post.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css">
+
+<%- contentFor('title') %>
+Đăng bài viết
+<%- contentFor('body') %>
+
 <div class="row">
     <div class="col-md-10 offset-md-1">
         <div class="card">
@@ -20,22 +27,11 @@
                         <label for="selectCategory" class="col-md-2 col-form-label required">Chuyên mục</label>
                         <div class="col-md-5">
                             <select class="form-control" id="selectCategory" name="category">
-                                <option selected>Thời sự</option>
-                                <option>Thế giới</option>
-                                <option id="kinhDoanh">Kinh doanh</option>
-                                <option>Công nghệ</option>
-                                <option>Thể thao</option>
-                                <option>Giải trí</option>
-                                <option>Sức khỏe</option>
-                                <option>Giáo dục</option>
                             </select>
                         </div>
 
                         <div class="col-md-5">
-                            <select class="form-control" id="selectSubCategory" name="subCategory">
-                                <option>Chính trị</option>
-                                <option>Giao thông</option>
-                                <option>Đô thị</option>
+                            <select class="form-control" id="selectChildCategory" name="childCategory">
                             </select>
                         </div>
                     </div>
@@ -44,8 +40,7 @@
                     <div class="form-group row" id="inputTag">
                         <label for="inputTag" class="col-md-2 col-form-label">Tag</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="tag" id="inputTag" spellcheck="false">
-                            <span class="font-italic"><small>Các thẻ cách nhau bởi dấu chấm phẩy.</small></span>
+                            <input type="text" class="form-control" name="tag" id="inputTag" data-role="tagsinput" spellcheck="false">
                         </div>
                     </div>
 
@@ -104,3 +99,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
+<!-- CKEditor 5 -->
+<script src="https://cdn.ckeditor.com/ckeditor5/12.1.0/classic/ckeditor.js"></script>
+<!-- bootstrap tags input-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js.map"></script>

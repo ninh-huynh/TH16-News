@@ -19,7 +19,7 @@ $(function () {
                 required: true
             },
 
-            subCategory: {
+            childCategory: {
                 required: true
             },
 
@@ -49,7 +49,7 @@ $(function () {
                 required: 'Chưa chọn chuyên mục'
             },
 
-            subCategory: {
+            childCategory: {
                 required: 'Chưa chọn chuyên mục con'
             },
 
@@ -74,16 +74,40 @@ $(function () {
         },
         unhighlight: function (element, errorClass, validClass) {
             $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        submitHandler: (form) => {
+            ajaxNewPostSubmitHandler(form);
+        }
+    });
+
+    //fill category select
+    $.ajax({
+        url: '/writer/new-post/category',
+        method: 'get',
+        error: err => console.log(err),
+        success: res => {
+            console.log(res);
+
+            let parentCategories = res;
+            let $selectParentCategory = $('#selectCategory');
+            parentCategories.forEach((parentCategory, index) => {
+                parentCategory.name = parentCategory.name.substr(0,1).toUpperCase()+parentCategory.name.substr(1);
+                $($selectParentCategory).append($('<option>', { 
+                    value: parentCategory.id,
+                    text : parentCategory.name,
+                }));   
+            });
         }
     });
 });
 
-$("#thumbnail").click(function () {
-    $("#replaceThumbnailButton").click();
+$('#thumbnail').click(function () {
+    $('#replaceThumbnailButton').click();
 });
 
 function readURL(input) {
-
+    console.log(input);
+    console.log($(input));
     if (($('#uploadThumbnailButton').is(input))) {
 
         $('#uploadThumbnailFormGroup').removeClass('d-flex').addClass('d-none');
@@ -91,6 +115,21 @@ function readURL(input) {
     }
 
     if (input.files && input.files[0]) {
+        let data = new FormData();
+        data.append('file', input.files[0]);
+        console.log(input.files[0]);
+        $.ajax({
+            url: '/writer/new-post/test',
+            method: 'post',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            error: err => console.log(err),
+            success: res => {
+                console.log(res);
+            }
+        });
         var reader = new FileReader();
 
         reader.onload = function (e) {
@@ -105,59 +144,34 @@ function readURL(input) {
 /* fill select list */
 $('#selectCategory').change(function (event) {
     var values;
+    console.log($(this).val());
 
-    switch ($(this).val()) {
-        case 'Thời sự':
-            values = ['Chính trị', 'Giao thông', 'Đô thị'];
-            break;
+    $.ajax({
+        url: `/writer/new-post/category/${ $(this).val() }`,
+        method: 'get',
+        error: err => console.log(err),
+        success: res => {
+            let categories = res;
+            let $selectChildCateogry = $('#selectChildCategory');
 
-        case 'Thế giới':
-            values = ['Quân sự', 'Tư liệu', 'Phân tích', 'Người Việt 4 phương'];
-            break;
-
-        case 'Kinh doanh':
-            values = ['Bất động sản', 'Hàng không', 'Tài chính', 'Doanh nhân', 'Tiêu dùng'];
-            break;
-
-        case 'Công nghệ':
-            values = ['Mobile', 'AI', 'SmartHome', 'Startup'];
-            break;
-
-        case 'Thể thao':
-            values = ['Thể thao Việt Nam', 'Thể thao Thế giới', 'Bóng đá Việt Nam'];
-            break;
-
-        case 'Giải trí':
-            values = ['Sao Việt', 'Sao Châu Á', 'Sao Hollywood'];
-            break;
-
-        case 'Sức khỏe':
-            values = ['Làm đẹp', 'Khỏe đẹp mỗi ngày', 'Giới tính'];
-            break;
-
-        case 'Giáo dục':
-            values = ['Tuyển sinh 2019', 'Du học', 'Chọn nghề', 'Chọn trường'];
-            break;
-
-        default:
-
-    }
-
-    $("#selectSubCategory").html('');
-    for (var i = 0; i < values.length; i++) {
-        $('#selectSubCategory').append('<option>' + values[i] + '</option>');
-    }
-
+            $($selectChildCateogry).empty();
+            categories.forEach(category => {
+                category.name = category.name.substr(0,1).toUpperCase() + category.name.substr(1);
+                $($selectChildCateogry).append($('<option>', { 
+                    value: category.id,
+                    text : category.name,
+                }));   
+            });
+        }
+    });
 });
 
-
-
 // make sure CKEditor toolbar could not be overlapped by navbar
-var myEditor;
+var editor;
 $(window).on('load', function () {
     var navbarHeight = $('#category-menu > .navbar').outerHeight();
 
-    ClassicEditor
+    editor = ClassicEditor
         .create(document.querySelector('#editor'), {
             toolbar: {
                 viewportTopOffset: navbarHeight, // category-menu height
@@ -167,3 +181,19 @@ $(window).on('load', function () {
             console.error(error);
         });
 });
+
+function ajaxNewPostSubmitHandler(form) {
+    
+    // let file = $(form).find('#uploadThumbnailButton')[0].files[0];
+    // var data = new FormData($('#newPostForm')[0]);
+    // //data.append(file.name, file);
+    // console.log(file);
+    // console.log(data);
+
+    // for(var pair of data.entries()) {
+    //     console.log(pair[0]+', '+pair[1]);
+    // }
+
+
+
+}
