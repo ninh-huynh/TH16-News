@@ -13,6 +13,8 @@ router.get('/', function (req, res, next) {
     var searchColumn = req.query.type;
     var current;
 
+    var isGuest = true;   // check is guest or not
+
     if (sortOrder === '' || sortOrder === undefined)
         sortOrder = 'DESC';
 
@@ -29,10 +31,15 @@ router.get('/', function (req, res, next) {
     }
 
     var page;
-    articleModel.countTotalByTitle_(searchColumn, keyword)
+    articleModel.countTotalByTitle(searchColumn, keyword)
         .then(totalArticle => {
             page = paginator.get(current, totalArticle, articlePerPage);
-            return articleModel.searchByKeyword_(searchColumn, keyword, articlePerPage, (current - 1) * articlePerPage, sortOrder);
+            return articleModel.searchByKeyword(searchColumn,
+                keyword,
+                articlePerPage,
+                (current - 1) * articlePerPage,
+                sortOrder,
+                isGuest);
         })
         .then(rows => {
             var obj = {
