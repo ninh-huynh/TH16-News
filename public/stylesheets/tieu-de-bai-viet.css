@@ -7,6 +7,27 @@
     object-fit: cover;
 }
 
+.article-content {
+     -webkit-filter: blur(0.25rem);
+     -moz-filter: blur(0.25rem);
+     -o-filter: blur(0.25rem);
+     -ms-filter: blur(0.25rem);
+     filter: blur(0.25rem);
+}
+
+.overlay {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    z-index: 2;
+}
+
 /* Tất cả các hình trong nội dung luôn có chiều rộng khớp với thẻ cha của nó */
 #article-detail img{
     width: 100%;

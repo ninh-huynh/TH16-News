@@ -10,6 +10,8 @@ router.get('/:title', (req, res, next) => {
     var title = req.params.title;
     var articleEntity;
     var today = moment().format('YYYY-MM-DD');
+    var isAbleToView;   
+    var isSubscriberCanViewPremium = false;     // check the subscriber login and currentDate <= expiry date
 
     title = title.replace(/-/g, ' ');
     articleModel.searchByTitle(title)
@@ -20,9 +22,12 @@ router.get('/:title', (req, res, next) => {
             return Promise.all([pLoadBySameCategory, pIncreaseViews]);
         })
         .then(([rows, totalRowEffected]) => {
+            isAbleToView = !articleEntity.isPremium || isSubscriberCanViewPremium;
+
             var obj = {
                 article: articleEntity,
-                sameCategoryArticle: rows
+                sameCategoryArticle: rows,
+                isAbleToView
             };
             res.render('post', obj);
         })
