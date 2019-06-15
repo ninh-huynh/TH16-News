@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
         articles.loadWeeklyTrend(5, 0),
         articles.loadNewest(10, 0),
         articles.loadMostViewed(10, 0),
-        articles.loadTopCategory(10, 0),
+        articles.loadTopCategory(9, 0),
         tags.load()])
         .then(([weeklyTrendRows, newestRows, mostViewedRows, topCatRows, tagRows]) => {
             var obj = {

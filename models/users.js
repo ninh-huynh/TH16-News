@@ -4,13 +4,17 @@ const tableName = 'USER';
 
 module.exports = {
 
-    load: (totalRow, rowBegin) => {
+    load: (totalRow, rowBegin, sortBy, order) => {
         var query = knex.queryBuilder()
             .select('u.*', 'ur.name as role', 'c.name as categoryManaged')
             .from('USER as u')
             .join('USER_ROLE as ur', 'u.roleID', '=', 'ur.id')
-            .leftJoin('CATEGORY as c', 'u.categoryIdManaged', '=', 'c.id')
-            .limit(totalRow).offset(rowBegin);
+            .leftJoin('CATEGORY as c', 'u.categoryIdManaged', '=', 'c.id');
+        
+        if (sortBy !== undefined)
+            query = query.orderBy(sortBy, order);
+        
+        query = query.limit(totalRow).offset(rowBegin);
         return query;
     },
 

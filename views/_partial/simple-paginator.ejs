@@ -1,24 +1,22 @@
 <nav aria-label="...">
     <ul class="pagination justify-content-center">
 
-        <%# Nút previous %> 
-        <%# page.prev là biến kiểu Number, == 0 khi không có trang trước đó %>
-       
-            <li class="page-item disabled">
-                <span class="page-link">
-                    <i class="fas fa-chevron-left"></i>
-                </span>
-            </li>
-        
+        <li class="page-item disabled" data-direction="prev">
+            <span class="page-link">
+                <i class="fas fa-chevron-left"></i>
+            </span>
+        </li>
 
-        <%# Nút next %> 
-        <%# page.next là biến kiểu Number, == 0 khi không có trang sau nó %>
-        
-            <li class="page-item">
-                <a class="page-link" href="#">
-                    <i class="fas fa-chevron-right"></i>
-                </a>
-            </li>   
+        <% if (hasNext) { %>
+            <li class="page-item" data-direction="next">
+        <% } else { %>
+            <li class="page-item disabled" data-direction="next">
+        <% }; %>
+            
+            <span class="page-link" href="#">
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </li>
 
     </ul>
 </nav>

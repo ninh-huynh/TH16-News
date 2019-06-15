@@ -7,9 +7,10 @@ var paginator = require('../utils/paginator');
 const articlePerPage = 5;       // define favorite number here.
 
 route.get('/:name', (req, res, next) => {
+    var isSubscriber = true;
     var tagName = req.params.name;
     tagName = tagName.replace(/-/g, ' ');
-        
+
     var current;
     if (req.query.page === undefined) {
         current = 1;            // default page is page number 1
@@ -26,7 +27,8 @@ route.get('/:name', (req, res, next) => {
             page = paginator.get(current, totalArticle, articlePerPage);
 
             return Promise.all([tagModel.loadByName(tagName),
-                article.loadByTagName(tagName, articlePerPage, (current - 1) * articlePerPage)]);
+                article.loadByTagName(tagName, articlePerPage,
+                    (current - 1) * articlePerPage, isSubscriber)]);
         })
         .then(([tagEntity, articles]) => {
             var obj = {

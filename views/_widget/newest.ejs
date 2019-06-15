@@ -1,14 +1,21 @@
+<%
+    var hasNext = newestArticles.length >= 5;
+%>
+
 <div id="newest">
     <div class="d-flex justify-content-between">
         <div class="h3">MỚI NHẤT</div>
-        <%- include('../_partial/simple-paginator') %>
+        <%- include('../_partial/simple-paginator', {hasNext}) %>
     </div>
     
     <ul class="list-group list-group-flush">
         <% newestArticles.forEach((article, index) => { %>
-        <% if (index < 5) { %>
         
-        <li class="list-group-item">
+        <% if (index < 5) { %>
+        <li class="list-group-item page-1">
+        <% } else { %>
+        <li class="list-group-item d-none page-2">
+        <% }; %>
             <div class="media">
                 <img data-src="<%= article.coverImageURL %>" class="align-self-center mr-3 lazyload"
                     alt="...">
@@ -25,7 +32,7 @@
             </div>
         </li>
 
-        <% }; %>
+       
         <% }); %>
 
         <% if (newestArticles.length === 0) { %>

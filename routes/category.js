@@ -9,6 +9,8 @@ const articlePerPage = 5;       // define favorite number here.
 route.get('/:name', (req, res, next) => {
     var categoryName = req.params.name;
     var categoryPath = '/categories/' + categoryName;
+    
+    var isSubscriber = false;
 
     var current;
     if (req.query.page === undefined) {
@@ -29,7 +31,8 @@ route.get('/:name', (req, res, next) => {
         })
         .then(totalArticle => {
             page = paginator.get(current, totalArticle, articlePerPage);
-            return article.loadByCategoryEntity(category, articlePerPage, (current - 1) * articlePerPage);
+            return article.loadByCategoryEntity(category,
+                articlePerPage, (current - 1) * articlePerPage, isSubscriber);
         })
         .then(articles => {
             var obj = {

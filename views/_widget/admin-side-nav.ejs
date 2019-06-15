@@ -1,0 +1,42 @@
+<div id="mySidenav" class="sticky-top">
+    <!-- category -->
+    <a href="/admin/categories/" id="category" class="list-group-item list-group-item-action 
+                d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-list mr-2 sidenav-before-icon"></i>
+            <span class="font-weight-bold">Chuyên mục</span>
+        </div>
+        <i class="fas fa-list mr-2 float-right sidenav-after-icon"></i>
+        <span class="badge badge-light badge-pill float-right sidenav-badge"><%= totalCategory %></span>
+    </a>
+    <!-- tag -->
+    <a href="/admin/tags/" id="tag" class="list-group-item list-group-item-action 
+                d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-tags mr-2 sidenav-before-icon"></i>
+            <span class="font-weight-bold">Nhãn</span>
+        </div>
+        <i class="fas fa-tags mr-2 float-right sidenav-after-icon"></i>
+        <span class="badge badge-light badge-pill sidenav-badge float-right"><%= totalTag %></span>
+    </a>
+    <!-- article -->
+    <a href="/admin/posts/" id="article" class="list-group-item list-group-item-action 
+                d-flex justify-content-between align-items-center">
+        <div>
+            <i class="far fa-newspaper mr-2 sidenav-before-icon"></i>
+            <span class="font-weight-bold">Bài viết</span>
+        </div>
+        <i class="far fa-newspaper mr-2 float-right sidenav-after-icon"></i>
+        <span class="badge badge-light badge-pill sidenav-badge float-right"><%= totalArticle %></span>
+    </a>
+    <!-- user-->
+    <a href="/admin/users/" id="user" class="list-group-item list-group-item-action 
+                d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-users mr-2 sidenav-before-icon"></i>
+            <span class="font-weight-bold">Người dùng</span>
+        </div>
+        <i class="fas fa-users mr-2 float-right sidenav-after-icon"></i>
+        <span class="badge badge-light badge-pill sidenav-badge float-right"><%= totalUser %></span>
+    </a>
+</div>
