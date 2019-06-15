@@ -320,9 +320,9 @@ module.exports = {
             });
     },
 
-    loadByCategoryEntity: (entity, totalRow, rowBegin) => {
+    loadByCategoryEntity: (entity, totalRow, rowBegin, isSubscriber) => {
         var articles;
-        return knex.queryBuilder()
+        var query = knex.queryBuilder()
             .select()
             .from(ARTICLE._)
             .whereIn('statusID', queryGetPublicId)
@@ -334,8 +334,14 @@ module.exports = {
                 });
 
                 this.whereIn('categoryID', categoryIDs);
-            })
-            .limit(totalRow).offset(rowBegin)
+            });
+        
+        if (isSubscriber)
+        {
+            query = query.orderBy('isPremium', 'desc');
+        }
+        
+        query = query.limit(totalRow).offset(rowBegin)
             .then(rows => {
                 articles = rows;
 
@@ -354,5 +360,7 @@ module.exports = {
                 // Final result: all article with the tags property included
                 return articles;
             });
+        
+        return query;
     },
 };
