@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressLayouts = require('express-ejs-layouts');
+var session = require('express-session');
+var passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
@@ -11,6 +13,7 @@ var writerRouter = require('./routes/writer');
 var categoryRouter = require('./routes/category');
 var tagRouter = require('./routes/tag');
 var searchRouter = require('./routes/search');
+var accountRouter = require('./routes/account');
 var articleRouter = require('./routes/article');
 var menu_bar = require('./middleware/menu_bar');
 var form_validate = require('./middleware/form-validate');
@@ -30,6 +33,9 @@ app.locals.concatToLink = linkHelper.concatToLink;          // pass concatToLink
 app.locals.moment = require('moment');
 app.locals.publicDateFormat = 'DD/MM/YYYY';
 
+require('./middleware/session')(app);
+require('./middleware/passport')(app);
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));           // for parsing req.body infomation
@@ -44,6 +50,7 @@ app.use('/tags', tagRouter);
 app.use('/admin', adminRouter);
 app.use('/writer', writerRouter);
 app.use('/search', searchRouter);
+app.use('/account', accountRouter);
 app.use(articleRouter);
 
 // catch 404 and forward to error handler
