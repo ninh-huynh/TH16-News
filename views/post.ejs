@@ -48,10 +48,12 @@
          </div>
 
          <%#TODO: Nút download file pdf, thêm vào thuộc tính href="#" khi đã đăng nhập %>
+         <% if (article.isPremium) { %>
          <a class="float-right" id="download-article-link" href="#"> 
             Tải xuống 
             <i class="fas fa-file-download"></i>
          </a>
+         <% }; %>
 
          <!-- Nội dung chi tiết bài viết -->
          <div id="article-detail" class="mb-3">
