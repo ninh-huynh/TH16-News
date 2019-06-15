@@ -1,14 +1,14 @@
-<div id="top-10" class="my-5">
+<div id="top-10" class="my-3">
     <div class="d-flex justify-content-between">
         <div class="h3">TOP 10 CHUYÊN MỤC</div>
-        <%- include('../_partial/simple-paginator') %>
+        <%# include('../_partial/simple-paginator') %>
     </div>
 
     <%# javascript forEach callback function: 
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach %>
     <div class="card-group">
         <% topCatArticles.forEach(function (article) { %>
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="img-cont">
                 <img data-src="<%= article.coverImageURL %>" class="card-img-top lazyload" alt="...">
             </div>

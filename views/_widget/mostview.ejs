@@ -1,16 +1,19 @@
+<%
+    var hasNext = mostViewedArticles.length >= 5;
+%>
+
 <div id="most-viewed">
     <div class="d-flex justify-content-between">
         <div class="h3">XEM NHIỀU</div>
-        <%- include('../_partial/simple-paginator') %>    
+        <%- include('../_partial/simple-paginator', {hasNext}) %>    
     </div>
 
     <% mostViewedArticles.forEach((article, index) => { %>
     <% if (index < 5) { %>
-        <% if (index === 4) { %>    
-            <div class="card">
-        <% } else { %>
-            <div class="card mb-3">
-        <% }; %>
+    <div class="card mb-3 shadow page-1">
+    <% } else { %>
+    <div class="card mb-3 shadow d-none page-2">
+    <% }; %>
         <div class="row no-gutters align-items-center">
             <div class="col-md-4">
                 <div class="img-cont">
@@ -31,7 +34,6 @@
             </div>
         </div>
     </div>
-    <% }; %>
     <% }); %>
 
     <%# Danh sách rỗng %>

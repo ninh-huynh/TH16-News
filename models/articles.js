@@ -135,8 +135,9 @@ module.exports = {
             .select('articleId', knex.raw('SUM(total) as total_view'))
             .from(ARTICLE_VIEWS._)
             .groupBy('articleId')
-            .orderBy('total_view', 'desc').as('most_view');
-
+            .orderBy('total_view', 'desc').as('most_view')
+            .limit(totalRow).offset(rowBegin);
+    
         return knex.queryBuilder()
             .select(['art.*', 'cat.name as category', 'cat.path as categoryPath'])
             .from(queryMostView)
