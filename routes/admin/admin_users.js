@@ -22,7 +22,7 @@ router.get('/load', (req, res, next) => {
     var order = req.query.order;
     var sort = req.query.sort;
 
-    Promise.all([userModel.countTotal(), userModel.load(limit, offset)])
+    Promise.all([userModel.countTotal(), userModel.load(limit, offset, sort, order)])
         .then(([total, rows]) => {
             var obj = {
                 total,
