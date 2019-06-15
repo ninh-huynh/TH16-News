@@ -46,7 +46,7 @@ $(function () {
         },
         unhighlight: function (element, errorClass, validClass) {
             $(element).addClass('is-valid').removeClass('is-invalid');
-        }
+        },
     });
     
     //TODO: loginForm, forgotPassForm
@@ -89,6 +89,16 @@ $(function () {
         },
         unhighlight: function (element, errorClass, validClass) {
             $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        submitHandler: function(form) {
+            var data = $(form).serialize();
+            $.post('/account/login/', data, function (result) {
+                $('#alert-container').append(result);
+                setTimeout(() => $('.alert').alert('close'), 2000);
+                if ($(result).hasClass('success')) {
+                    $('#loginModal').modal('toggle');
+                }
+            });
         }
     });
 

@@ -49,7 +49,7 @@ router.post('/add', (req, res, next) => {
             res.render('_widget/add-success-alert', { layout: 'layouts/empty', });
         }).catch(err => {
 
-            res.render('_widget/error-alert', { layout: 'layouts/empty', err });
+            res.render('_widget/error-alert-admin', { layout: 'layouts/empty', err });
         });
 });
 
@@ -63,7 +63,7 @@ router.delete('/delete', (req, res, next) => {
         })
         .catch(err => {
 
-            res.render('_widget/error-alert', { layout: 'layouts/empty', err });
+            res.render('_widget/error-alert-admin', { layout: 'layouts/empty', err });
         });
 });
 
@@ -75,7 +75,7 @@ router.post('/update', (req, res, next) => {
             res.render('_widget/update-success-alert', { layout: 'layouts/empty', });
         }).catch(err => {
 
-            res.render('_widget/error-alert', { layout: 'layouts/empty', err });
+            res.render('_widget/error-alert-admin', { layout: 'layouts/empty', err });
         });
 });
 
@@ -102,7 +102,7 @@ router.get('/update/:id', (req, res, next) => {
             res.render('_widget/update-user-form', obj);
         })
         .catch(([err1, err2]) => {
-            res.render('_widget/error-alert', { layout: 'layouts/empty', err1 });
+            res.render('_widget/error-alert-admin', { layout: 'layouts/empty', err1 });
         });
 });
 
@@ -119,7 +119,7 @@ router.post('/renew', (req, res, next) => {
         }).catch(err => {
             console.log(err);
 
-            res.render('_widget/error-alert', { layout: 'layouts/empty', err });
+            res.render('_widget/error-alert-admin', { layout: 'layouts/empty', err });
         });
 });
 
