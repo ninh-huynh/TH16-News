@@ -54,7 +54,7 @@ module.exports = {
     // Each article have default property as database column
     // and relation property like:
     // .category    : The category name of this article
-    loadByTagName: (name, totalRow, rowBegin) => {
+    loadByTagName: (name, totalRow, rowBegin, isSubscriber) => {
         return tag.loadByName(name)
             .then(tagEntity => {
                 // get all article id with this tagID from tagEntity
@@ -69,11 +69,16 @@ module.exports = {
                     .from(ARTICLE._)
                     .whereIn(ARTICLE.id, subQuery1).as('art');
 
-                return knex.queryBuilder()
+                var query = knex.queryBuilder()
                     .select(['art.*', { category: 'cat.name', categoryPath: 'cat.path' }]).from(subQuery2)
                     .innerJoin(`${CATEGORY._} as cat `, 'art.categoryID', 'cat.id')
-                    .whereIn(ARTICLE.statusID, queryGetPublicId)
-                    .limit(totalRow).offset(rowBegin);
+                    .whereIn(ARTICLE.statusID, queryGetPublicId);
+
+                if (isSubscriber) {
+                    query = query.orderBy('isPremium', 'desc');
+                }
+
+                return query.limit(totalRow).offset(rowBegin);
             });
     },
 
@@ -249,7 +254,7 @@ module.exports = {
         }
         else {
             query = query.orderBy([{ column: 'isPremium', order: 'desc' },
-                { column: 'publicationDate', order: sortOrder }]);
+            { column: 'publicationDate', order: sortOrder }]);
         }
 
         return query.limit(totalRow).offset(rowBegin);
@@ -335,12 +340,11 @@ module.exports = {
 
                 this.whereIn('categoryID', categoryIDs);
             });
-        
-        if (isSubscriber)
-        {
+
+        if (isSubscriber) {
             query = query.orderBy('isPremium', 'desc');
         }
-        
+
         query = query.limit(totalRow).offset(rowBegin)
             .then(rows => {
                 articles = rows;
@@ -360,7 +364,7 @@ module.exports = {
                 // Final result: all article with the tags property included
                 return articles;
             });
-        
+
         return query;
     },
 };
