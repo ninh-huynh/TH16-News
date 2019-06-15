@@ -2,12 +2,34 @@ var express = require('express');
 var router = express.Router();
 var category = require('../models/categories');           // import category model
 var tag = require('../models/tags');
+var userModel = require('../models/users');
+var articleModel = require('../models/articles');
 var linkHelper = require('../utils/linkHelper');
 
 var usersRouter = require('./admin/admin_users');
 var tagsRouter = require('./admin/admin_tags');
 var postsRouter = require('./admin/admin_posts');
 
+
+router.use('/', (req, res, next) => {
+
+    Promise.all([
+        category.countTotal(),
+        tag.countTotal(),
+        articleModel.countTotal(),
+        userModel.countTotal()])
+        .then(([totalCategory, totalTag, totalArticle, totalUser]) => {
+            res.locals.totalCategory = totalCategory;
+            res.locals.totalTag = totalTag;
+            res.locals.totalArticle = totalArticle;
+            res.locals.totalUser = totalUser;
+            next();
+        })
+        .catch(err => {
+            console.log(err);
+            if (err) throw err;
+        });
+});
 
 // handle read category
 router.get('/categories', function (req, res, next) {
@@ -21,7 +43,7 @@ router.get('/categories/load', (req, res, next) => {
     let limit = parseInt(req.query.limit);
     let offset = parseInt(req.query.offset);
 
-    switch(req.query.load) {
+    switch (req.query.load) {
         case 'all':
             if ('filter' in req.query) {
                 promise = category.loadByParentID(parseInt(JSON.parse(req.query.filter).parentName), limit, offset);
@@ -31,7 +53,7 @@ router.get('/categories/load', (req, res, next) => {
 
             promise
                 .then(([total, rows]) => {
-                    res.send({ total: total, rows: rows }); 
+                    res.send({ total: total, rows: rows });
                 })
                 .catch(err => {
                     console.log(err);
@@ -42,7 +64,7 @@ router.get('/categories/load', (req, res, next) => {
         case 'parent':
             promise = category.loadParent()
                 .then((rows) => {
-                    res.send(rows); 
+                    res.send(rows);
                 })
                 .catch(err => {
                     console.log(err);
@@ -53,8 +75,8 @@ router.get('/categories/load', (req, res, next) => {
         case 'parent-name':
             promise = category.loadParent()
                 .then((rows) => {
-                    var names = rows.reduce((names, parent) => Object.assign(names, { [parent.id]: parent.name }) ,{});
-                    res.send(names); 
+                    var names = rows.reduce((names, parent) => Object.assign(names, { [parent.id]: parent.name }), {});
+                    res.send(names);
                 })
                 .catch(err => {
                     console.log(err);
@@ -65,7 +87,7 @@ router.get('/categories/load', (req, res, next) => {
         case 'child':
             promise = category.loadChild(req.query.parentId)
                 .then((rows) => {
-                    res.send(rows); 
+                    res.send(rows);
                 })
                 .catch(err => {
                     console.log(err);

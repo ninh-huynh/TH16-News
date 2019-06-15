@@ -14,12 +14,15 @@ module.exports = {
     },
 
     loadByName: (name) => {
-        return knex.queryBuilder().select().from('TAG').where('name', name)
-            .then(rows => {
-                if (rows.length === 0)
-                    throw new Error(`Tag ${name} not found!`);
-                return rows[0];
-            });
+        var query = knex.queryBuilder().select().from('TAG').where('name', name);
+
+        console.log(query.toString());
+
+        return query.then(rows => {
+            if (rows.length === 0)
+                throw new Error(`Tag ${name} not found!`);
+            return rows[0];
+        });
     },
 
     loadByArticle: (id) => {
@@ -27,7 +30,7 @@ module.exports = {
             .select('tagID')
             .from('ARTICLE_TAG')
             .where('articleID', id);
-       
+
         return knex.queryBuilder()
             .select()
             .from('TAG')
@@ -70,6 +73,15 @@ module.exports = {
         return knex.queryBuilder().select().from('TAG').where('name', name)
             .then(rows => {
                 return rows.length === 1;
+            });
+    },
+
+    countTotal: () => {
+        return knex.queryBuilder()
+            .select(knex.raw('COUNT(*) as total'))
+            .from('TAG')
+            .then(rows => {
+                return rows[0].total;
             });
     },
 };

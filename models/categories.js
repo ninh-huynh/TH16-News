@@ -167,4 +167,13 @@ module.exports = {
                 return categoryEntity;
             });
     },
+
+    countTotal: () => {
+        return knex.queryBuilder()
+            .select(knex.raw('COUNT(*) as total'))
+            .from('CATEGORY')
+            .then(rows => {
+                return rows[0].total;
+            });
+    },
 };

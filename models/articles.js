@@ -368,4 +368,13 @@ module.exports = {
 
         return query;
     },
+
+    countTotal: () => {
+        return knex.queryBuilder()
+            .select(knex.raw('COUNT(*) as total'))
+            .from('ARTICLE')
+            .then(rows => {
+                return rows[0].total;
+            });
+    },
 };
