@@ -48,7 +48,7 @@ $(function () {
             $(element).addClass('is-valid').removeClass('is-invalid');
         },
     });
-    
+
     //TODO: loginForm, forgotPassForm
 
     $('#loginForm').validate({
@@ -90,14 +90,17 @@ $(function () {
         unhighlight: function (element, errorClass, validClass) {
             $(element).addClass('is-valid').removeClass('is-invalid');
         },
-        submitHandler: function(form) {
+        submitHandler: function (form) {
             var data = $(form).serialize();
             $.post('/account/login/', data, function (result) {
                 $('#alert-container').append(result);
-                setTimeout(() => $('.alert').alert('close'), 2000);
-                if ($(result).hasClass('success')) {
-                    $('#loginModal').modal('toggle');
-                }
+                setTimeout(() => {
+                    $('.alert').alert('close');
+                    if ($(result).hasClass('success')) {
+                        $('#loginModal').modal('toggle');
+                        location.reload();      // reload page to update in article page
+                    }
+                }, 2000);
             });
         }
     });
