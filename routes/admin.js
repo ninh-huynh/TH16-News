@@ -27,7 +27,9 @@ router.use('/', (req, res, next) => {
                 var err = new Error('Bạn không đủ quyền truy cập vào trang này');
                 err.status = 401;
                 next(err);
+                return;
             }
+            next();
         });
 });
 
