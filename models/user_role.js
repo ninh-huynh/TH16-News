@@ -16,4 +16,14 @@ module.exports = {
             .select()
             .from('USER_ROLE');  
     },
+
+    getId: (name) => {
+        return knex.queryBuilder()
+            .select('id')
+            .from('USER_ROLE')
+            .where('name', '=', name)
+            .then(rows => {
+                return rows[0].id;
+            });
+    }
 };
