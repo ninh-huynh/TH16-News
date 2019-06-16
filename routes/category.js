@@ -3,7 +3,7 @@ var route = express.Router();
 var article = require('../models/articles');
 var categories = require('../models/categories');
 var paginator = require('../utils/paginator');
-
+var userRoleModel = require('../models/user_role');
 const articlePerPage = 5;       // define favorite number here.
 
 route.get('/:name', (req, res, next) => {
@@ -11,7 +11,7 @@ route.get('/:name', (req, res, next) => {
     var categoryPath = '/categories/' + categoryName;
     
     var isSubscriber = false;
-
+    var userEntity = req.user;
     var current;
     if (req.query.page === undefined) {
         current = 1;            // default page is page number 1
@@ -24,7 +24,15 @@ route.get('/:name', (req, res, next) => {
     
     var category;
     var page;
-    categories.loadByLink(categoryPath)
+
+    userRoleModel.getId('Độc giả')
+        .then(roleID => {
+            if (userEntity !== undefined && userEntity.roleID === roleID) {
+                isSubscriber = true;
+            }
+
+            return categories.loadByLink(categoryPath);
+        })
         .then(categoryEntity => {
             category = categoryEntity;
             return article.countTotalByCategory(category);
