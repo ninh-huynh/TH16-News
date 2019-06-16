@@ -58,6 +58,28 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
+// https://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url
+router.get('/login/facebook', passport.authenticate('facebook', { scope : ['email'] }));
 
+router.get('/login/facebook/callback',
+    passport.authenticate('facebook', { 
+        successRedirect: '/',
+        failureRedirect: '/' 
+    }));
+
+router.get('/login/google',
+    passport.authenticate('google', 
+        { scope: [
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'
+        ] 
+        }));
+
+router.get('/login/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/' }),
+    function(req, res) {
+        res.redirect('/');
+    });
+    
 
 module.exports = router;

@@ -23,9 +23,26 @@ module.exports = {
             });
     },
 
+    addSingle: (user) => {
+        return knex(tableName)
+            .insert(user);
+    },
+
     getSingleByEmail: (email) => {
         return knex(tableName)
             .where('email', email)
+            .select('*');
+    },
+
+    getSingleByFacebookID: (id) => {
+        return knex(tableName)
+            .where('facebookID', id)
+            .select('*');
+    },
+
+    getSingleByGoogleID: (id) => {
+        return knex(tableName)
+            .where('googleID', id)
             .select('*');
     }
 };
