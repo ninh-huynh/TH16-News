@@ -76,8 +76,13 @@
 
          <!-- Khu vực bình luận -->
          <div class="comment-section bg-light w-100 p-3 my-3">
+         <% if (subscriberName === null) { %>
              <input type="text" class="form-control mb-3" style="width: initial;" id="txtName"
                  placeholder="Tên của bạn">
+        <% } else { %>
+             <input type="text" class="form-control mb-3" style="width: initial;" id="txtName"
+                 value="<%= subscriberName %>" disabled>
+        <% }; %>
              <textarea class="form-control mb-3" rows="2" id="txtComment"
                  placeholder="Bạn nghĩ gì về tin này?"></textarea>
              <button type="button" class="btn btn-secondary" id="comment-btn">Gửi bình luận</button>
