@@ -37,6 +37,7 @@ module.exports = function (app) {
         clientID: configAuth.facebookAuth.clientID,
         clientSecret: configAuth.facebookAuth.clientSecret,
         callbackURL: configAuth.facebookAuth.callbackURL,
+        profileFields: [ 'id', 'displayName', 'picture.type(large)' ]
     }, (accessToken, refreshToken, profile, done) => {
         accountModel.getSingleByFacebookID(profile.id)
             .then(rows => {
@@ -44,6 +45,8 @@ module.exports = function (app) {
                     const newUser = {
                         facebookID: profile.id,
                         name: profile.displayName,
+                        roleID: 1,
+                        avatar: profile.photos[0].value
                         //email: profile.emails[0].value
                     };
                     accountModel.addSingle(newUser)
@@ -52,8 +55,16 @@ module.exports = function (app) {
                         });
                 }
 
-                var user = rows[0];
-                return done(null, user);
+                var user = {
+                    id: rows[0].id,
+                    name: profile.displayName,
+                    avatar: profile.photos[0].value,
+                    roleID: rows[0].roleID
+                };
+                accountModel.update(user)
+                    .then(() => {
+                        return done(null, user);
+                    });
             })
             .catch(err => {
                 console.log(err);
@@ -65,12 +76,14 @@ module.exports = function (app) {
         clientSecret: configAuth.googleAuth.clientSecret,
         callbackURL: configAuth.googleAuth.callbackURL
     }, (accessToken, refreshToken, profile, done) => {
+        console.log(profile);
         accountModel.getSingleByGoogleID(profile.id)
             .then(rows => {
                 if (rows.length === 0) {      // chưa từng đăng nhập bằng Google
                     const newUser = {
                         googleID: profile.id,
                         name: profile.displayName,
+                        roleID: 1
                         //email: profile.emails[0].value
                     };
                     accountModel.addSingle(newUser)
@@ -78,8 +91,16 @@ module.exports = function (app) {
                             return done(null, newUser);
                         });
                 } else {
-                    var user = rows[0];
-                    return done(null, user);
+                    const user = {
+                        id: rows[0].id,
+                        name: profile.displayName,
+                        roleID: rows[0].roleID,
+                        avatar: profile.photos[0].value
+                    };
+                    accountModel.update(user)
+                        .then(() => {
+                            return done(null, user);
+                        });
                 }
             })
             .catch(err => {

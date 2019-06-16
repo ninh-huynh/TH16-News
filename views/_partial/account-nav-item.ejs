@@ -10,21 +10,28 @@
              <span class="fa fa-user"></span>
          </a>
          <% } else { %>
-         <!-- Tạo Avatar random: http://pravatar.cc/ -->
-         <img src="http://i.pravatar.cc/300" class="rounded-circle dropdown-toggle" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">
+            <% if (login) { %>
+                <!-- Tạo Avatar random: http://pravatar.cc/ -->
+                <img src="<%- user.avatar %>" class="rounded-circle dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+            <% } else { %>
+                <i class="far fa-user rounded-circle dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"></i>
+            <% } %>
          <% }; %>
 
          <%# Menu dropdown %>
          <div class="dropdown-menu dropdown-menu-right">
-
+        <% if (!login) { %>
              <!-- Chức năng chỉ dành cho khách vãng lai -->
              <a class="dropdown-item" href="#loginModal" data-toggle="modal">Đăng nhập</a>
              <a class="dropdown-item" href="#signupModal" data-toggle="modal">Đăng kí</a>
-
+             
+        <% } else { %>
+        
              <!-- Các chức năng dành cho nhóm người dùng đã đăng nhập-->
              <div class="dropdown-item d-flex flex-row align-items-center">
-                 <img src="http://i.pravatar.cc/300" class="rounded-circle dropdown-toggle" data-toggle="dropdown"
+                 <img src="<%- user.avatar %>" class="rounded-circle dropdown-toggle" data-toggle="dropdown"
                      aria-haspopup="true" aria-expanded="false">
 
                  <div id="user-wrapper" class="ml-3">
@@ -32,25 +39,27 @@
                      <div id="userName" class="font-weight-bold">Tên người dùng</div>
 
                      <!-- Nút đăng xuất -->
-                     <a class="text-success" href="#">
+                     <a class="text-success" href="/account/logout/">
                          <i class="fas fa-sign-out-alt"></i>
                          <span>Đăng xuất</span>
                      </a>
                  </div>
              </div>
-
+            
              <!-- Cập nhật thông tin - Đổi mật khẩu -->
              <a href="/account-info/" class="dropdown-item">
                  <i class="fas fa-user-edit"></i>
                  <span>Tài khoản</span>
              </a>
 
+            <% if (user.role === 'Độc giả') { %>
              <!-- Chức năng dành cho subscriber -->
              <a class="dropdown-item" href="#">
                  <i class="fas fa-hand-holding-usd"></i>
                  <span>Gia hạn</span>
              </a>
 
+            <% } else if (user.role === 'Phóng viên') { %>
              <!-- Chức năng dành cho writer -->
              <a class="dropdown-item" href="/writer/new-post/">
                  <i class="fas fa-edit"></i>
@@ -62,12 +71,13 @@
                  <span>Bài đã viết</span>
              </a>
 
+            <% } else if (user.role === 'Biên tập viên') { %>
              <!-- Chức năng dành cho editor -->
              <a class="dropdown-item" href="/approve-draft/">
                  <i class="fas fa-pen-alt"></i>
                  <span>Duyệt bài viết</span>
              </a>
-
+            <% } else { %>
              <!-- Chức năng dành cho admin -->
              <a class="dropdown-item" href="/admin/categories/">
                  <i class="fas fa-list"></i>
@@ -85,7 +95,8 @@
                  <i class="fas fa-users"></i>
                  <span>Quản lý người dùng</span>
              </a>
-
+            <% }; %>
          </div>
+         <% }; %>
      </div>
  </div>

@@ -44,5 +44,11 @@ module.exports = {
         return knex(tableName)
             .where('googleID', id)
             .select('*');
+    },
+
+    update: (user) => {
+        return knex(tableName)
+            .update(user)
+            .where('id', user.id);
     }
 };
