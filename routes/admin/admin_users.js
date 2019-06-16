@@ -4,8 +4,10 @@ var category = require('../../models/categories');           // import category 
 var userModel = require('../../models/users');
 var userRoleModel = require('../../models/user_role');
 var moment = require('moment');
+var bcrypt = require('bcrypt');
 
 // All path has prefix with '/admin/users'
+const SALT_ROUND = 10;
 
 router.get('/', (req, res, next) => {
     res.render('admin/users', { layout: 'layouts/manage' });
@@ -39,11 +41,15 @@ router.get('/load', (req, res, next) => {
 router.post('/add', (req, res, next) => {
     var newUser = req.body;
 
-    var dob = moment(newUser.dayOfBirth, 'DD/MM/YYYY');
-    newUser.dayOfBirth = dob.format('YYYY-MM-DD');
+    var dob = moment(newUser.dateOfBirth, 'DD/MM/YYYY');
+    newUser.dateOfBirth = dob.format('YYYY-MM-DD');
     var defaultPassword = dob.format('DDMMYYYY');
 
-    userModel.add(newUser)
+    bcrypt.hash(defaultPassword, SALT_ROUND)
+        .then(hash => {
+            newUser.password = hash;
+            return userModel.add(newUser);
+        })
         .then(affectedRows => {
 
             res.render('_widget/add-success-alert', { layout: 'layouts/empty', });

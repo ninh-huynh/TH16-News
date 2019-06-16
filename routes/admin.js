@@ -4,6 +4,7 @@ var category = require('../models/categories');           // import category mod
 var tag = require('../models/tags');
 var userModel = require('../models/users');
 var articleModel = require('../models/articles');
+var userRoleModel = require('../models/user_role');
 var linkHelper = require('../utils/linkHelper');
 
 var usersRouter = require('./admin/admin_users');
@@ -11,8 +12,28 @@ var tagsRouter = require('./admin/admin_tags');
 var postsRouter = require('./admin/admin_posts');
 
 
+// authenticate router
 router.use('/', (req, res, next) => {
+    var userEntity = req.user;
 
+    console.log(userEntity);
+
+    userRoleModel.getId('Quản trị viên')
+        .then(id => {
+            
+            var isAuthenticated = userEntity !== undefined && userEntity.roleID === id;
+
+            if (! isAuthenticated) {
+                var err = new Error('Bạn không đủ quyền truy cập vào trang này');
+                err.status = 401;
+                next(err);
+                return;
+            }
+            next();
+        });
+});
+
+router.use('/', (req, res, next) => {
     Promise.all([
         category.countTotal(),
         tag.countTotal(),
@@ -27,7 +48,7 @@ router.use('/', (req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-            if (err) throw err;
+            next(err);
         });
 });
 

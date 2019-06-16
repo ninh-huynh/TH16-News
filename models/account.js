@@ -14,7 +14,7 @@ module.exports = {
                 const roleID = row[0].id;
                 newReader.roleID = roleID;
                 newReader.dateOfBirth = moment(newReader.dateOfBirth, 'DD/MM/YYYY').format(sqlDateFormat);
-
+                newReader.expiryDate = moment().format(sqlDateFormat);
                 return knex(tableName)
                     .insert(newReader);
             })

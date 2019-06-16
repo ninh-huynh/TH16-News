@@ -17,7 +17,7 @@ const formValidateOption = {
                 }
             }
         },
-        dayOfBirth: {
+        dateOfBirth: {
             required: true
         }
     },
@@ -29,7 +29,7 @@ const formValidateOption = {
             email: 'Email không hợp lệ',
             remote: 'Email đã được sử dụng'
         },
-        dayOfBirth: {
+        dateOfBirth: {
             required: 'Hãy nhập ngày sinh'
         }
     },
@@ -71,7 +71,7 @@ $(function () {
 
     // init table, form validator, datepicker
     initTable();
-    $('#dayOfBirth').datepicker(datePickerOption);
+    $('#dateOfBirth').datepicker(datePickerOption);
     validator = $('#addUserForm').validate(formValidateOption);
 });
 

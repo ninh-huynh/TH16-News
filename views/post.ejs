@@ -1,7 +1,7 @@
 <%# article.category, article.tags, article.comments %>
 <%
     var category = article.category; 
-    var parentCategory = category.parent; 
+    var parentCategory = category.parent;
 %>
 <link rel="stylesheet" href="/stylesheets/tieu-de-bai-viet.css">
 
@@ -24,6 +24,22 @@
  </h2>
  <div class="row">
      <div class="col">
+
+    <% if (! isAbleToView) { %>
+    <div class="alert alert-info" role="alert">
+        Bạn cần 
+        <a class="alert-link" href="#loginModal" data-toggle="modal">đăng nhập</a> 
+        tài khoản độc giả để có thể xem được nội dung này
+    </div>
+    <% }; %>
+    
+    <% if (! isAbleToView) { %>
+    <div class="article-content">
+        <div class="overlay"></div>
+    <% } else { %>
+        <div>
+    <% }; %>
+
         <%# Tác giả - Thời gian đăng (HH:mm DD-MM-YYYY) %>
          <div class="text-muted mb-3 d-inline-block">
             <span class="font-weight-bold"><%= article.writer %></span>
@@ -32,11 +48,12 @@
          </div>
 
          <%#TODO: Nút download file pdf, thêm vào thuộc tính href="#" khi đã đăng nhập %>
-         <a class="float-right" data-toggle="tooltip" data-placement="left" id="download-article-link" 
-         download title="Bạn phải là thành viên mới có thể tải xuống file này">
+         <% if (article.isPremium) { %>
+         <a class="float-right" id="download-article-link" href="#"> 
             Tải xuống 
             <i class="fas fa-file-download"></i>
          </a>
+         <% }; %>
 
          <!-- Nội dung chi tiết bài viết -->
          <div id="article-detail" class="mb-3">
@@ -55,11 +72,17 @@
                 </a>
              <% }); %>
          </h6>
+        </div>
 
          <!-- Khu vực bình luận -->
          <div class="comment-section bg-light w-100 p-3 my-3">
+         <% if (subscriberName === null) { %>
              <input type="text" class="form-control mb-3" style="width: initial;" id="txtName"
                  placeholder="Tên của bạn">
+        <% } else { %>
+             <input type="text" class="form-control mb-3" style="width: initial;" id="txtName"
+                 value="<%= subscriberName %>" disabled>
+        <% }; %>
              <textarea class="form-control mb-3" rows="2" id="txtComment"
                  placeholder="Bạn nghĩ gì về tin này?"></textarea>
              <button type="button" class="btn btn-secondary" id="comment-btn">Gửi bình luận</button>

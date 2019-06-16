@@ -53,6 +53,7 @@ function addComment() {
             var list_group_item = $('<li></li>').append(div_name, div_opinion, div_time)
                 .addClass('list-group-item');
             $('#comment-ul').prepend(list_group_item);
+            $('#txtComment').val('');  // clear comment
         })
         .catch(err => {
             // err: MySQL error
