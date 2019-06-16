@@ -3,11 +3,13 @@ var articleModel = require('../models/articles');
 var router = express.Router();
 var tags = require('../models/tags');
 var paginator = require('../utils/paginator');
+var userRoleModel = require('../models/user_role');
 
 const articlePerPage = 5;       // define favorite number here.
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    var userEntity = req.user;
     var keyword = req.query.keyword;
     var sortOrder = req.query.sort;
     var searchColumn = req.query.type;
@@ -31,7 +33,14 @@ router.get('/', function (req, res, next) {
     }
 
     var page;
-    articleModel.countTotalByTitle(searchColumn, keyword)
+
+    userRoleModel.getId('Độc giả')
+        .then(roleID => {
+            if (userEntity !== undefined && userEntity.roleID === roleID) {
+                isGuest = false;
+            }
+            return articleModel.countTotalByTitle(searchColumn, keyword);
+        })
         .then(totalArticle => {
             page = paginator.get(current, totalArticle, articlePerPage);
             return articleModel.searchByKeyword(searchColumn,

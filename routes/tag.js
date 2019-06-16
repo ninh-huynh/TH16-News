@@ -3,11 +3,13 @@ var route = express.Router();
 var article = require('../models/articles');
 var tagModel = require('../models/tags');
 var paginator = require('../utils/paginator');
+var userRoleModel = require('../models/user_role');
 
 const articlePerPage = 5;       // define favorite number here.
 
 route.get('/:name', (req, res, next) => {
-    var isSubscriber = true;
+    var userEntity = req.user;
+    var isSubscriber = false;
     var tagName = req.params.name;
     tagName = tagName.replace(/-/g, ' ');
 
@@ -22,7 +24,14 @@ route.get('/:name', (req, res, next) => {
     }
 
     var page;
-    article.countTotalByTag_public(tagName)
+
+    userRoleModel.getId('Độc giả')
+        .then(roleID => {
+            if (userEntity !== undefined && userEntity.roleID === roleID) {
+                isSubscriber = true;
+            }
+            return article.countTotalByTag_public(tagName);
+        })
         .then(totalArticle => {
             page = paginator.get(current, totalArticle, articlePerPage);
 
