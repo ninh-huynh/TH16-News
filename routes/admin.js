@@ -21,7 +21,7 @@ router.use('/', (req, res, next) => {
     userRoleModel.getId('Quản trị viên')
         .then(id => {
             
-            var isAuthenticated = userEntity !== undefined && userEntity.id === id;
+            var isAuthenticated = userEntity !== undefined && userEntity.roleID === id;
 
             if (! isAuthenticated) {
                 var err = new Error('Bạn không đủ quyền truy cập vào trang này');
