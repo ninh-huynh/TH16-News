@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var expressLayouts = require('express-ejs-layouts');
+
 var session = require('express-session');
 var passport = require('passport');
 
@@ -21,18 +21,12 @@ var linkHelper = require('./utils/linkHelper');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.use(expressLayouts);
-app.set('layout', 'layouts/main');                          // explicit default layout: main.ejs
-app.set('layout extractScripts', true);                     // move all script tag to the script section in layout file
-app.set('layout extractStyles', true);                      // same as above
 
 app.locals.concatToLink = linkHelper.concatToLink;          // pass concatToLink() to view, able to call directly in any view
 app.locals.moment = require('moment');
 app.locals.publicDateFormat = 'DD/MM/YYYY';
 
+require('./middleware/view_engine')(app);
 require('./middleware/session')(app);
 require('./middleware/passport')(app);
 
