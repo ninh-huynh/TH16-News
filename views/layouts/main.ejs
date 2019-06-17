@@ -15,8 +15,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
-
+    <% if (! login) {%>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    <% }; %>
     <!-- Common css  -->
    <link rel="stylesheet" href="/stylesheets/menu-bar.css">
    <link rel="stylesheet" href="/stylesheets/layout.css">
@@ -35,9 +36,11 @@
 
     <div id="wrap">
         <div id="main" class="container">
+        <% if (! login) { %>
             <%- include('../_partial/forgot-pass') %>
             <%- include('../_partial/signup') %>
             <%- include('../_partial/login') %>
+        <% }; %>
             <%- body %>
         </div>
     </div>
@@ -65,8 +68,11 @@
     <%# Các đoạn script dùng chung %>
     <script src="/javascripts/lazysizes.min.js"></script>
     <script src="/javascripts/menu-bar.js"></script>
-    <script src="/javascripts/modalForms.js"></script>
-    <script src="/javascripts/guestFormValidate.js"></script>
+
+    <% if (! login) { %>
+        <script src="/javascripts/modalForms.js"></script>
+        <script src="/javascripts/guestFormValidate.js"></script>
+    <% }; %> 
 
     <!-- form validate -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>

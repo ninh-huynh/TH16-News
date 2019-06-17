@@ -3,8 +3,6 @@
         <title> <%- page.tag %> </title>
     <% } else if (is_post()) { %>
         <title> <%- page.title %> </title>
-    <% } else if (path === 'account-info/index.html') { %>
-        <title> <%- 'Thông tin tài khoản' %> </title>
     <% } else if (path === 'new-post/index.html') { %>
         <title> <%- 'Đăng bài viết' %> </title>
     <% } else if (path === 'edit-post/index.html') { %>
@@ -13,10 +11,4 @@
         <title> <%- 'Danh sách bài đã viết' %> </title>
     <% } else if (path === 'approve-draft/index.html') { %>
         <title> <%- 'Duyệt bài viết' %> </title>
-    <% } else if (path === 'posts/index.html') { %>
-        <title> <%- 'Quản lý bài viết' %> </title>
-    <% } else if (path === 'users/index.html') { %>
-        <title> <%- 'Quản lý người dùng' %> </title>
-    <% } else if (path === 'tags/index.html') { %>
-        <title> <%- 'Quản lý nhãn' %> </title>
 <% }; %>

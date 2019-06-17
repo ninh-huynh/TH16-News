@@ -18,12 +18,14 @@ var articleRouter = require('./routes/article');
 var menu_bar = require('./middleware/menu_bar');
 var form_validate = require('./middleware/form-validate');
 var linkHelper = require('./utils/linkHelper');
+var moment = require('moment');
+moment.locale('vi');
 
 var app = express();
 
 
 app.locals.concatToLink = linkHelper.concatToLink;          // pass concatToLink() to view, able to call directly in any view
-app.locals.moment = require('moment');
+app.locals.moment = moment;
 app.locals.publicDateFormat = 'DD/MM/YYYY';
 
 require('./middleware/view_engine')(app);
