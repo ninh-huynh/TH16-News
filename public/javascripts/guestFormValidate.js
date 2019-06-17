@@ -100,7 +100,7 @@ $(function () {
                         $('#loginModal').modal('toggle');
                         location.reload();      // reload page to update in article page
                     }
-                }, 2000);
+                }, 500);
             });
         }
     });

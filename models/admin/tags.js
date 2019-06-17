@@ -36,7 +36,56 @@ module.exports = {
     add: (tag) => {
         return knex(tableName)
             .insert(tag)
-            .then(rows => rows[0]);
+            .then(rows => {
+                console.log(rows);
+            });
+    },
+
+    upsert: (tag)=> {
+        //const {table, object, constraint} = params;
+        const insert = knex('CATEGORY').insert(tag);
+        const update = knex.queryBuilder().update(tag);
+        return knex.raw(`? ON CONFLICT ${ 'name' } DO ? returning *`, [insert, update]).get('rows').get(0);
+    },
+
+    insertIfNotExists: (tag) => {
+        // return db.load(`
+        //     insert into TAG(name)
+        //     select '${ tag.name }'
+        //     where not exists (select * from TAG where name = '${ tag.name }')
+        // `);
+
+        return knex(tableName)
+            .select('*')
+            .where('name', tag.name)
+            .then(rows => {
+                if (rows.length === 1)
+                    return rows[0].id;
+                else {
+                    return knex(tableName)
+                        .insert(tag)
+                        .then(rows => rows[0]);
+                }
+            });
+    },
+
+    insertMultiple: (tags) => {
+        return Promise.all([
+            tags.forEach(tag => {
+                return knex(tableName)
+                    .select('*')
+                    .where('name', tag.name)
+                    .then(rows => {
+                        if (rows.length === 1)
+                            return rows[0].id;
+                        else {
+                            return knex(tableName)
+                                .insert(tag)
+                                .then(rows => rows[0]);
+                        }
+                    });
+            })
+        ]);
     },
 
     remove: (ids) => {

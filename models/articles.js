@@ -197,7 +197,8 @@ module.exports = {
     },
 
     add: (newArticle) => {
-        return db.add(newArticle, ARTICLE._);
+        return db.add(newArticle, ARTICLE._)
+            .then(rows => rows[0]);
     },
 
     update: (article) => {
@@ -274,6 +275,7 @@ module.exports = {
 
     searchByTitle: (title) => {
         var articleEntity;
+        console.log(title);
         return knex.queryBuilder()
             .select('a.*', 'u.nickName as writer')
             .from('ARTICLE as a')

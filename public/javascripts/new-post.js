@@ -1,9 +1,17 @@
+
+// var $body = $('body');
+
+// $(document).on({
+//     ajaxStart: function() { $body.addClass('loading');    },
+//     ajaxStop: function() { $body.removeClass('loading'); }    
+// });
+
 $(function () {
     $('#newPostForm').validate({
         rules: {
             title: {
                 required: true,
-                maxlength: 20,
+                maxlength: 100,
                 remote: {
                     url: '/check-title-available',
                     type: 'post',
@@ -41,7 +49,7 @@ $(function () {
         messages: {
             title: {
                 required: 'Thiếu tiêu đề',
-                maxlength: 'Độ dài tiêu đề tối đa là 20 kí tự',
+                maxlength: 'Độ dài tiêu đề tối đa là 100 kí tự',
                 remote: 'Đã có bài viết với tiêu đề này'
             },
 
@@ -80,7 +88,7 @@ $(function () {
         }
     });
 
-    //fill category select
+    // //fill category select
     $.ajax({
         url: '/writer/new-post/category',
         method: 'get',
@@ -101,6 +109,10 @@ $(function () {
     });
 });
 
+$('#newPostForm').submit(function(e) {
+    e.preventDefault();
+});
+
 $('#thumbnail').click(function () {
     $('#replaceThumbnailButton').click();
 });
@@ -114,37 +126,42 @@ function readURL(input) {
         $('#displayThumbnailFormGroup').removeClass('d-none').addClass('d-flex');
     }
 
-    if (input.files && input.files[0]) {
-        let data = new FormData();
-        data.append('file', input.files[0]);
-        console.log(input.files[0]);
-        $.ajax({
-            url: '/writer/new-post/test',
-            method: 'post',
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            error: err => console.log(err),
-            success: res => {
-                console.log(res);
-            }
-        });
-        var reader = new FileReader();
+    // load tạm ảnh ở local
+    var reader = new FileReader();
 
-        reader.onload = function (e) {
-            $('#thumbnail')
-                .attr('src', e.target.result);
-        };
+    reader.onload = function (e) {
+        $('#thumbnail')
+            .attr('src', e.target.result);
+    };
 
-        reader.readAsDataURL(input.files[0]);
-    }
+    reader.readAsDataURL(input.files[0]);
+    // gửi request upload ảnh
+    // if (input.files && input.files[0]) {
+    //     let data = new FormData();
+    //     data.append('file', input.files[0]);
+    //     console.log(input.files[0]);
+    //     $.ajax({
+    //         url: '/writer/new-post/test',
+    //         method: 'post',
+    //         data: data,
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+    //         error: err => console.log(err),
+    //         success: res => {
+    //             console.log(res);
+
+    //             $('#thumbnail').attr('src', res.url);
+
+
+    //         }
+    //     });
+    // }
 }
 
 /* fill select list */
 $('#selectCategory').change(function (event) {
     var values;
-    console.log($(this).val());
 
     $.ajax({
         url: `/writer/new-post/category/${ $(this).val() }`,
@@ -177,23 +194,46 @@ $(window).on('load', function () {
                 viewportTopOffset: navbarHeight, // category-menu height
             }
         })
+        .then(e => {
+            editor = e;
+        })
         .catch(error => {
             console.error(error);
         });
 });
 
 function ajaxNewPostSubmitHandler(form) {
+    Swal.showLoading();
+    let tags = $('#inputTag').tagsinput('items').itemsArray;
+    var data = new FormData(form);
+    data.set('tags', JSON.stringify(tags));
+    data.set('content', editor.getData());
+    data.set('thumbnail', $('#uploadThumbnailButton')[0].files[0]);
     
-    // let file = $(form).find('#uploadThumbnailButton')[0].files[0];
-    // var data = new FormData($('#newPostForm')[0]);
-    // //data.append(file.name, file);
-    // console.log(file);
-    // console.log(data);
-
-    // for(var pair of data.entries()) {
-    //     console.log(pair[0]+', '+pair[1]);
-    // }
-
-
-
+    $.ajax({
+        url: '/writer/new-post',
+        method: 'post',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        error: err => {
+            Swal.fire({
+                position: 'center',
+                type: 'error',
+                title: 'Đăng bài thất bại',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        },
+        success: res => {
+            Swal.fire({
+                position: 'center',
+                type: 'success',
+                title: 'Đăng bài viết thành công',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    });
 }

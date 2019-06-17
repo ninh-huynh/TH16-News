@@ -83,7 +83,8 @@ module.exports = function (app) {
                     const newUser = {
                         googleID: profile.id,
                         name: profile.displayName,
-                        roleID: 1
+                        roleID: 1,
+                        avatar: profile.photos[0].value
                         //email: profile.emails[0].value
                     };
                     accountModel.addSingle(newUser)

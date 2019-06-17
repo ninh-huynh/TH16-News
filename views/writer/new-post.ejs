@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="/stylesheets/new-post.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css">
 
 <%- contentFor('title') %>
 Đăng bài viết
@@ -40,7 +39,10 @@
                     <div class="form-group row" id="inputTag">
                         <label for="inputTag" class="col-md-2 col-form-label">Tag</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="tag" id="inputTag" data-role="tagsinput" spellcheck="false">
+                            <%# <input type="text" name="tag" id="inputTag" data-role="tagsinput" spellcheck="false"> %>
+                            <select multiple name="tags" data-role="tagsinput" id="inputTag">
+
+                            </select>
                         </div>
                     </div>
 
@@ -68,7 +70,7 @@
                     <div class="form-group row required">
                         <label for="inputAbstract" class="col-md-2 col-form-label">Tóm tắt</label>
                         <div class="col-md-10">
-                            <textarea class="form-control" rows="5" id="inputAbstract" name="inputAbstract" required></textarea>
+                            <textarea class="form-control" rows="5" id="inputAbstract" name="summary" required></textarea>
                         </div>
                     </div>
 
@@ -76,7 +78,7 @@
                     <div class="form-group row required" id="inputContent">
                         <label for="inputContent" class="col-md-2 col-form-label">Nội dung</label>
                         <div class="col-md-10">
-                            <textarea id="editor" placeholder="Thêm nội dung" name="editor" required>
+                            <textarea id="editor" placeholder="Thêm nội dung" name="content" required>
                                 
                             </textarea>
                         </div>
@@ -103,4 +105,6 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/12.1.0/classic/ckeditor.js"></script>
 <!-- bootstrap tags input-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js.map"></script>
+<!-- sweet alert 2-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.12.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
