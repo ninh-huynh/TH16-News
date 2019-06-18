@@ -37,3 +37,12 @@ $('.page-item').click(function () {
         }
     }
 });
+
+$.fn.tagcloud.defaults = {
+    size: { start: 0.9, end: 1.5, unit: 'em' },
+    color: { start: '#343a40', end: '#343a40' }
+};
+
+$(function () {
+    $('#tags-cloud-content a').tagcloud();
+});
