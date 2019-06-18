@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
         articles.loadNewest(10, 0),
         articles.loadMostViewed(10, 0),
         articles.loadTopCategory(9, 0),
-        tags.load()])
+        tags.loadByTopPostCount(15)])
         .then(([weeklyTrendRows, newestRows, mostViewedRows, topCatRows, tagRows]) => {
             var obj = {
                 trendArticles: weeklyTrendRows,

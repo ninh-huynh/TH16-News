@@ -84,4 +84,25 @@ module.exports = {
                 return rows[0].total;
             });
     },
+
+    loadByTopPostCount: (limit) => {
+        var queryArticleTag = knex.queryBuilder()
+            .select(['tagID', knex.raw('COUNT(*) as totalPost')])
+            .from('ARTICLE_TAG')
+            .groupBy('tagID')
+            .orderBy('totalPost', 'desc')
+            .as('a_t');
+        
+        var query = knex.queryBuilder()
+            .select(['TAG.*', 'a_t.totalPost'])
+            .from('TAG')
+            .join(queryArticleTag, 'a_t.tagID', '=', 'TAG.id')
+            .limit(limit)
+            .as('t');
+        
+        return knex.queryBuilder()
+            .select('t.*')
+            .from(query)
+            .orderBy('t.name');
+    }
 };

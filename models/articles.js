@@ -137,13 +137,16 @@ module.exports = {
             .groupBy('articleId')
             .orderBy('total_view', 'desc').as('most_view')
             .limit(totalRow).offset(rowBegin);
-    
-        return knex.queryBuilder()
+            
+        var query = knex.queryBuilder()
             .select(['art.*', 'cat.name as category', 'cat.path as categoryPath'])
             .from(queryMostView)
             .join(`${ARTICLE._} as art`, 'most_view.articleId', 'art.id')
             .join(`${CATEGORY._} as cat`, 'art.categoryID', 'cat.id')
-            .whereIn(ARTICLE.statusID, queryGetPublicId);
+            .whereIn(ARTICLE.statusID, queryGetPublicId)
+            .orderBy('most_view.total_view', 'desc');
+        
+        return query;
     },
 
 
@@ -169,31 +172,30 @@ module.exports = {
 
     loadWeeklyTrend: (totalRow, rowBegin) => {
         var end = moment();
-        var begin = end.subtract(7, 'days');
+        var begin = moment().subtract(7, 'days');
 
         var queryMostView = knex.queryBuilder()
             .select(['articleId', knex.raw('SUM(total) as total_view')])
             .from(ARTICLE_VIEWS._)
             .groupBy('articleId')
             .orderBy('total_view', 'desc')
-            .as('most_view');
-
-        var queryMostViewArticleID = knex.queryBuilder()
-            .select('most_view.articleID')
-            .from(queryMostView);
+            .as('most_view');        
 
         var queryWeekly = knex.queryBuilder()
             .select()
             .from(ARTICLE._)
-            .whereIn('id', queryMostViewArticleID)
-            .andWhereBetween('publicationDate', [begin.format(sqlDateFormat), end.format(sqlDateFormat)])
+            .whereBetween('publicationDate', [begin.format(sqlDateFormat), end.format(sqlDateFormat)])
             .as('art');
 
-        return knex.queryBuilder()
+        var query = knex.queryBuilder()
             .select('art.*', 'cat.name as category', 'cat.path as categoryPath')
             .from(queryWeekly)
+            .join(queryMostView, 'most_view.articleId', '=', 'art.id')
             .join(`${CATEGORY._} as cat`, 'art.categoryID', 'cat.id')
+            .orderBy([{column: 'total_view', order: 'desc'}, {column: 'publicationDate', order: 'desc'}])
             .limit(totalRow).offset(rowBegin);
+         
+        return query;
     },
 
     add: (newArticle) => {
@@ -279,7 +281,7 @@ module.exports = {
         return knex.queryBuilder()
             .select('a.*', 'u.nickName as writer')
             .from('ARTICLE as a')
-            .whereIn(ARTICLE.statusID, queryGetPublicId).andWhere('title', title)
+            .whereIn(ARTICLE.statusID, queryGetPublicId).andWhere('title', 'like', `${title}%`)
             .join('USER as u', 'a.writerID', 'u.id')
             .then(rows => {
                 if (rows.length === 0)
