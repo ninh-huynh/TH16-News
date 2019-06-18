@@ -281,7 +281,7 @@ module.exports = {
         return knex.queryBuilder()
             .select('a.*', 'u.nickName as writer')
             .from('ARTICLE as a')
-            .whereIn(ARTICLE.statusID, queryGetPublicId).andWhere('title', title)
+            .whereIn(ARTICLE.statusID, queryGetPublicId).andWhere('title', 'like', `${title}%`)
             .join('USER as u', 'a.writerID', 'u.id')
             .then(rows => {
                 if (rows.length === 0)

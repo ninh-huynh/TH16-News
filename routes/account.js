@@ -99,8 +99,7 @@ router.get('/info', (req, res, next) => {
         next(err);
         return;
     }
-    console.log(req.updateSuccessfull);
-    
+
     userRoleModel.getName(userEntity.roleID)
         .then(roleName => {
             var user = {};
