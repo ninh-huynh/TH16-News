@@ -40,9 +40,9 @@ module.exports = {
     },
 
     updateStatus: (id, newStatus) => {
-        knex('ARTICLE_STATUS as as')
-            .select('as.id as id')
-            .where('as.name', newStatus)
+        return knex('ARTICLE_STATUS as a_s')
+            .select('a_s.id as id')
+            .where('a_s.name', newStatus)
             .then(row => {
                 let statusID = row[0].id;
                 return knex(tableName)

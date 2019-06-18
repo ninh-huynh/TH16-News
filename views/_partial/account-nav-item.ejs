@@ -73,9 +73,13 @@
 
             <% } else if (user.role === 'Biên tập viên') { %>
              <!-- Chức năng dành cho editor -->
-             <a class="dropdown-item" href="/approve-draft/">
+             <a class="dropdown-item" href="/editor/approve-draft/">
                  <i class="fas fa-pen-alt"></i>
                  <span>Duyệt bài viết</span>
+             </a>             
+             <a class="dropdown-item" href="/editor/approved/">
+                 <i class="fas fa-pen-alt"></i>
+                 <span>Bài đã duyệt</span>
              </a>
             <% } else { %>
              <!-- Chức năng dành cho admin -->

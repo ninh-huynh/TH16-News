@@ -1,6 +1,15 @@
-<!-- refuse modal -->
-<div class="modal" id="refuseModal">
-    <div class="modal-dialog">
+<link rel="stylesheet" href="/stylesheets/approve-draft.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+
+
+<%- contentFor('title') %>
+Duyệt bài viết
+<%- contentFor('body') %>
+
+<!-- reject modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         
         <!-- Modal Header -->
@@ -11,7 +20,7 @@
         
         <!-- Modal body -->
         <div class="modal-body">
-            <form role="form" class="needs-validation" id="refuseForm" novalidate>
+            <form role="form" class="needs-validation" id="rejectForm" novalidate>
                 
                 <div class="form-group row required">
                     <div class="col-md-12">
@@ -38,8 +47,9 @@
 </div>
 
 <!-- approve modal -->
-<div class="modal" id="approveModal">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="loginModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
         
         <!-- Modal Header -->
@@ -55,19 +65,19 @@
                 <div class="form-group row required">
                     <label for="selectParentCategory" class="col-md-3 col-form-label">Chuyên mục</label>
                     <div class="col-md-4">
-                        <select class="form-control" id="selectParentCategory" name="selectParentCategory" required>
+                        <select class="form-control" id="selectParentCategory" name="parentCategory" required>
                         </select>
                     </div>
                     <div class="col-md-5">
-                        <select class="form-control" id="selectCategory" name="selectCategory" required>
+                        <select class="form-control" id="selectCategory" name="category" required>
                         </select>
                     </div>
                 </div>
                 <!-- hiệu chỉnh tag-->
                 <div class="form-group row">
-                    <label for="editTags" class="col-md-3 col-form-label">Nhãn</label>
+                    <label for="inputTag" class="col-md-3 col-form-label">Nhãn</label>
                     <div class="col-md-9">
-                        <textarea  class="form-control" name="editTags" id="editTags" spellcheck="false" rows="10"></textarea>
+                        <input multiple name="tags" data-role="tagsinput" id="inputTag" />
                     </div>
                 </div>
 
@@ -117,7 +127,7 @@
                                 <button id="approveBtn" class="btn btn-success" disabled="">
                                     <i class="far fa-check-circle"></i> Duyệt
                                 </button>
-                                <button id="refuseBtn" class="btn btn-danger" disabled="">                                              
+                                <button id="rejectBtn" class="btn btn-danger" disabled="">                                              
                                     <i class="far fa-times-circle"></i> Từ chối
                                 </button>
                             </div> 
@@ -126,7 +136,7 @@
                         <!-- context menu -->
                         <div class="dropdown-menu dropdown-menu-sm " id="context-menu" style="z-index: 1051;">
                             <a class="dropdown-item" id="approveItem">Duyệt</a>
-                            <a class="dropdown-item" id="refuseItem">Từ chối</a>
+                            <a class="dropdown-item" id="rejectItem">Từ chối</a>
                         </div>
                     </table>
                 </div>
@@ -136,3 +146,10 @@
     
     <div class="col-lg-1"></div>
 </div>
+
+<script src="/javascripts/approve-draft.js"></script>
+<!-- bootstrap tags input-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
+<!-- sweet alert 2-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.12.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>

@@ -1,31 +1,6 @@
 var $table = $('#table');
-var tableData = [
-    {id: 1, article: {title: 'bài  viết 1', href: '#', category: 'tài chính', tags: ['giá vàng', 'tài chính'] }, author: 'tác giả 1', },
-    {id: 2, article: {title: 'bài  viết 2', href: '#', category: 'giới tính', tags: ['giới tính', 'dậy thì'] }, author: 'tác giả 2', },
-    {id: 3, article: {title: 'bài  viết 3', href: '#', category: 'du học', tags: ['du học', 'học tập'] }, author: 'tác giả 3', },
-    {id: 4, article: {title: 'bài  viết 4', href: '#', category: 'mobile', tags: ['smartphone', 'di động'] }, author: 'tác giả 4', },
-    {id: 5, article: {title: 'bài  viết 5', href: '#', category: 'phân tích', tags: ['phân tích', 'đánh giá'] }, author: 'tác giả 5', },
-    {id: 6, article: {title: 'bài  viết 6', href: '#', category: 'hàng không', tags: ['hàng không', 'giao thông'] }, author: 'tác giả 6', },
-    {id: 7, article: {title: 'bài  viết 7', href: '#', category: 'quân sự', tags: ['quân sự', 'hạt nhân', 'khủng bố'] }, author: 'tác giả 7', },
-    {id: 8, article: {title: 'bài  viết 8', href: '#', category: 'tư liệu', tags: ['lịch sử', 'di tích'] }, author: 'tác giả 8', },
-    {id: 9, article: {title: 'bài  viết 9', href: '#', category: 'giao thông', tags: ['giao thông', 'tai nạn', 'luật giao thông'] }, author: 'tác giả 9', },
-    {id: 10, article: {title: 'bài  viết 10', href: '#', category: 'đô thị', tags: ['quy hoạch', 'đô thị'] }, author: 'tác giả 10', }
-];
-
-const statuses = ['đã xuất bản', 'đã được duyệt & chờ xuất bản'];
-
-const categories = [
-    ['Thời sự', 'Chính trị', 'Giao thông', 'Đô thị'],
-    ['Thế giới', 'Quân sự', 'Tư liệu', 'Phân tích', 'Người Việt 4 phương'],
-    ['kinh doanh', 'bất động sản', 'hàng không', 'tài chính', 'doanh nhân', 'tiêu dùng'],
-    ['công nghệ', 'mobile', 'AI', 'smartHome', 'startup'],
-    ['thể thao', 'thể thao Việt Nam', 'thể thao Thế giới', 'bóng đá Việt Nam'],
-    ['sao Việt', 'sao châu Á', 'sao Hollywood'],
-    ['sức khỏe', 'làm đẹp', 'khỏe đẹp mỗi ngày', 'giới tính'],
-    ['giáo dục', 'tuyển sinh 2019', 'du học', 'chọn nghề', 'chọn trường']];
-
+var parentCategories;
 $(function () {
-    var html = [];
     // context menu
     $('#context-menu').hide();
 
@@ -42,21 +17,13 @@ $(function () {
     // Loop over them and prevent submission
     var validation = Array.prototype.filter.call(forms, function(form) {
         form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        form.classList.add('was-validated');
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
         }, false);
     });
-
-    // approve modal
-    for (var i = 0; i < categories.length; i++) {
-        $('#selectParentCategory').append($('<option>', {
-            value: categories[i][0].toLowerCase(),
-            text: categories[i][0].substr(0, 1).toUpperCase() + categories[i][0].substr(1),
-        }));
-    }
 
     $('#datetimePicker').datepicker({
         format: 'dd-mm-yyyy',
@@ -64,18 +31,21 @@ $(function () {
         autoclose: true,
         clearBtn: true,
     });
+
+    // $('#inputTag').tagsinput({
+    //     itemValue: 'id',
+    //     itemText: 'name',
+    // });
 });
 
 function getIdSelections() {
     return $.map($table.bootstrapTable('getSelections'), function (row) {
-        return row.id
-    })
+        return row.id;
+    });
 }
 
-function articleFormatter(value, row, index) {
-    return [
-        '<a href="' + value.href + '" target="_blank">' + value.title.substr(0, 1).toUpperCase() + value.title.substr(1) + '</a>'
-    ].join('');
+function titleFormatter(title, row, index) {
+    return `<a>${ title }</a>`;
 }
 
 function nameFormatter(value, row) {
@@ -83,135 +53,159 @@ function nameFormatter(value, row) {
     return value;
 }
 
-function statusFormatter(value, row, index) {
-    if (value.toLowerCase() === 'đã được duyệt & chờ xuất bản'.toLowerCase()) {
-        var html = [`
-            <select class='form-control category-dropdown-menu' style='text-align: center; text-align-last: center;' >
-        `];
-
-        for (var i = 0; i < statuses.length; i++) {
-            html += '<option value="' + statuses[i] + '"';
-            if (value.toLowerCase() === statuses[i].toLowerCase()) {
-                html += ' selected="selected" ';
-            }
-            html += '>' + statuses[i].substr(0, 1).toUpperCase() + statuses[i].substr(1) + '</option>';
-        }
-        html += '</select>';
-
-        return html;
-    }
-    else {
-        return value;
-    }
-}
-
 function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
-    height: 800,
-    locale: 'vi-VN',
-    toolbar: '#toolbar',
-    pagination: true,
-    search: true,
-    showPaginationSwitch: true,
-    showRefresh: true,
-    showToggle: true,
-    showColumns: true,
-    showFullscreen: true,
-    smartDisplay: true,
-    clickToSelect: true,
-    undefinedText: ' ',
-    uniqueId: 'id',
-    // extension
-    stickyHeader: true,
-    stickyHeaderOffsetY: 56,
-    showJumpto: true,
-    searchAccentNeutralise: true,
-    //filter
+        height: 800,
+        locale: 'vi-VN',
+        toolbar: '#toolbar',
+        pagination: true,
+        search: true,
+        showPaginationSwitch: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+        showFullscreen: true,
+        smartDisplay: true,
+        clickToSelect: true,
+        singleSelect: true,
+        uniqueId: 'id',
+        // extension
+        stickyHeader: true,
+        stickyHeaderOffsetY: 56,
+        showJumpto: true,
+        searchAccentNeutralise: true,
+        sortName: 'id',
+        url: '/editor/approve-draft/load',
+        sidePagination: 'server',
+        responseHandler: res => {
+            console.log(res);
+            let total = res.total;
+            let rows = res.rows.map(row => {
+                return {
+                    state: false,
+                    id: row.id,
+                    parentCategory: { id: row.parentCategoryID, name: row.parentCategory },
+                    category: { id: row.categoryID, name: row.category },
+                    title: row.title,
+                    writerName: row.writerName
+                };
+            });
+            return { total: total, rows: rows };
+        },
 
-    columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
+        //filter
+
+        columns: [{field: 'state', checkbox: true, align: 'center', valign: 'middle', width: '5%', }, 
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
-            {  field: 'article', title: 'Bài viết', align: 'center',  valign: 'middle', formatter: articleFormatter, sortable: true, },
-            {  field: 'author', title: 'Tác giả', align: 'center',  valign: 'middle', width: '20%', formatter: nameFormatter, sortable: true, }],
-    data: tableData,
-        })
-    }
+            { field: 'parentCategoy', visible: false },
+            { field: 'category', visible: false },
+            {  field: 'title', title: 'Bài viết', align: 'left',  valign: 'middle', formatter: titleFormatter, sortable: true, },
+            {  field: 'writerName', title: 'Tác giả', align: 'center',  valign: 'middle', width: '20%', formatter: nameFormatter, sortable: true, }],
+    });
+}
 
-    $table.on('check.bs.table uncheck.bs.table ' +
+$table.on('check.bs.table uncheck.bs.table ' +
     'check-all.bs.table uncheck-all.bs.table',
-    function () {
+function () {
     var selections = $table.bootstrapTable('getSelections');
-    $('#refuseBtn').prop('disabled', selections.length != 1);
+    $('#rejectBtn').prop('disabled', selections.length != 1);
     $('#approveBtn').prop('disabled', selections.length != 1);
-
-    // save your data, here just save the current page
-    var idSelections = getIdSelections()
-    // push or splice the selections if you want to save all data selections
-})
-
-$table.on('all.bs.table', function (e, name, args) {
-
-})
-
-// refuse event
-$('#refuseBtn').on('click', function () {
-    refuse();
 });
 
-function refuse() {
-    $("#refuseForm").removeClass('was-validated').attr('novalidate', '');
+$table.on('load-success.bs.table', (data) => {
+    $.ajax({
+        url: '/editor/approve-draft/category/parent/',
+        method: 'get',
+        error: err => {
+            console.log(err);
+        },
+        success: rows => {
+            parentCategories = rows;
+        }
+    });
+});
+
+// reject event
+$('#rejectBtn').on('click', function () {
+    reject();
+});
+
+function reject() {
+    $('#rejectForm').removeClass('was-validated').attr('novalidate', '');
     $('#inputReason').val('');
-    $('#refuseModal').modal('show');
+    $('#rejectModal').modal('show');
 }
 
 // approve event
 $('#approveBtn').on('click', function() {
     approve();
-})
+});
 
 function approve() {
     let id = getIdSelections()[0];
     let row = $table.bootstrapTable('getRowByUniqueId', id);
-    
-    let article = row.article;
-    let tags = article.tags;
-    let filled = false;
-    // fill category
-    $('#selectCategory').empty();
-    for (var i = 0; i < categories.length && !filled; i++) {
-        for (var j = 0; j < categories[i].length && !filled; j++) {
+    let categories;
+    let tags;
+
+    if (!id)
+        return;
+
+    Swal.enableLoading();
+
+    $.ajax({
+        url: `/editor/approve-draft/${ row.id }`,
+        method: 'get',
+        error: err => {
+            console.log(err);
+            Swal.fire({
+                position: 'center',
+                type: 'error',
+                title: err,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        },
+        success: res => {
+            categories = res.categories;
+            tags = res.tags;
+
+            // parent category
+            let $selectParentCateogry = $('#selectParentCategory');
+            parentCategories.forEach(category => {
+                $selectParentCateogry.append($('<option>', {
+                    value: category.id,
+                    text: category.name
+                }));
+            });
+            $($selectParentCateogry).find(`option[value=${ row.parentCategory.id }]`).attr('selected', 'selected');
             
-            // set selected parent category
-            if (categories[i][j].toLowerCase() === article.category.toLowerCase()) {
-                $('#selectParentCategory option[selected="selected"]').attr('selected', '');
-                $('#selectParentCategory option[value="' + categories[i][0].toLowerCase() + '"]').attr('selected', 'selected');
+            // child cateogry
+            let $selectCategory = $('#selectCategory');
+            categories.forEach(category => {
+                $($selectCategory).append($('<option>', {
+                    value: category.id,
+                    text: category.name
+                }));
+            });
+            $($selectCategory).find(`option[value=${ row.category.id }]`).attr('selected', 'selected');
 
-                // fill & set selected categoryy
-                for (var index = 1; index < categories[i].length; index++) {
-                    $('#selectCategory').append($('<option>', {
-                        value: categories[i][index].toLowerCase(),
-                        text: categories[i][index].substr(0, 1).toUpperCase() + categories[i][index].substr(1),
-                    }));
-                }
+            // tags
+            let $inputTag = $('#inputTag');
+            $($inputTag).tagsinput('removeAll');
+            tags.forEach(tag => {
+                console.log(tag);
+                $($inputTag).tagsinput('add', tag.name);
+            });
 
-                $('#selectCategory option[selected="selected"]').attr('selected', '');
-                $('#selectCategory option[value="' + article.category.toLowerCase() + '"]').attr('selected', 'selected');
-
-                filled = true;
-            }            
+            Swal.close();
+            $('#approveForm').removeClass('was-validated').attr('novalidate', '');
+            $('#approveModal').modal('show');
         }
-    }
-    
-    // fill tag
-    $('#editTags').empty();
-    $.each(tags, function(index, value) {
-        $('#editTags').append(value + '; ')
-    })
-    $("#approveForm").removeClass('was-validated').attr('novalidate', '');
-    $('#approveModal').modal('show');
+    });
 }
           
 function mounted() {
-    initTable()
+    initTable();
 }
 
 // context-menu event (row clicking)
@@ -226,12 +220,12 @@ $('#table').on('contextmenu', 'tr',  function(e) {
     }
 
     $('#context-menu').show();
-    $("#context-menu").offset({left:e.pageX, top:e.pageY});
+    $('#context-menu').offset({left:e.pageX, top:e.pageY});
     e.preventDefault();
 
     // item click handler
     // remove event handler
-    $('#refuseItem').on('click', function(e) {
+    $('#rejectItem').on('click', function(e) {
         var selectionIds = getIdSelections();
     
         if (selectionIds.length > 0) {
@@ -241,7 +235,7 @@ $('#table').on('contextmenu', 'tr',  function(e) {
         }
         
         $table.bootstrapTable('updateCellById', {id: dataIndex + 1, field: 'state', value: true});
-        refuse();
+        reject();
     });
     
     $('#approveItem').on('click', function(e) {
@@ -278,7 +272,7 @@ $('#mySidenav a').mouseleave(function() {
 });
 
 /* form submit */
-$('#refuseForm').submit(function(e) {
+$('#rejectForm').submit(function(e) {
     e.preventDefault();
 
     if (this.checkValidity()) {
@@ -287,29 +281,74 @@ $('#refuseForm').submit(function(e) {
         $table.bootstrapTable('remove', {
             field: 'id',
             values: ids
-        })
-        $('#refuseBtn').prop('disabled', true);
+        });
+        $('#rejectBtn').prop('disabled', true);
         $('#approveBtn').prop('disabled', true);
-        $('#refuseModal').modal('hide');
+        $('#rejectModal').modal('hide');
     } else {
         e.stopPropagation();
     }
-})
+});
 
 $('#approveForm').submit(function(e) {
     e.preventDefault();
 
     if (this.checkValidity()) {
-        var ids = getIdSelections();
+        e.preventDefault();
+        
+        Swal.showLoading();
 
-        $table.bootstrapTable('remove', {
-            field: 'id',
-            values: ids
-        })
-        $('#refuseBtn').prop('disabled', true);
-        $('#approveBtn').prop('disabled', true);
-        $('#approveModal').modal('hide');
+        let id = getIdSelections()[0];
+        let tags = $('#inputTag').tagsinput('items');
+        let date = new Date($('#datetimePicker').datepicker('getDate'));
+        let data = {
+            draftID: id,
+            categoryID: $('#selectCategory option:selected').val(),
+            tags: JSON.stringify(tags),
+            publicationDate: date
+        };
+        console.log(data);
+    
+        $.ajax({
+            url: '/editor/approve-draft/approve',
+            method: 'post',
+            data: data,
+            error: err => {
+                console.log(err);
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    title: 'Lỗi',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            },
+            success: res => {
+                $('#approveModal').modal('hide');
+                Swal.fire({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Đã duyệt',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                $table.bootstrapTable('refresh', { silent: true });
+            }
+        });
     } else {
         e.stopPropagation();
     }
-})
+});
+
+function formatDate(date) {
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+  
+    var year = date.getFullYear();
+    
+    return day + '-' + month + '-' + year;
+}

@@ -29,7 +29,7 @@ router.post('/', multer.single('thumbnail'), (req, res, next) => {
     console.log(req);
     const file = req.file;
     let coverImageURL;
-
+    console.log(req.body);
     upload.uploadSingleThumbnail(file)
         .then(url => {
             coverImageURL = url;
@@ -43,7 +43,7 @@ router.post('/', multer.single('thumbnail'), (req, res, next) => {
                 statusID: 4,
                 writerID: req.session.passport.user.id
             };
-
+            
             const tags = JSON.parse(req.body.tags).map(tag => ({ name: tag }));
 
             Promise.all([
@@ -59,10 +59,14 @@ router.post('/', multer.single('thumbnail'), (req, res, next) => {
                         .then(() => {
                             res.status(200).send('success');
                         })
-                        .catch(err => console.log(err));
+                        .catch(err => {
+                            console.log(err);
+                            res.status(400).send('Lỗi, không thể đăng bài viết');
+                        });
                 })
                 .catch(err => {
                     console.log(err);
+                    res.status(400).send('Lỗi, không thể đăng bài viết');
                 });
         })
         .catch(err => {

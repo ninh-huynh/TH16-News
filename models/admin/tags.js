@@ -41,20 +41,8 @@ module.exports = {
             });
     },
 
-    upsert: (tag)=> {
-        //const {table, object, constraint} = params;
-        const insert = knex('CATEGORY').insert(tag);
-        const update = knex.queryBuilder().update(tag);
-        return knex.raw(`? ON CONFLICT ${ 'name' } DO ? returning *`, [insert, update]).get('rows').get(0);
-    },
-
+    // thêm tag nếu chưa tồn tại, trả về của tag mới thêm hoặc đã trùng
     insertIfNotExists: (tag) => {
-        // return db.load(`
-        //     insert into TAG(name)
-        //     select '${ tag.name }'
-        //     where not exists (select * from TAG where name = '${ tag.name }')
-        // `);
-
         return knex(tableName)
             .select('*')
             .where('name', tag.name)
@@ -65,6 +53,24 @@ module.exports = {
                     return knex(tableName)
                         .insert(tag)
                         .then(rows => rows[0]);
+                }
+            });
+    },
+
+    insertTagNameifNotExists: (tagName) => {
+        return knex(tableName)
+            .select('*')
+            .where('name', tagName)
+            .then(rows => {
+                if (rows.length === 1)
+                    return rows[0].id;
+                else {
+                    return knex(tableName)
+                        .insert({ name: tagName })
+                        .then(rows => {
+                            console.log(rows);
+                            return rows[0];
+                        });
                 }
             });
     },

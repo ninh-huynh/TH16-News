@@ -11,6 +11,17 @@ var usersRouter = require('./admin/admin_users');
 var tagsRouter = require('./admin/admin_tags');
 var postsRouter = require('./admin/admin_posts');
 
+router.use((req, res, next) => {
+    var user;
+    if (typeof req.session.passport !== 'undefined')
+        user = req.session.passport.user;
+    
+    if (typeof user === 'undefined' || typeof user.roleID === 'undefined' || user.roleID !== 4)
+        res.status(400).send('Bạn không có quyền truy cập vào trang này');
+    else
+        next();
+});
+
 
 // authenticate router
 router.use('/', (req, res, next) => {

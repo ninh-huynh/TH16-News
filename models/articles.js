@@ -210,7 +210,7 @@ module.exports = {
     },
 
     addTag: (tagID, articleID) => {
-        return db.add({ tagID, articleID }, 'article_tag');
+        return db.add({ tagID, articleID }, 'ARTICLE_TAG');
     },
 
     countTotalByTag_public: (tagName) => {
@@ -256,7 +256,7 @@ module.exports = {
         }
         else {
             query = query.orderBy([{ column: 'isPremium', order: 'desc' },
-            { column: 'publicationDate', order: sortOrder }]);
+                { column: 'publicationDate', order: sortOrder }]);
         }
 
         return query.limit(totalRow).offset(rowBegin);
@@ -275,7 +275,7 @@ module.exports = {
 
     searchByTitle: (title) => {
         var articleEntity;
-        console.log(title);
+        
         return knex.queryBuilder()
             .select('a.*', 'u.nickName as writer')
             .from('ARTICLE as a')
@@ -379,4 +379,63 @@ module.exports = {
                 return rows[0].total;
             });
     },
+
+    getDraftsByEditorID: (id, limit, offset, search, sort, order) => {
+        console.log(id, limit, offset, search, sort, order);
+        const query = knex.queryBuilder()
+            .from('ARTICLE as a')
+            .innerJoin('CATEGORY as c', 'a.categoryID', 'c.id')
+            .innerJoin('CATEGORY as p', 'p.id', 'c.parentID')
+            .innerJoin('USER as e', 'e.categoryIdManaged', 'p.id')
+            .innerJoin('USER as w', 'a.writerID', 'w.id')
+            .innerJoin('ARTICLE_STATUS as s', 's.id', 'a.statusID')
+            .where('e.id', id)
+            .andWhere('s.id', 4)
+            .modify(queryBuilder => {
+                if (search) {
+                    queryBuilder.whereRaw(`match(a.title) against('${ search }')`)
+                        .orWhereRaw(`match(w.name) against('${ search }')`);
+                }
+            });
+
+        return Promise.all([
+            // get total row
+            query
+                .clone()
+                .countDistinct('a.id as total')
+                .first()
+                .then(row => row.total),
+
+            // get rows
+            query
+                .clone()
+                .select('a.id', 'a.title', 'w.name as writerName', 'p.id as parentCategoryID', 'p.name as parentCategory', 'c.id as categoryID', 'c.name as category')
+                .modify(queryBuilder => {
+                    if (sort && order)
+                        queryBuilder.orderBy(sort, order);
+                })
+                .limit(limit)
+                .offset(offset)
+        ]);
+    },
+
+    getDraftInfo: (draftID) => {
+        return Promise.all([
+            knex
+                .queryBuilder()
+                .from('ARTICLE as a')
+                .innerJoin('CATEGORY as p', 'a.categoryID', 'p.id')
+                .innerJoin('CATEGORY as c', 'c.parentID', 'p.parentID')
+                .where('a.id', draftID)
+                .select('c.id as id', 'c.name as name'),
+
+            knex
+                .queryBuilder()
+                .from('ARTICLE as a')
+                .innerJoin('ARTICLE_TAG as at', 'a.id', 'at.articleID')
+                .innerJoin('TAG as t', 'at.tagID', 't.id')
+                .where('a.id', draftID)
+                .select('t.id as id', 't.name as name'),
+        ]);
+    }
 };

@@ -1,11 +1,3 @@
-
-// var $body = $('body');
-
-// $(document).on({
-//     ajaxStart: function() { $body.addClass('loading');    },
-//     ajaxStop: function() { $body.removeClass('loading'); }    
-// });
-
 $(function () {
     $('#newPostForm').validate({
         rules: {
@@ -42,7 +34,7 @@ $(function () {
 
             editor: {
                 required: true,
-                maxlength: 1024
+                maxlength: 8000
             }
 
         },
@@ -72,7 +64,7 @@ $(function () {
 
             editor: {
                 required: 'Nội dung không được trống',
-                maxlength: 'Nội dung không được vượt quá 1024 kí tự'
+                maxlength: 'Nội dung không được vượt quá 8000 kí tự'
             }
         },
         errorClass: 'invalid',
@@ -204,7 +196,7 @@ $(window).on('load', function () {
 
 function ajaxNewPostSubmitHandler(form) {
     Swal.showLoading();
-    let tags = $('#inputTag').tagsinput('items').itemsArray;
+    let tags = $('#inputTag').tagsinput('items');
     var data = new FormData(form);
     data.set('tags', JSON.stringify(tags));
     data.set('content', editor.getData());
@@ -221,7 +213,7 @@ function ajaxNewPostSubmitHandler(form) {
             Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: 'Đăng bài thất bại',
+                title: err,
                 showConfirmButton: false,
                 timer: 1500
             });

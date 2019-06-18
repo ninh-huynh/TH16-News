@@ -11,7 +11,7 @@ module.exports = {
     uploadSingleThumbnail: (file) => {
         return new Promise((resolve, reject) => {
             if (!file) {
-                reject('No image file');
+                reject('No file');
             }
             
             let newFileName = `${ file.originalname }_${ Date.now() }`;

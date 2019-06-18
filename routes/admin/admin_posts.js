@@ -52,7 +52,7 @@ router.put('/update-status', (req, res, next) => {
 
     promise
         .then(res => {
-            res.status(200).send();
+            res.status(200).send('success');
         })
         .catch(err => {
             console.log(err);

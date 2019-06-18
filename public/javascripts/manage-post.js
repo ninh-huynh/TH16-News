@@ -19,23 +19,9 @@ const ARTICLE_STATUS = {
         label: 'Chưa được duyệt',
         color: 'blue'
     }
-}
+};
 
 var $table = $('#table');
-// var tableData = [
-//     {id: 1, title: {title: 'bài  viết 1', href: '#' }, author: 'tác giả 1', publish_date: "1-1-2019", status: 'Đã xuất bản'},
-//     {id: 2, title: {title: 'bài  viết 2', href: '#' }, author: 'tác giả 2', publish_date: "", status: 'Đã được duyệt & chờ xuất bản'},
-//     {id: 3, title: {title: 'bài  viết 3', href: 'https://mp3.zing.vn' }, author: 'tác giả 3', publish_date: "3-3-2019", status: 'Đã xuất bản'},
-//     {id: 4, title: {title: 'bài  viết 4', href: 'https://mp3.zing.vn' }, author: 'tác giả 4', publish_date: "4-4-2019", status: 'Đã xuất bản'},
-//     {id: 5, title: {title: 'bài  viết 5', href: 'https://mp3.zing.vn' }, author: 'tác giả 5', publish_date: "", status: 'Đã được duyệt & chờ xuất bản'},
-//     {id: 6, title: {title: 'bài  viết 6', href: 'https://mp3.zing.vn' }, author: 'tác giả 6', publish_date: "", status: 'Đã được duyệt & chờ xuất bản'},
-//     {id: 7, title: {title: 'bài  viết 7', href: 'https://mp3.zing.vn' }, author: 'tác giả 7', publish_date: "7-7-2019", status: 'Đã xuất bản'},
-//     {id: 8, title: {title: 'bài  viết 8', href: 'https://mp3.zing.vn' }, author: 'tác giả 8', publish_date: "", status: 'Đã được duyệt & chờ xuất bản'},
-//     {id: 9, title: {title: 'bài  viết 9', href: 'https://mp3.zing.vn' }, author: 'tác giả 9', publish_date: "9-9-2019", status: 'Đã xuất bản'},
-//     {id: 10, title: {title: 'bài  viết 10', href: 'https://mp3.zing.vn' }, author: 'tác giả 10', publish_date: "10-10-2019", status: 'Đã xuất bản'}
-// ];
-
-// var statuses = ['đã xuất bản', 'đã được duyệt & chờ xuất bản'];
 
 $(function () {
     // context menu
@@ -95,19 +81,36 @@ function statusFormatter(value, row, index) {
 
 window.operateEvents = {
     'change .status-dropdown-menu' : function (e, value, row, index) {
+        Swal.showLoading();
         let newStatus = $('tbody tr[data-index="' + index + '"]').find('select option:selected').text();
         
         $.ajax({
             url: '/admin/posts/update-status',
             method: 'put',
             data: { id: row.id, status: newStatus },
-            error: err => console.log(err),
+            error: err => {
+                console.log(err);
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    title: err,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            },
             success: res => {
+                Swal.fire({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Đã duyệt',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 $table.bootstrapTable('refresh', { silent: true });
             }
         });
     }
-}
+};
 
 function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
@@ -130,8 +133,7 @@ function initTable() {
         stickyHeaderOffsetY: 56,
         showJumpto: true,
         searchAccentNeutralise: true,
-        pageList: [5, 10, 20, 100],
-        pageSize: 5,
+        pageSize: 10,
 
         url: '/admin/posts/load',
         sidePagination: 'server',
@@ -164,24 +166,20 @@ $table.on('check.bs.table uncheck.bs.table ' +
 function () {
     var selections = $table.bootstrapTable('getSelections');
     $('#remove').prop('disabled', !selections.length);
-
-    // save your data, here just save the current page
-    var idSelections = getIdSelections()
-    // push or splice the selections if you want to save all data selections
-})
+});
 
 $table.on('all.bs.table', function (e, name, args) {
 
-})
+});
 
 $('#remove').click(function () {
     var ids = getIdSelections();
     
     removePost(ids);
-})
+});
           
 function mounted() {
-    initTable()
+    initTable();
 }
 
 // context-menu event (row clicking)
