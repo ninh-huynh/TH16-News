@@ -16,6 +16,7 @@ var tagRouter = require('./routes/tag');
 var searchRouter = require('./routes/search');
 var accountRouter = require('./routes/account');
 var articleRouter = require('./routes/article');
+var draftRouter = require('./routes/draft');
 var menu_bar = require('./middleware/menu_bar');
 var form_validate = require('./middleware/form-validate');
 var linkHelper = require('./utils/linkHelper');
@@ -49,6 +50,7 @@ app.use('/writer', writerRouter);
 app.use('/editor', editorRouter);
 app.use('/search', searchRouter);
 app.use('/account', accountRouter);
+app.use('/draft', draftRouter);
 app.use(articleRouter);
 
 // catch 404 and forward to error handler

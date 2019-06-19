@@ -62,8 +62,10 @@ module.exports = {
             .select('*')
             .where('name', tagName)
             .then(rows => {
-                if (rows.length === 1)
+                if (rows.length === 1){
+                    console.log(rows[0].id);
                     return rows[0].id;
+                }
                 else {
                     return knex(tableName)
                         .insert({ name: tagName })

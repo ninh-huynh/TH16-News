@@ -5,10 +5,28 @@ const categoryModel = require('./../../models/categories');
 const moment = require('moment');
 const tagModel = require('./../../models/admin/tags');
 const articleTagModel = require('./../../models/article_tag');
+const linkHelper = require('../../utils/linkHelper');
 
 
 const sqlDateFormat = 'YYYY/MM/DD';
-
+const ARTICLE_STATUS = {
+    published : {
+        label: 'đã xuất bản',
+        id: 2
+    },
+    rejected : {
+        label: 'bị từ chối',
+        id: 3
+    },
+    pending_approval: {
+        label: 'đang chờ duyệt',
+        id: 4
+    },
+    pending_publish: {
+        label: 'đã được duyệt & chờ xuất bản',
+        id: 1
+    }
+};
 
 router.get('/', (req, res, next) => {
     res.render('editor/approve-draft', { layout: 'layouts/manage' });
@@ -21,9 +39,14 @@ router.get('/load', (req, res, next) => {
     const search = req.query.search;
     const sort = req.query.sort;
     const order = req.query.order;
+    const host = req.headers['host'];
 
     articleModel.getDraftsByEditorID(req.session.passport.user.id, limit, offset, search, sort, order)
         .then(([total, rows]) => {
+            rows.forEach(row => {
+                row.href = host + '/draft' + linkHelper.concatToLink([row.title]);
+            });
+            
             res.status(200).send({ total: total, rows: rows });
         })
         .catch(err => {
@@ -57,7 +80,6 @@ router.get('/:draftID', (req, res, next) => {
 });
 
 router.post('/approve', (req, res, next) => {
-    console.log(req.body);
     const draft = {
         id: parseInt(req.body.draftID),
         categoryID: parseInt(req.body.categoryID),
@@ -86,33 +108,28 @@ router.post('/approve', (req, res, next) => {
 
                 return arr;
             }, []);
-            console.log(draft);
-            Promise.all([
+            
+            return Promise.all([
                 ...newTags.map(tagName => tagModel.insertTagNameifNotExists(tagName)),
-                ...deleteTags.map(id => tagModel.remove([id])),
+                ...deleteTags.map(id => articleTagModel.remove(parseInt(req.body.draftID), id)),
                 articleModel.update(draft)
-            ])
-                .then(([tagsID]) => {
-                    console.log([tagsID, draft]);
-                    tagsID = [].concat(tagsID);
-                    Promise.all(
-                        tagsID.map(tagID => articleTagModel.insertSingleEntity({ tagID: tagID, articleID: parseInt(req.body.draftID) }))
-                    )
-                        .then(([rows]) => {
-                            res.status(200).send('success');
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(400).send(err);
-                        });
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(400).send(err);
-                });
-
-
-            console.log([newTags, deleteTags]);
+            ]);
+        })
+        .then((params) => {
+            
+            if (newTags.length > 0) {
+                let insertTagsID = params.slice(0, newTags.length);
+                return Promise.all(
+                    insertTagsID.map(tagID => articleTagModel.insertSingleEntity({ tagID: tagID, articleID: parseInt(req.body.draftID) }))
+                );
+            }
+            else {
+                console.log(true);
+                return Promise.all([true]);
+            }
+        })
+        .then(([rows]) => {
+            res.status(200).send('success');
         })
         .catch(err => {
             console.log(err);
@@ -120,8 +137,23 @@ router.post('/approve', (req, res, next) => {
         });
 });
 
-router.get('/test', (req, res, next) => {
+router.post('/reject', (req, res, next) => {
+    const id = parseInt(req.body.articleID);
+    const reason = req.body.reason;
+    const article = {
+        id: id,
+        statusID: ARTICLE_STATUS.rejected.id,
+        rejectReason: reason
+    };
 
+    articleModel.update(article)
+        .then(() => {
+            res.status(200).send('success');
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).send('error');
+        });
 });
 
 

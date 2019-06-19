@@ -1,0 +1,70 @@
+<%# article.category, article.tags, article.comments %>
+<%
+    var category = article.category; 
+    var parentCategory = category.parent;
+%>
+<link rel="stylesheet" href="/stylesheets/tieu-de-bai-viet.css">
+
+<%- contentFor('title') %>
+<%= article.title %>
+
+<%- contentFor('body') %>
+<nav class="mt-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    
+    <li class="breadcrumb-item"><a href="<%=concatToLink(['categories',parentCategory.name])%>"><%= parentCategory.name %></a></li>
+    
+    <li class="breadcrumb-item"><a href="<%=concatToLink(['categories',category.name])%>"><%= category.name %></a></li>
+  </ol>
+</nav>
+
+ <h2 class="display-4 font-weight-bold">
+    <%= article.title %>
+ </h2>
+ <div class="row">
+     <div class="col">
+      <div>
+        <%# Tác giả - Thời gian đăng (HH:mm DD-MM-YYYY) %>
+         <div class="text-muted mb-3 d-inline-block">
+            <span class="font-weight-bold"><%= article.writer %></span>
+         </div>
+
+        <p class="font-weight-bold">
+            <%= article.summary %>
+        </p>
+
+         <!-- Nội dung chi tiết bài viết -->
+         <div id="article-detail" class="mb-3">
+             <img src="<%= article.coverImageURL %>">
+             <div class="container-fuild">
+                 <%- article.content %>
+             </div>
+         </div>
+
+         <!-- Danh sách các thẻ được gắn -->
+         <h6 class="mt-3">
+             <i class="fas fa-tags mr-2"></i>
+             <% article.tags.forEach((tag) => { %>
+                <a href="<%= concatToLink(['tags', tag.name])  %>" class="badge badge-dark">
+                    <%= tag.name %>
+                </a>
+             <% }); %>
+         </h6>
+        </div>
+
+        <!-- Alert báo lỗi -->
+        <div class="alert alert-danger alert-dismissible fade show d-none" role="alert" id="my-alert">
+          <h4 class="alert-heading">Đã có lỗi xảy ra: </h4>
+          <p id="alert-message"></p>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+     </div> <!-- col-8-->
+     <div class="col-xl-4 d-none d-xl-block" id="right-side">
+
+     </div> <!-- col-4-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="/javascripts/tieu-de-bai-viet.js"></script>

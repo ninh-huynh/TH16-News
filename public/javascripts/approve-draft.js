@@ -45,7 +45,7 @@ function getIdSelections() {
 }
 
 function titleFormatter(title, row, index) {
-    return `<a>${ title }</a>`;
+    return `<a href='${ row.href }' target='_blank'>${ title }</a>`;
 }
 
 function nameFormatter(value, row) {
@@ -87,7 +87,8 @@ function initTable() {
                     parentCategory: { id: row.parentCategoryID, name: row.parentCategory },
                     category: { id: row.categoryID, name: row.category },
                     title: row.title,
-                    writerName: row.writerName
+                    writerName: row.writerName,
+                    href: row.href
                 };
             });
             return { total: total, rows: rows };
@@ -99,6 +100,7 @@ function initTable() {
             { field: 'id', title: 'ID', align: 'center', valign: 'middle', sortable: true,  width: '5%'}, 
             { field: 'parentCategoy', visible: false },
             { field: 'category', visible: false },
+            { field: 'href', visible: false },
             {  field: 'title', title: 'Bài viết', align: 'left',  valign: 'middle', formatter: titleFormatter, sortable: true, },
             {  field: 'writerName', title: 'Tác giả', align: 'center',  valign: 'middle', width: '20%', formatter: nameFormatter, sortable: true, }],
     });
@@ -276,15 +278,40 @@ $('#rejectForm').submit(function(e) {
     e.preventDefault();
 
     if (this.checkValidity()) {
-        var ids = getIdSelections();
+        e.preventDefault();
+        Swal.showLoading();
 
-        $table.bootstrapTable('remove', {
-            field: 'id',
-            values: ids
+        const reason = $('#inputReason').val();
+        const id = getIdSelections()[0];
+        $.ajax({
+            url: '/editor/approve-draft/reject',
+            method: 'post',
+            data: { 
+                articleID: id,
+                reason: reason 
+            },
+            error: err => {
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    title: err,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            },
+            success: res => {
+                $('#rejectModal').modal('hide');
+                Swal.fire({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Đã từ chối',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                $table.bootstrapTable('refresh', { silent: true });
+            }
         });
-        $('#rejectBtn').prop('disabled', true);
-        $('#approveBtn').prop('disabled', true);
-        $('#rejectModal').modal('hide');
     } else {
         e.stopPropagation();
     }

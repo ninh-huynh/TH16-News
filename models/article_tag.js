@@ -20,5 +20,13 @@ module.exports = {
     insertSingleEntity: (entity) => {
         return knex(tableName)
             .insert(entity);
+    },
+
+    remove: (articleID, tagID) => {
+        return knex(tableName)
+            .where('articleID', articleID)
+            .andWhere('tagID', tagID)
+            .delete()
+            .then(row => console.log(row));
     }
 };

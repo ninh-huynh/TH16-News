@@ -3,6 +3,7 @@ var router = express.Router();
 var linkHelper = require('../utils/linkHelper');
 
 var newPostRouter = require('./writer/new-post');
+var myPostsRouter = require('./writer/my-posts');
 
 router.use((req, res, next) => {
     var user;
@@ -16,5 +17,6 @@ router.use((req, res, next) => {
 });
 
 router.use('/new-post', newPostRouter);
+router.use('/my-posts', myPostsRouter);
 
 module.exports = router;

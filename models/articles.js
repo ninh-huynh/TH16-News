@@ -301,6 +301,32 @@ module.exports = {
             });
     },
 
+    searchDraftByTitle: (title) => {
+        var articleEntity;
+        
+        return knex.queryBuilder()
+            .select('a.*', 'u.nickName as writer')
+            .from('ARTICLE as a')
+            .where('title', 'like', `${title}%`)
+            .join('USER as u', 'a.writerID', 'u.id')
+            .then(rows => {
+                if (rows.length === 0)
+                    throw new Error(`${title} is not found`);
+                articleEntity = rows[0];
+
+                var pLoadCategory = categories.loadByIdIncludeParent(articleEntity.categoryID);
+                var pLoadTags = tag.loadByArticle(articleEntity.id);
+                var pLoadComments = comment.loadByArticle(articleEntity.id);
+                return Promise.all([pLoadCategory, pLoadTags, pLoadComments]);
+            })
+            .then(([category, tags, comments]) => {
+                articleEntity.category = category;
+                articleEntity.tags = tags;
+                articleEntity.comments = comments;
+                return articleEntity;
+            });
+    },
+
     loadBySameCategory: (articleEntity) => {
         var categoryID = articleEntity.categoryID;
         return knex.queryBuilder()
@@ -439,5 +465,38 @@ module.exports = {
                 .where('a.id', draftID)
                 .select('t.id as id', 't.name as name'),
         ]);
-    }
+    },
+
+    getArticleByWriterID: (writerID, limit, offset, search, sort, order) => {
+        const query = knex
+            .queryBuilder()
+            .from('ARTICLE as a')
+            .innerJoin('CATEGORY as c', 'a.categoryID', 'c.id')
+            .innerJoin('ARTICLE_STATUS as s', 'a.statusID', 's.id')
+            .where('a.writerID', writerID)
+            .modify(queryBuilder => {
+                if (search)
+                    queryBuilder
+                        .whereRaw(`match(a.title) against('${ search }')`)
+                        .orWhereRaw(`match(c.name) against('${ search }')`);
+            });
+
+        return Promise.all([
+            query
+                .clone()
+                .countDistinct('a.id as total')
+                .first()
+                .then(rows => rows.total),
+
+            query
+                .clone()
+                .select('a.id as id', 'a.title as title', 'c.name as categoryName', 'a.publicationDate as publicationDate', 's.id as statusID', 's.name as statusName')
+                .modify(queryBuilder => {
+                    if (sort && order)
+                        queryBuilder.orderBy(sort, order);
+                })
+                .limit(limit)
+                .offset(offset)
+        ]);
+    },
 };
