@@ -6,8 +6,20 @@ var userRoleModel = require('../models/user_role');
 var router = express.Router();
 var userModel = require('./../models/users');
 var moment = require('moment');
+var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
+var crypto = require('crypto');
+
+var options = {
+    auth: {
+        api_key: process.env.SEND_GRID_API_KEY
+    }
+};
+var mailer = nodemailer.createTransport(sgTransport(options));
 
 const SALT_ROUND = 10;
+
+const TOKEN_LENGTH = 32;
 
 router.post('/sign-up', (req, res, next) => {
     const email = req.body.email;
@@ -164,4 +176,97 @@ router.post('/change-pass', (req, res, next) => {
         });
 });
 
+
+router.post('/forgot-pass', (req, res, next) => {
+    var userEmail = req.body.email;
+    console.log(userEmail);
+
+    res.redirect('/');
+
+    crypto.randomBytes(TOKEN_LENGTH / 2, (err, buff) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        var token = buff.toString('hex');
+
+        var email = {
+            to: `${userEmail}`,
+            from: 'noreply@th16news.com',
+            subject: 'Xác nhận đổi mật khẩu',
+            html: `
+        <p>Bạn vừa mới yêu cầu đổi mật khẩu. Nếu đây đúng là yêu cầu của bạn, vui lòng tiếp tục chọn vào link bên dưới</p>
+        <a href="http://${process.env.DOMAIN}:5000/account/reset-pass?token=${token}">ĐỔI MẬT KHẨU</a>
+        <p>Thời hạn 24 giờ từ lúc nhận được email này</p>
+        `
+        };
+
+        userModel.findBy('email', userEmail)
+            .then(row => {
+
+                var userEntity = {
+                    id: row.id,
+                    passwordResetToken: token,
+                    passwordResetExpires: moment().add(1, 'days').format('YYYY-MM-DD'),
+                };
+
+                return userModel.update(userEntity);
+            }).then(affectedRow => {
+                console.log(affectedRow);
+            }).catch(err => {
+                console.log(err);
+            });
+
+        mailer.sendMail(email)
+            .then(result => {
+                console.log(result);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    });
+});
+
+
+router.get('/reset-pass', (req, res, next) => {
+    var token = req.query.token;
+    console.log(token);
+    userModel.findBy('passwordResetToken', token)
+        .then(row => {
+            if (moment().isBefore(row.passwordResetExpires)) {
+                res.render('reset-pass', {user: row});
+            }
+            else {
+                res.render('_widget/error-alert', { message: 'Đường link này đã hết hạn, vui lòng gửi lại yêu cầu mới' });
+            }
+        }).catch(err => {
+            console.log(err);
+            if (err.status === 404) {
+                res.render('_widget/error-alert', { message: 'Đường link này đã hết hạn, vui lòng gửi lại yêu cầu mới' });
+            } else {
+                next(err);
+            }
+        });
+});
+
+
+router.post('/reset-pass', (req, res, next) => {
+    
+    var user = req.body;
+    bcrypt.hash(user.newPass, SALT_ROUND)
+        .then(hash => {
+            let updateUser = {
+                id: user.id,
+                password: hash,
+            };
+            return userModel.update(updateUser);
+        })
+        .then(affectedRow => {
+            res.redirect('/');
+        })
+        .catch(err => {
+            console.log(err);
+            next(err);
+        });
+});
 module.exports = router;

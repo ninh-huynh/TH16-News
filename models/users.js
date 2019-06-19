@@ -62,4 +62,19 @@ module.exports = {
                 return rows[0];
             });
     },
+
+    findBy: (column, columnValue) => {
+        return knex.queryBuilder()
+            .select('*')
+            .from('USER')
+            .where(column, '=', columnValue)
+            .then(rows => {
+                if (rows.length === 0) {
+                    var err = new Error(`User ${column} ${columnValue} not found`);
+                    err.status = 404;
+                    throw err;
+                }
+                return rows[0];
+            });
+    }
 };
