@@ -301,14 +301,14 @@ module.exports = {
             });
     },
 
-    searchDraftByTitle: (title) => {
+    searchDraftByTitle: (writerID, title) => {
         var articleEntity;
         
         return knex.queryBuilder()
-            .select('a.*', 'u.nickName as writer')
+            .select('a.*')
             .from('ARTICLE as a')
-            .where('title', 'like', `${title}%`)
-            .join('USER as u', 'a.writerID', 'u.id')
+            .where('a.title', 'like', `${title}%`)
+            .join('USER as w', 'a.writerID', 'w.id')
             .then(rows => {
                 if (rows.length === 0)
                     throw new Error(`${title} is not found`);
@@ -322,7 +322,6 @@ module.exports = {
             .then(([category, tags, comments]) => {
                 articleEntity.category = category;
                 articleEntity.tags = tags;
-                articleEntity.comments = comments;
                 return articleEntity;
             });
     },
@@ -502,4 +501,13 @@ module.exports = {
                 .offset(offset)
         ]);
     },
+
+    getStatusIdById: (id) => {
+        return knex
+            .queryBuilder()
+            .from('ARTICLE')
+            .where('id', id)
+            .select('statusID')
+            .then(rows => rows[0].statusID);
+    }
 };

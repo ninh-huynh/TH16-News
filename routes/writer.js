@@ -4,6 +4,7 @@ var linkHelper = require('../utils/linkHelper');
 
 var newPostRouter = require('./writer/new-post');
 var myPostsRouter = require('./writer/my-posts');
+var editPostRouter = require('./writer/edit-post');
 
 router.use((req, res, next) => {
     var user;
@@ -18,5 +19,6 @@ router.use((req, res, next) => {
 
 router.use('/new-post', newPostRouter);
 router.use('/my-posts', myPostsRouter);
+router.use('/edit-post', editPostRouter);
 
 module.exports = router;

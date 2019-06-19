@@ -55,13 +55,13 @@ router.get('/load', (req, res, next) => {
                         row.href = host + linkHelper.concatToLink([row.title]);
                         break;
 
-                    case ARTICLE_STATUS.pending_approval.id:
                     case ARTICLE_STATUS.pending_publish.id:
                         row.href = host + '/draft' +linkHelper.concatToLink([row.title]);
                         break;
                     
+                    case ARTICLE_STATUS.pending_approval.id:
                     case ARTICLE_STATUS.refused.id:
-                        row.href = host + '/writer/edit' + linkHelper.concatToLink([row.title]);
+                        row.href = host + '/writer/edit-post' + linkHelper.concatToLink([row.title]);
                         break;
                     default:
                 }

@@ -110,8 +110,6 @@ $('#thumbnail').click(function () {
 });
 
 function readURL(input) {
-    console.log(input);
-    console.log($(input));
     if (($('#uploadThumbnailButton').is(input))) {
 
         $('#uploadThumbnailFormGroup').removeClass('d-flex').addClass('d-none');
