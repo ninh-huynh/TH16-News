@@ -467,7 +467,7 @@ module.exports = {
         ]);
     },
 
-    getArticleByWriterID: (writerID, limit, offset, search, sort, order) => {
+    getArticleByWriterID: (writerID, limit, offset, search, sort, order, filter) => {
         const query = knex
             .queryBuilder()
             .from('ARTICLE as a')
@@ -475,6 +475,9 @@ module.exports = {
             .innerJoin('ARTICLE_STATUS as s', 'a.statusID', 's.id')
             .where('a.writerID', writerID)
             .modify(queryBuilder => {
+                console.log(filter);
+                if (filter)
+                    queryBuilder.where('s.name', filter);
                 if (search)
                     queryBuilder
                         .whereRaw(`match(a.title) against('${ search }')`)

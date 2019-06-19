@@ -158,7 +158,8 @@ function initTable() {
             {  field: 'articleTitle', title: 'Bài viết', align: 'left',  valign: 'middle', formatter: articleTitleFormatter, sortable: true, },
             {  field: 'categoryName', title: 'Chuyên mục', align: 'center',  valign: 'middle', width: '20%', formatter: categoryNameFormatter, sortable: true, filterControl: 'select', },
             {  field: 'publish_date', title: 'Ngày xuất bản', align: 'center',  valign: 'middle', width: '15%', sortable: true,},
-            {  field: 'statusName', title: 'Trạng thái', align: 'center',  valign: 'middle', width: '20%', formatter: statusNameFormatter, sortable: true, filterControl: 'select'}],
+            {  field: 'statusName', title: 'Trạng thái', align: 'center',  valign: 'middle', width: '20%',
+                formatter: statusNameFormatter, sortable: true, filterControl: 'select'}],
     });
 }
 

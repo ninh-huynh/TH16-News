@@ -39,11 +39,13 @@ router.get('/load', (req, res, next) => {
     const search = req.query.serach;
     const sort = req.query.sort;
     const order = req.query.order;
+    let filter = null;
+    if (req.query.filter)
+        filter = JSON.parse(req.query.filter).statusName;
     const host = req.headers['host'];
-
-    articleModel.getArticleByWriterID(writerID, limit, offset, search, sort, order)
+    console.log([limit, offset, search, sort, order, filter]);
+    articleModel.getArticleByWriterID(writerID, limit, offset, search, sort, order, filter)
         .then(([ total, rows ]) => {
-            console.log(rows);
             rows.forEach(row => {
                 if (row.publicationDate)
                     row.publicationDate = moment(row.publicationDate, sqlDateFormat).format('DD/MM/YYYY');

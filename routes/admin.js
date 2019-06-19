@@ -96,6 +96,7 @@ router.get('/categories/load', (req, res, next) => {
         case 'parent':
             promise = category.loadParent()
                 .then((rows) => {
+                    console.log(rows);
                     res.send(rows);
                 })
                 .catch(err => {
