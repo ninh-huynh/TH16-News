@@ -4,27 +4,40 @@ const tableName = 'USER';
 
 module.exports = {
 
-    load: (totalRow, rowBegin, sortBy, order) => {
+    load: (totalRow, rowBegin, sortBy, order, search) => {
         var query = knex.queryBuilder()
             .select('u.*', 'ur.name as role', 'c.name as categoryManaged')
             .from('USER as u')
             .join('USER_ROLE as ur', 'u.roleID', '=', 'ur.id')
             .leftJoin('CATEGORY as c', 'u.categoryIdManaged', '=', 'c.id');
-        
+
+        if (search !== undefined) {
+            query = query.where('ur.name', 'like', search);
+        }
+
         if (sortBy !== undefined)
             query = query.orderBy(sortBy, order);
-        
+
         query = query.limit(totalRow).offset(rowBegin);
         return query;
     },
 
-    countTotal: () => {
-        return knex.queryBuilder()
+    countTotal: (search) => {
+        var query = knex.queryBuilder()
             .select(knex.raw('COUNT(*) as total'))
-            .from('USER')
-            .then(rows => {
-                return rows[0].total;
-            });
+            .from('USER');
+
+        if (search !== undefined) {
+            var subQuery = knex.queryBuilder()
+                .select('id')
+                .from('USER_ROLE')
+                .where('name', 'like', search);
+            query = query.whereIn('roleID', subQuery);
+        }
+
+        return query.then(rows => {
+            return rows[0].total;
+        });
     },
 
     add: (newUser) => {

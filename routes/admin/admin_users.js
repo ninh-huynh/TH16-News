@@ -23,8 +23,10 @@ router.get('/load', (req, res, next) => {
     var search = req.query.search;
     var order = req.query.order;
     var sort = req.query.sort;
-
-    Promise.all([userModel.countTotal(), userModel.load(limit, offset, sort, order)])
+    if (search === '')
+        search = undefined;
+    
+    Promise.all([userModel.countTotal(search), userModel.load(limit, offset, sort, order, search)])
         .then(([total, rows]) => {
             var obj = {
                 total,
