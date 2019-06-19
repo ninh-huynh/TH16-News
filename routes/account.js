@@ -104,20 +104,19 @@ router.get('/logout', function (req, res) {
 
 router.get('/info', (req, res, next) => {
     var userEntity = req.user;
-
+    
     if (userEntity === undefined) {
         var err = new Error('Bạn phải đăng nhập mới có thể truy cập trang này');
         err.status = 401;
         next(err);
         return;
     }
-
-    userRoleModel.getName(userEntity.roleID)
-        .then(roleName => {
-            var user = {};
-            Object.assign(user, userEntity);
+    
+    var userId = req.user.id;
+    userModel.loadById(userId)
+        .then(user => {
+        
             res.locals.updateSuccessfull = false;
-            user.role = roleName;
             res.render('account-info', { user });
         })
         .catch(err => {
@@ -140,8 +139,7 @@ router.post('/info', (req, res, next) => {
     user.dateOfBirth = moment(user.dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
     userModel.update(user)
         .then(affectedRow => {
-            var updateSuccessfull = true;
-            res.render('account-info', { updateSuccessfull, userSessionInfo });
+            res.redirect('/account/info');
         })
         .catch(err => {
             console.log(err);
