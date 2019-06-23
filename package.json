@@ -4,7 +4,9 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "node --inspect ./bin/www"
+    "start": "node --inspect ./bin/www",
+    "dev": "cross-env NODE_ENV=development DEBUG=th16-news:* nodemon --inspect ./bin/www",
+    "production": "node ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,9 @@
   },
   "homepage": "https://github.com/kim-ninh/TH16-News#readme",
   "devDependencies": {
-    "eslint": "^5.16.0"
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "nodemon": "^1.19.1"
   },
   "dependencies": {
     "@azure/storage-blob": "^10.3.0",
@@ -25,10 +29,10 @@
     "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "debug": "^4.1.1",
+    "dotenv": "^8.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-ejs-layouts": "^2.5.0",
-    "express-handlebars": "^3.0.2",
     "express-session": "^1.16.2",
     "firebase": "^6.2.0",
     "http-errors": "^1.7.2",
